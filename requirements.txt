@@ -1,0 +1,5 @@
+Django==5.2.6
+python-decouple==3.8
+pytz==2025.7
+sqlparse==1.0.4
+asgiref==3.8.0
