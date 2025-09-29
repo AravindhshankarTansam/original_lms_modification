@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+{% block title %}Login | eLearning{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card shadow-lg rounded-4 p-4" style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <p class="text-center text-muted mb-4">Login</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-3" 
+                        style="background: linear-gradient(90deg, #4f46e5, #3b82f6); border: none;">
+                    Login
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <small class="text-muted">Don't have an account? 
+                    <a href="{% url 'register' %}" class="text-primary fw-medium">Register</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
+    {% if user.role == 'superuser' %}
+        <p>Superuser access: Full control</p>
+    {% elif user.role == 'admin' %}
+        <p>Admin access: Manage courses and assessments</p>
+    {% else %}
+        <p>User access: Enroll in courses</p>
+    {% endif %}
+</div>

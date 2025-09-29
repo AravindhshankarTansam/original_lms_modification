@@ -1,0 +1,14 @@
+<div class="container mx-auto mt-10">
+    <h2 class="text-2xl font-bold mb-4">Available Courses</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for course in courses %}
+            <div class="p-4 border rounded shadow">
+                <h3 class="text-xl font-bold">{{ course.title }}</h3>
+                <p>{{ course.description }}</p>
+                {% if user.role == 'user' %}
+                    <a href="{% url 'enroll_course' course.id %}" class="bg-green-600 text-white p-2 rounded mt-2 inline-block">Enroll</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

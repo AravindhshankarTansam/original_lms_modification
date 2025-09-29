@@ -1,0 +1,8 @@
+:root{
+    --primary-color: #4F46E5; /* Indigo-600 */
+    --primary-color-hover: #4338CA; /* Indigo-700 */
+    --secondary-color: #6B7280; /* Gray-500 */
+    --background-color: #F9FAFB; /* Gray-50 */
+    --text-color: #111827; /* Gray-900 */
+    --border-color: #E5E7EB; /* Gray-200 */
+}

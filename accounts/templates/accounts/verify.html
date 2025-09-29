@@ -1,0 +1,8 @@
+<div class="bg-white p-8 rounded shadow-md w-96 mx-auto mt-24">
+    <h2 class="text-xl font-bold mb-4">Enter Verification Code</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="code" class="w-full border p-2 rounded mb-4" placeholder="6-digit code">
+        <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">Verify</button>
+    </form>
+</div>
