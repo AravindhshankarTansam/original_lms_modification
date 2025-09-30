@@ -2,11 +2,15 @@
 {% load static %}
 {% block title %}Register | eLearning{% endblock %}
 
+{% block extra_head %}
+<link href="{% static 'css/register.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center min-vh-100" style="background: linear-gradient(135deg, #f0f8ff, #f8eaff);">
-    <div class="card shadow-lg rounded-5 border-0" style="max-width: 500px; width: 100%; border-top: 6px solid #6610f2; animation: floatCard 0.6s ease-in-out;">
+<div class="register-page d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg rounded-5 border-0 register-card">
         <div class="card-body p-5">
-            <h2 class="text-center mb-4 fw-bold text-gradient" style="background: linear-gradient(45deg, #6610f2, #0d6efd); -webkit-background-clip: text; background-clip: text; color: transparent;">
+            <h2 class="text-center mb-4 fw-bold text-gradient">
                 Create Your Account
             </h2>
 
@@ -33,39 +37,4 @@
         </div>
     </div>
 </div>
-
-<style>
-/* Card float animation */
-@keyframes floatCard {
-    0% { transform: translateY(-20px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-}
-
-/* Button gradient */
-.btn-gradient {
-    background: linear-gradient(45deg, #6610f2, #0d6efd);
-    color: white;
-    transition: all 0.3s ease;
-}
-.btn-gradient:hover {
-    background: linear-gradient(45deg, #0d6efd, #6610f2);
-    color: white;
-}
-
-/* Form control focus glow */
-.form-control:focus {
-    border-color: #6610f2;
-    box-shadow: 0 0 8px rgba(102, 16, 242, 0.5);
-}
-
-/* Floating label style */
-.form-floating > label {
-    font-weight: 500;
-}
-
-/* Force required text to uppercase */
-.form-control:required {
-    text-transform: uppercase;
-}
-</style>
 {% endblock %}
