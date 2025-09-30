@@ -8,6 +8,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from .forms import ProfileForm
 
 # helper decorator
 def role_required(role):
@@ -97,3 +98,16 @@ def admin_dashboard(request):
     if request.user.role not in ['admin', 'superuser']:
         return redirect('dashboard')  # normal users cannot access
     return render(request, 'accounts/admin/base.html')
+
+# accounts/views.py
+@login_required
+def profile(request):
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileForm(instance=request.user)
+
+    return render(request, "accounts/admin/profile.html", {"form": form, "user": request.user})
