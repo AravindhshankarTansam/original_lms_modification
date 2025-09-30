@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Register | eLearning{% endblock %}
 
 {% block extra_head %}
@@ -7,32 +8,31 @@
 {% endblock %}
 
 {% block content %}
-<div class="register-page d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-lg rounded-5 border-0 register-card">
-        <div class="card-body p-5">
-            <h2 class="text-center mb-4 fw-bold text-gradient">
-                Create Your Account
-            </h2>
+<div class="register-page">
+    <div class="register-card">
+        <div class="card-body">
+            <h2 class="form-title">Create Your Account</h2>
 
             <form method="POST">
                 {% csrf_token %}
-
-                {% for field in form %}
-                <div class="form-floating mb-3">
-                    {{ field }}
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {% if field.errors %}
-                        <div class="text-danger small mt-1">{{ field.errors }}</div>
-                    {% endif %}
+                <div class="form-grid">
+                    {% for field in form %}
+                        <div class="form-group {% if forloop.last and forloop.counter|divisibleby:2 == False %}span-2{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="form-error">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
 
-                <button type="submit" class="btn btn-gradient w-100 py-2 fw-bold mt-2">Register Now</button>
+                <button type="submit" class="btn-gradient">Register Now</button>
             </form>
 
-            <p class="text-center text-secondary mt-4">
-                Already have an account? 
-                <a href="{% url 'login' %}" class="text-primary fw-semibold text-decoration-none">Login</a>
+            <p class="login-link">
+                Already have an account?
+                <a href="{% url 'login' %}">Login</a>
             </p>
         </div>
     </div>

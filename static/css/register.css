@@ -1,147 +1,205 @@
 /* Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-/* Reset */
+/* Reset and Base Styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
 }
 
-/* Body */
 body {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #f0f8ff, #f8eaff);
-  padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/lmsbg.png');
+    background-size: cover;
+    background-position: center;
+    padding: 1rem;
 }
 
-/* Card */
-.card {
-  max-width: 500px;
-  width: 100%;
-  border: none;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-  border-top: 6px solid #6610f2;
-  animation: floatCard 0.6s ease-in-out;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
+/* Register Page Container */
+.register-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* Card float animation */
+/* Card Styling */
+.register-card {
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-top: 6px solid #6610f2;
+    animation: floatCard 0.6s ease-in-out;
+    padding: 2rem;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* Animation */
 @keyframes floatCard {
-  0% { transform: translateY(-20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Headings */
-h2 {
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  text-align: center;
+.form-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #6610f2, #0d6efd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-.text-gradient {
-  background: linear-gradient(45deg, #6610f2, #0d6efd);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Form Grid Layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.5rem;
 }
 
-/* Form Controls */
-.form-control {
-  border-radius: 0.75rem;
-  padding: 1rem;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  background: #f9fafb;
+/* Form Group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-/* Focus state */
-.form-control:focus {
-  border-color: #6610f2;
-  box-shadow: 0 0 8px rgba(102, 16, 242, 0.5);
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #343a40;
+    font-size: 0.95rem;
 }
 
-/* Floating label adjustments */
-.form-floating > label {
-  font-weight: 500;
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 0.75rem;
+    background: #f9fafb;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Required text uppercase */
-.form-control:required {
-  text-transform: uppercase;
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #6610f2;
+    box-shadow: 0 0 8px rgba(102, 16, 242, 0.3);
+    outline: none;
+}
+
+/* Center the last field if odd count */
+.form-group.span-2 {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 50%;
+}
+
+/* Error Message */
+.form-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
 }
 
 /* Button */
 .btn-gradient {
-  width: 100%;
-  background: linear-gradient(45deg, #6610f2, #0d6efd);
-  color: #fff;
-  font-weight: 600;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
-  border: none;
-  transition: all 0.3s ease;
+    width: 50%;
+    display: block;
+    margin: 1.2rem auto 0;
+    background: linear-gradient(45deg, #6610f2, #0d6efd);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: none;
+    transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(45deg, #0d6efd, #6610f2);
-  color: #fff;
+    background: linear-gradient(45deg, #0d6efd, #6610f2);
 }
 
-/* Links */
-.text-secondary a, .text-primary {
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
+/* Login Link */
+.login-link {
+    text-align: center;
+    color: #6c757d;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
 }
 
-.text-secondary a:hover, .text-primary:hover {
-  text-decoration: underline;
+.login-link a {
+    color: #0d6efd;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-/* Responsive adjustments */
-
-/* Tablets */
-@media (max-width: 992px) {
-  .card {
-    padding: 1.8rem;
-  }
-  h2 {
-    font-size: 1.6rem;
-  }
+.login-link a:hover {
+    text-decoration: underline;
 }
 
-/* Mobile devices */
+/* Responsive Grid */
 @media (max-width: 768px) {
-  .card {
-    padding: 1.5rem;
-  }
-  h2 {
-    font-size: 1.5rem;
-  }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.span-2 {
+        grid-column: auto;
+        justify-self: stretch;
+        width: 100%;
+    }
 }
 
-/* Extra small devices */
+/* Card Responsiveness */
+@media (max-width: 992px) {
+    .register-card {
+        padding: 1.8rem;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+    }
+}
+
 @media (max-width: 576px) {
-  body {
-    padding: 0.5rem;
-  }
-  .card {
-    padding: 1.2rem;
-    border-radius: 1rem;
-  }
-  h2 {
-    font-size: 1.3rem;
-  }
-  .btn-gradient {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
+    body {
+        padding: 0.5rem;
+    }
+
+    .register-card {
+        padding: 1.2rem;
+        border-radius: 1rem;
+    }
+
+    .form-title {
+        font-size: 1.3rem;
+    }
+
+    .btn-gradient {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
 }
