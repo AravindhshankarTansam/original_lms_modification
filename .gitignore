@@ -32,5 +32,4 @@ Desktop.ini
 
 # JetBrains IDEs
 .idea/
-__pycache__/
-*.pyc
+__pycache__
