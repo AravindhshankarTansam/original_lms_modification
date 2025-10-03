@@ -90,7 +90,7 @@ def user_logout(request):
 
 # dashboard
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'accounts/user/dashboard.html')
 
 
 @login_required
