@@ -1,26 +1,37 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from .models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(forms.ModelForm):
     email = forms.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'phone_number', 'password1', 'password2')
+        fields = ('username', 'email', 'phone_number')  # password removed
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         for field_name, field in self.fields.items():
             field.widget.attrs.update({
                 'class': 'form-control',
                 'placeholder': ' '
             })
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': ' '
+            })
+
+
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-input'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-input'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
 
 class ProfileForm(forms.ModelForm):

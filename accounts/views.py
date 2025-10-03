@@ -1,6 +1,6 @@
 # Create your views here.
-from django.shortcuts import render, redirect
-from .forms import RegisterForm, LoginForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import RegisterForm, LoginForm, ProfileForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import User
@@ -8,7 +8,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileForm
+
 
 # helper decorator
 def role_required(role):
@@ -22,7 +22,8 @@ def role_required(role):
         return wrapper
     return decorator
 
-# heler function to send verification email
+
+# helper function to send verification email
 def send_verification_email(user):
     code = random.randint(100000, 999999)
     subject = 'Email Verification Code'
@@ -33,14 +34,17 @@ def send_verification_email(user):
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
     return code
 
-# registration
+
+# STEP 1: Registration (no password yet)
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.set_unusable_password()   # no password yet
             user.is_active = False
             user.save()
+
             code = send_verification_email(user)  # use the helper
             request.session['verification_code'] = code
             request.session['user_id'] = user.id
@@ -50,20 +54,40 @@ def register(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
-# verify code
+# STEP 2: Verify OTP
 def verify_code(request):
     if request.method == 'POST':
         input_code = request.POST.get('code')
         user_id = request.session.get('user_id')
+
         if str(request.session.get('verification_code')) == str(input_code):
             user = User.objects.get(id=user_id)
             user.is_active = True
             user.save()
-            messages.success(request, 'Email verified! You can login now.')
-            return redirect('login')
+            # redirect to password set page
+            return redirect('setpassword')
         else:
             messages.error(request, 'Invalid code!')
+
     return render(request, 'accounts/verify.html')
+
+
+# STEP 3: Set Password (after OTP success)
+def set_password(request):
+    user = request.user
+    if request.method == "POST":
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Password updated successfully!")
+            return redirect("login")
+        else:
+            # form errors automatically attached to each field
+            messages.error(request, "Please fix the errors below.")
+    else:
+        form = SetPasswordForm(user)
+    
+    return render(request, "accounts/setpassword.html", {"form": form})
 
 # login
 def user_login(request):
@@ -88,6 +112,7 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+
 # dashboard
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
@@ -99,7 +124,8 @@ def admin_dashboard(request):
         return redirect('dashboard')  # normal users cannot access
     return render(request, 'accounts/admin/base.html')
 
-# accounts/views.py
+
+# profile
 @login_required
 def profile(request):
     if request.method == "POST":

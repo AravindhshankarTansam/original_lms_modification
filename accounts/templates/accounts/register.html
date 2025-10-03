@@ -16,14 +16,17 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-grid">
+                    {# Only show username, email, phone_number here #}
                     {% for field in form %}
-                        <div class="form-group {% if forloop.last and forloop.counter|divisibleby:2 == False %}span-2{% endif %}">
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="form-error">{{ field.errors }}</div>
-                            {% endif %}
-                        </div>
+                        {% if field.name != 'password1' and field.name != 'password2' %}
+                            <div class="form-group {% if forloop.last and forloop.counter|divisibleby:2 == False %}span-2{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="form-error">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
 
