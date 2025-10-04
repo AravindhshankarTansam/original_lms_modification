@@ -1,8 +1,27 @@
-<div class="bg-white p-8 rounded shadow-md w-96 mx-auto mt-24">
-    <h2 class="text-xl font-bold mb-4">Enter Verification Code</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="code" class="w-full border p-2 rounded mb-4" placeholder="6-digit code">
-        <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">Verify</button>
-    </form>
+{% load static %}
+<link href="{% static 'css/register.css' %}" rel="stylesheet">
+
+<div class="register-page">
+    <div class="register-card">
+        <div class="card-body">
+            <h2 class="form-title">Enter Verification Code</h2>
+
+            {% if messages %}
+                <div class="form-error mb-4">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="code">6-digit Code</label>
+                    <input type="number" name="code" id="code" class="form-control" maxlength="6">
+                </div>
+                <button type="submit" class="btn-gradient">Verify</button>
+            </form>
+        </div>
+    </div>
 </div>

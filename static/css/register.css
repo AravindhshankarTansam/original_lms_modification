@@ -1,0 +1,204 @@
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/lmsbg.png');
+    background-size: cover;
+    background-position: center;
+    padding: 1rem;
+}
+
+/* Register Page Container */
+.register-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Card Styling */
+.register-card {
+    max-width: 600px;
+    width: 100%;
+    /* make the element the backdrop-filter target */
+    position: relative;
+    overflow: hidden;
+    /* translucent background so the backdrop blur is visible */
+    background: rgba(255, 255, 255, 0.45);
+    /* enable blur on supported browsers */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    /* subtle translucent border as a fallback when backdrop-filter is not supported */
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-top: 6px solid #6610f2;
+    animation: floatCard 0.6s ease-in-out;
+    padding: 2rem;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* Animation */
+@keyframes floatCard {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Headings */
+.form-title {
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #6610f2, #0d6efd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Form Groups stacked vertically */
+.form-group {
+    display: flex;
+    flex-direction: column; /* stack label & input */
+    width: 100%;
+    margin-bottom: 1rem; /* spacing between fields */
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #343a40;
+    font-size: 0.95rem;
+}
+
+/* Input, select, textarea */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 0.75rem;
+    background: #f9fafb;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Password fields */
+input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 0.75rem;
+    background: #f9fafb;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+input[type="password"]:focus {
+    border-color: #6610f2;
+    box-shadow: 0 0 8px rgba(102, 16, 242, 0.3);
+    outline: none;
+}
+
+/* Error Message */
+.form-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Button */
+.btn-gradient {
+    width: 50%;
+    display: block;
+    margin: 1.2rem auto 0;
+    background: linear-gradient(45deg, #6610f2, #0d6efd);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(45deg, #0d6efd, #6610f2);
+}
+
+/* Login Link */
+.login-link {
+    text-align: center;
+    color: #6c757d;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.login-link a {
+    color: #0d6efd;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Card Responsiveness */
+@media (max-width: 992px) {
+    .register-card {
+        padding: 1.8rem;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    .register-card {
+        padding: 1.2rem;
+        border-radius: 1rem;
+    }
+
+    .form-title {
+        font-size: 1.3rem;
+    }
+
+    .btn-gradient {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}

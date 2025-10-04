@@ -1,30 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
 {% block title %}Login | eLearning{% endblock %}
 
+{% block extra_head %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body_class %}login-page{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-    <div class="card shadow-lg rounded-4 p-4" style="max-width: 400px; width: 100%;">
-        <div class="card-body">
-            <p class="text-center text-muted mb-4">Login</p>
 
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
+<div class="login-card">
+    {% comment %} <h1 class="form-title1">Welcome Back</h1> {% endcomment %}
+    <p class="form-title2">Login to continue</p>
 
-                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-3" 
-                        style="background: linear-gradient(90deg, #4f46e5, #3b82f6); border: none;">
-                    Login
-                </button>
-            </form>
+    <form method="POST" class="register-form">
+        {% csrf_token %}
 
-            <div class="text-center mt-3">
-                <small class="text-muted">Don't have an account? 
-                    <a href="{% url 'register' %}" class="text-primary fw-medium">Register</a>
-                </small>
-            </div>
+        <!-- Username Field -->
+        <div class="form-group">
+            {{ form.username }}
+            <label for="id_username">Username</label>
         </div>
+
+        <!-- Password Field -->
+        <div class="form-group password-group">
+            {{ form.password }}
+            <label for="id_password">Password</label>
+            <span class="eye-toggle" onclick="togglePassword()">
+                <i id="eyeIcon" class="fa fa-eye"></i>
+            </span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <!-- Register Link -->
+    <div class="text-center mt-3">
+        <small>Don’t have an account? 
+            <a href="{% url 'register' %}" class="fw-medium text-primary">Register</a>
+        </small>
     </div>
 </div>
+
+<!-- Password Toggle Script -->
+<script>
+function togglePassword() {
+    const passwordInput = document.querySelector("#id_password");
+    const eyeIcon = document.querySelector("#eyeIcon");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+    }
+}
+</script>
+
 {% endblock %}
