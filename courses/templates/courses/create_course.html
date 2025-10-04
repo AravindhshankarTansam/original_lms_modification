@@ -1,13 +1,126 @@
 {% extends "accounts/admin/base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container mx-auto mt-10">
-    <h2 class="text-2xl font-bold mb-4">Create Course</h2>
-    <form method="POST" class="space-y-4">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Course Title" class="border p-2 w-full rounded">
-        <textarea name="description" placeholder="Course Description" class="border p-2 w-full rounded"></textarea>
-        <button type="submit" class="bg-blue-600 text-white p-2 rounded">Create</button>
-    </form>
-</div>
+
+
+  <div id="headerWithFilters" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 style="margin: 0;">Course creation</h1>
+  
+    <div id="savedModulesContainer" style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <select id="savedModulesDropdown" aria-label="Select saved module" style="min-width: 160px;">
+        <option value="" disabled selected>Saved Modules</option>
+        <!-- Options dynamically added by JS -->
+      </select>
+  
+      <select id="savedDifficultyDropdown" aria-label="Select difficulty" style="min-width: 140px;">
+        <option value="" selected>Levels</option>
+        <option value="easy">Beginner</option>
+        <option value="medium">Intermediate</option>
+        <option value="hard">All Levels</option>
+        <option value="hard">Expert</option>
+      </select>
+  
+      <button type="button" id="clearSavedBtn" style="background:#e53e3e; color:#fff; font-weight:600; border:none; border-radius:6px; padding:8px 16px; cursor:pointer;">
+        Clear Saved Data
+      </button>
+    </div>
+  </div>
+  <form id="moduleForm" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <fieldset>
+      <legend>Module Title</legend>
+      <input type="text" id="moduleTitle" name="moduleTitle" placeholder="Enter module title" required autocomplete="off" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Topic Title</legend>
+      <input type="text" id="topicTitle" name="topicTitle" placeholder="Enter topic title" required autocomplete="off" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Upload Type</legend>
+      <select id="uploadFileType" name="uploadFileType" required>
+        <option value="" disabled selected>Select upload type</option>
+        <option value="video">Video</option>
+        <option value="ppt">PPT</option>
+        <option value="pdf">PDF</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Upload File</legend>
+      <input type="file" id="uploadFile" name="uploadFile" accept="video/*,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf" />
+      <p id="existingFileName" style="margin-top: 10px; color: #555;"></p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Upload Description</legend>
+      <div id="uploadDescriptionEditor" class="quill-editor"></div>
+      <input type="hidden" id="uploadDescription" name="uploadDescription" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Types of Questions</legend>
+      <select id="questionTypeSelect" name="questionType" required>
+        <option value="" disabled selected>Select question type</option>
+        <option value="multiple_choice">Multiple Choice</option>
+        <option value="true_false">True / False</option>
+      </select>
+    </fieldset>
+
+    <fieldset id="difficultyFieldset" style="display:none;">
+      <legend>Difficulty Level</legend>
+      <select id="questionDifficulty" name="questionDifficulty" required>
+        <option value="" disabled selected>Select difficulty</option>
+        <option value="easy">Beginner</option>
+        <option value="medium">Intermediate</option>
+        <option value="hard">All Levels</option>
+        <option value="hard">Expert</option>
+      </select>
+    </fieldset>
+
+    <fieldset id="questionFieldset" style="display:none;">
+      <legend>Question</legend>
+      <textarea id="questionText" name="questionText" placeholder="Type your question here..." rows="3" required></textarea>
+    </fieldset>
+
+    <fieldset id="optionsFieldset" style="display:none;">
+      <legend>Options (Select the correct answer(s))</legend>
+      <div class="option">
+        <input type="checkbox" id="opt1" name="correctOptions" value="option1" />
+        <input type="text" id="option1Text" name="option1Text" placeholder="Option 1" autocomplete="off" />
+      </div>
+      <div class="option">
+        <input type="checkbox" id="opt2" name="correctOptions" value="option2" />
+        <input type="text" id="option2Text" name="option2Text" placeholder="Option 2" autocomplete="off" />
+      </div>
+      <div class="option">
+        <input type="checkbox" id="opt3" name="correctOptions" value="option3" />
+        <input type="text" id="option3Text" name="option3Text" placeholder="Option 3" autocomplete="off" />
+      </div>
+      <div class="option">
+        <input type="checkbox" id="opt4" name="correctOptions" value="option4" />
+        <input type="text" id="option4Text" name="option4Text" placeholder="Option 4" autocomplete="off" />
+      </div>
+    </fieldset>
+
+    <fieldset id="questionDescriptionFieldset" style="display:none;">
+      <legend>Question Description</legend>
+      <div id="questionDescriptionEditor" class="quill-editor"></div>
+      <input type="hidden" id="questionDescription" name="questionDescription" />
+    </fieldset>
+
+    <button type="submit" id="submitBtn">Save & Continue</button>
+  </form>
+
+
+  <!-- Include Quill CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/create_course.css' %}" />
+  
+  <!-- Include Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="{% static 'js/create_course.js' %}"></script>
 {% endblock %}
