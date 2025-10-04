@@ -72,23 +72,31 @@ def verify_code(request):
     return render(request, 'accounts/verify.html')
 
 
+from .forms import CustomSetPasswordForm  # import your custom form
+
 # STEP 3: Set Password (after OTP success)
 def set_password(request):
-    user = request.user
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')  # Redirect if no user_id in session
+    user = get_object_or_404(User, id=user_id)
+    
     if request.method == "POST":
-        form = SetPasswordForm(user, request.POST)
+        form = CustomSetPasswordForm(user, request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Password updated successfully!")
+            user = authenticate(username=user.username, password=request.POST['password1'])
+            if user:
+                login(request, user)
             return redirect("login")
         else:
-            # form errors automatically attached to each field
-            messages.error(request, "Please fix the errors below.")
+            # Debug: Print errors to console
+            print(form.errors)  # Add this to check errors in the server console
     else:
-        form = SetPasswordForm(user)
+        form = CustomSetPasswordForm(user)
     
     return render(request, "accounts/setpassword.html", {"form": form})
-
 # login
 def user_login(request):
     if request.method == 'POST':

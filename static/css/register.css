@@ -33,8 +33,17 @@ body {
 .register-card {
     max-width: 600px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
+    /* make the element the backdrop-filter target */
+    position: relative;
+    overflow: hidden;
+    /* translucent background so the backdrop blur is visible */
+    background: rgba(255, 255, 255, 0.45);
+    /* enable blur on supported browsers */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border-radius: 1.5rem;
+    /* subtle translucent border as a fallback when backdrop-filter is not supported */
+    border: 1px solid rgba(255, 255, 255, 0.35);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     border-top: 6px solid #6610f2;
     animation: floatCard 0.6s ease-in-out;
