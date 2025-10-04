@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         matchStatus.style.fontSize = '0.9rem';
         matchStatus.style.marginTop = '0.35rem';
         matchStatus.style.display = 'none';
-        confirmInput.parentElement.appendChild(matchStatus);
+        confirmInput.parentElement.parentElement.appendChild(matchStatus);
 
         const updateMatchStatus = () => {
             const a = passwordInput ? passwordInput.value : '';
