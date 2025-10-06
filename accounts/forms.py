@@ -23,14 +23,7 @@ from django.contrib.auth.forms import SetPasswordForm
 import re
 
 class CustomSetPasswordForm(SetPasswordForm):
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
-    )
-    password2 = forms.CharField(
-        label="Confirm Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm your password'}),
-    )
+    pass
 
     def clean_password1(self):
         password = self.cleaned_data.get("password1")
