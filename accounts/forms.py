@@ -23,17 +23,10 @@ from django.contrib.auth.forms import SetPasswordForm
 import re
 
 class CustomSetPasswordForm(SetPasswordForm):
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your password'}),
-    )
-    password2 = forms.CharField(
-        label="Confirm Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm your password'}),
-    )
+    pass
 
     def clean_password1(self):
-        password = self.cleaned_data.get("password1")
+        password = self.cleaned_data.get("new_password1")
         errors = []
 
         # Minimum length
@@ -62,8 +55,8 @@ class CustomSetPasswordForm(SetPasswordForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
+        password1 = cleaned_data.get("new_password1")
+        password2 = cleaned_data.get("new_password2")
 
         if password1 and password2 and password1 != password2:
             self.add_error('password2', "The two password fields didn't match.")

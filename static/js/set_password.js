@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     toggleSpans.forEach(function(span) {
         span.addEventListener('click', function() {
-            const inputId = this.getAttribute('data-target');
-            const input = document.getElementById(inputId);
+            const input = document.querySelector(`#${this.dataset.target}`);
             const icon = this.querySelector('i');
 
             if (input.type === "password") {
@@ -21,14 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // --- Live password constraint checking for password1 ---
-    const passwordInput = document.getElementById('id_password1');
+    // --- Live password constraint checking ---
+    const passwordInput = document.querySelector('.form-group .password-input input[name$="password1"]');
     const rules = {
-        length: document.getElementById('rule-length'),
-        uppercase: document.getElementById('rule-uppercase'),
-        lowercase: document.getElementById('rule-lowercase'),
-        number: document.getElementById('rule-number'),
-        special: document.getElementById('rule-special')
+        length: document.querySelector('#rule-length'),
+        uppercase: document.querySelector('#rule-uppercase'),
+        lowercase: document.querySelector('#rule-lowercase'),
+        number: document.querySelector('#rule-number'),
+        special: document.querySelector('#rule-special')
     };
 
     if (passwordInput) {
@@ -44,10 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- Confirm password matching ---
-    const confirmInput = document.getElementById('id_password2');
+    const confirmInput = document.querySelector('.form-group .password-input input[name$="password2"]');
     const form = document.querySelector('form');
 
-    // create or reuse a small status element below the confirm input
     let matchStatus = null;
     if (confirmInput) {
         matchStatus = document.createElement('div');
@@ -55,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         matchStatus.style.fontSize = '0.9rem';
         matchStatus.style.marginTop = '0.35rem';
         matchStatus.style.display = 'none';
-        confirmInput.parentElement.appendChild(matchStatus);
+        confirmInput.closest('.form-group').appendChild(matchStatus);
 
         const updateMatchStatus = () => {
             const a = passwordInput ? passwordInput.value : '';
@@ -78,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-        // update on input for both fields
         confirmInput.addEventListener('input', updateMatchStatus);
         if (passwordInput) passwordInput.addEventListener('input', updateMatchStatus);
     }
@@ -95,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     matchStatus.textContent = 'Passwords do not match.';
                     matchStatus.style.display = 'block';
                 }
-                // focus confirm input to help user
                 confirmInput.focus();
             }
         });
