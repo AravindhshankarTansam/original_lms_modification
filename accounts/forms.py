@@ -18,36 +18,31 @@ class RegisterForm(forms.ModelForm):
             })
 
 
-from django import forms
-from django.contrib.auth.forms import SetPasswordForm
-import re
-
 class CustomSetPasswordForm(SetPasswordForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add uniform styling and floating label placeholders
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': ' '
+            })
 
-    def clean_password1(self):
+    def clean_new_password1(self):
         password = self.cleaned_data.get("new_password1")
         errors = []
 
         # Minimum length
         if len(password) < 8:
-            errors.append("")
-
-        # Uppercase letter
+            errors.append("Password must be at least 8 characters long.")
         if not re.search(r'[A-Z]', password):
-            errors.append("")
-
-        # Lowercase letter
+            errors.append("Password must include an uppercase letter.")
         if not re.search(r'[a-z]', password):
-            errors.append("")
-
-        # Number
+            errors.append("Password must include a lowercase letter.")
         if not re.search(r'[0-9]', password):
-            errors.append("")
-
-        # Special character
+            errors.append("Password must include a number.")
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-            errors.append("")
+            errors.append("Password must include a special character (!@#$%^&*).")
 
         if errors:
             raise forms.ValidationError(errors)
@@ -59,9 +54,10 @@ class CustomSetPasswordForm(SetPasswordForm):
         password2 = cleaned_data.get("new_password2")
 
         if password1 and password2 and password1 != password2:
-            self.add_error('password2', "The two password fields didn't match.")
+            self.add_error('new_password2', "The two password fields didn't match.")
 
         return cleaned_data
+
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-input'}))
