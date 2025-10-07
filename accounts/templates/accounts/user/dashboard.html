@@ -1,17 +1,200 @@
-<div class="container mx-auto mt-10">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Dashboard</h1>
-        <a href="{% url 'logout' %}" 
-           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-            Logout
-        </a>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | eLearning{% endblock %}
+
+{% block extra_head %}
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">eLearning</h3>
+    <i class="fas fa-bars toggle-btn" id="toggleSidebar"></i>
+  </div>
+
+  <ul class="sidebar-menu">
+    <li><a href="/dashboard/" class="active"><i class="fas fa-home me-2"></i><span>Dashboard</span></a></li>
+    <li><a href="/courses/"><i class="fas fa-book me-2"></i><span>Courses</span></a></li>
+    <li><a href="/profile/"><i class="fas fa-user me-2"></i><span>Profile</span></a></li>
+    <li><a href="/logout/"><i class="fas fa-sign-out-alt me-2"></i><span>Logout</span></a></li>
+  </ul>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3 shadow-sm full-navbar" id="mainNavbar">
+  <div class="navbar-container">
+    <div class="left-section">
+      <h5 class="text-white mb-0 fw-semibold" id="dashboardTitle">Dashboard</h5>
     </div>
 
-    {% if user.role == 'superuser' %}
-        <p>Superuser access: Full control</p>
-    {% elif user.role == 'admin' %}
-        <p>Admin access: Manage courses and assessments</p>
-    {% else %}
-        <p>User access: Enroll in courses</p>
-    {% endif %}
+    <div class="right-section dropdown">
+      <a
+        class="nav-link dropdown-toggle text-white d-flex align-items-center"
+        href="#"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="fas fa-user-circle fa-lg me-2"></i>
+        Welcome, {{ request.user.username }}
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li><a class="dropdown-item" href="/profile/">Profile</a></li>
+        <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+  <div class="content-section py-4">
+    <h4 class="fw-bold mb-3">Available Courses</h4>
+
+    <!-- Carousel Wrapper -->
+    <div class="carousel-container" id="carouselContainer">
+      <button class="carousel-arrow left-arrow" id="leftArrow">&#10094;</button>
+      <div class="carousel-track" id="carouselTrack">
+        {% for i in "1234567" %}
+        <article class="card">
+          <a class="card-link" href="#0">
+            <img class="card-img" src="{% static 'images/course'|add:i|add:'.jpg' %}" alt="Course {{ i }}">
+            <div class="card-details">
+              <div>
+                <div class="card-subtitle">Course {{ i }}</div>
+                <h3 class="card-title">Course Name {{ i }}</h3>
+                <div class="card-content">Brief description of the course goes here. Learn and improve your skills.</div>
+              </div>
+              <div class="card-view-more">
+                View more
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </article>
+        {% endfor %}
+      </div>
+      <button class="carousel-arrow right-arrow" id="rightArrow">&#10095;</button>
+    </div>
+
+  </div>
 </div>
+<!-- ================== Trending Topics Section ================== -->
+<!-- ================== Trending Topics Section ================== -->
+<div class="trending-section">
+  <!-- Filter Bar -->
+  <div class="filter-container">
+    <h4 class="fw-bold mb-3">Filters</h4>
+    <div class="filter-tags">
+      <button class="filter-btn">Course Name</button>
+      <button class="filter-btn">Topics</button>
+      <button class="filter-btn">Level</button>
+      <button class="filter-btn">Duration</button>
+      <button class="filter-btn">Tags</button>
+    </div>
+  </div>
+
+  <!-- Trending Topics Title -->
+  <h4 class="fw-bold mb-3 mt-4">Trending Topics</h4>
+
+  <!-- Trending Carousel Container -->
+  <div class="trending-carousel-container">
+    <button class="trend-arrow left" id="trendLeft">&#10094;</button>
+
+    <div class="trending-carousel-track" id="trendingTrack">
+      <!-- Card 1 -->
+      <div class="trending-item">
+        <div class="trending-content">
+          <div class="trending-left">
+            <div class="trend-card">
+              <img src="{% static 'images/trending1.jpg' %}" alt="Trending Course" class="trend-img">
+              <div class="trend-details">
+                <h5 class="trend-title">Advanced Data Science</h5>
+                <p class="trend-desc">Master Python, ML, and AI with real-world projects and mentorship support.</p>
+              </div>
+            </div>
+          </div>
+          <div class="trending-right">
+            <div class="trend-info-box">
+              <p><strong>Total Hours:</strong> 60 hrs</p>
+              <p><strong>Estimation:</strong> 6 Weeks</p>
+              <p><strong>Assessment:</strong> Included</p>
+              <p><strong>Price:</strong> ₹2499</p>
+              <button class="btn-enroll">Enroll Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="trending-item">
+        <div class="trending-content">
+          <div class="trending-left">
+            <div class="trend-card">
+              <img src="{% static 'images/trending2.jpg' %}" alt="Trending Course" class="trend-img">
+              <div class="trend-details">
+                <h5 class="trend-title">Web Development Bootcamp</h5>
+                <p class="trend-desc">Learn HTML, CSS, JS, and frameworks with hands-on projects.</p>
+              </div>
+            </div>
+          </div>
+          <div class="trending-right">
+            <div class="trend-info-box">
+              <p><strong>Total Hours:</strong> 80 hrs</p>
+              <p><strong>Estimation:</strong> 8 Weeks</p>
+              <p><strong>Assessment:</strong> Included</p>
+              <p><strong>Price:</strong> ₹2999</p>
+              <button class="btn-enroll">Enroll Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="trending-item">
+        <div class="trending-content">
+          <div class="trending-left">
+            <div class="trend-card">
+              <img src="{% static 'images/trending3.jpg' %}" alt="Trending Course" class="trend-img">
+              <div class="trend-details">
+                <h5 class="trend-title">UI/UX Design Mastery</h5>
+                <p class="trend-desc">Create modern UI/UX designs and prototypes with Figma & Adobe XD.</p>
+              </div>
+            </div>
+          </div>
+          <div class="trending-right">
+            <div class="trend-info-box">
+              <p><strong>Total Hours:</strong> 50 hrs</p>
+              <p><strong>Estimation:</strong> 5 Weeks</p>
+              <p><strong>Assessment:</strong> Included</p>
+              <p><strong>Price:</strong> ₹1999</p>
+              <button class="btn-enroll">Enroll Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="trend-arrow right" id="trendRight">&#10095;</button>
+
+    <!-- Dot Indicators -->
+    <div class="trend-indicators" id="trendIndicators">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</div>
+<!-- ================== End Trending Topics Section ================== -->
+
+
+
+<!-- ================== End Trending Topics Section ================== -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}
