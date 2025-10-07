@@ -1,0 +1,385 @@
+/* ============================
+   General Body Styles
+============================ */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================
+   Navbar Styling
+============================ */
+.navbar-custom {
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.6rem 1.2rem;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Logo */
+.navbar-brand img {
+  height: 80px;
+}
+
+/* ============================
+   Search Bar
+============================ */
+.search-bar {
+  width: 400px;
+  max-width: 100%;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  border-radius: 25px;
+  padding-left: 40px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.search-bar .fa-search {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+/* ============================
+   DROPDOWN STYLING (PARALLEL)
+============================ */
+
+/* Base dropdown menu */
+.dropdown-menu {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
+  transition: all 0.25s ease-in-out;
+  transform-origin: top left;
+  margin-top: 8px;
+  border-radius: 8px;
+  display: block;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  min-width: 200px;
+  position: absolute;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Show dropdown on hover */
+.dropdown:hover > .dropdown-menu,
+.dropdown-submenu:hover > .dropdown-menu {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
+}
+
+/* Submenu (side-by-side) */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: 6px;
+  margin-top: 0;
+}
+
+/* Menu items */
+.dropdown-item {
+  padding: 8px 15px;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Arrow indicator for submenus */
+.dropdown-submenu > a::after {
+  content: "›";
+  float: right;
+  margin-left: 10px;
+  font-weight: bold;
+  color: #666;
+}
+
+/* Hover effects */
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* Explore dropdown width */
+.explore-dropdown .dropdown-menu {
+  min-width: 220px;
+}
+
+/* Make sure dropdowns appear correctly */
+.navbar {
+  overflow: visible;
+  position: relative;
+  z-index: 1000;
+}
+
+/* ============================
+   Login Button
+============================ */
+.login-btn {
+  border-radius: 25px;
+  padding: 6px 18px;
+  background-color: #007bff;
+  color: #fff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+/* ============================
+   Responsive Adjustments
+============================ */
+@media (max-width: 991px) {
+  /* Disable hover dropdown on mobile */
+  .dropdown:hover > .dropdown-menu,
+  .dropdown-submenu:hover > .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+  }
+
+  .navbar-custom {
+    text-align: center;
+  }
+
+  .navbar-collapse {
+    background-color: #fff;
+    padding: 15px 0;
+  }
+
+  .dropdown-menu {
+    position: static !important;
+    transform: none !important;
+    box-shadow: none;
+    border: none;
+    opacity: 1 !important;
+    visibility: visible !important;
+    padding-left: 0;
+  }
+
+  
+
+  .dropdown-submenu > .dropdown-menu {
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding-left: 15px; /* indent submenus */
+    display: none; 
+  }
+  .dropdown-submenu > .dropdown-menu.show {
+    display: block;
+  }
+
+  .dropdown-submenu > a::after {
+    content: "▼"; /* down arrow for mobile */
+    float: right;
+    margin-left: 10px;
+  }
+
+  .search-bar {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .navbar-brand img {
+    height: 60px;
+  }
+
+  .login-btn {
+    width: 75%;
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+
+/* ============================
+   Animation Touch-Up
+============================ */
+.dropdown-menu,
+.dropdown-submenu .dropdown-menu {
+  animation: fadeInScale 0.15s ease-in-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Custom Hamburger to Close Icon */
+.navbar-toggler.collapsed .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280,0,0,0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon {
+  /* Close Icon in red */
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='4' y1='4' x2='26' y2='26' stroke='red' stroke-width='3'/%3E%3Cline x1='26' y1='4' x2='4' y2='26' stroke='red' stroke-width='3'/%3E%3C/svg%3E");
+}
+
+
+/* ============================
+   Hero Section
+============================ */
+.hero-banner-slide-module--content-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px; /* fixed width */
+    padding: 20px;
+    background-color: #fff;
+    color: #000000;
+    text-align: left;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.hero-banner-slide-module--content-box.left {
+    left: 190px; /* distance from the left edge */
+}
+
+.hero-banner-slide-module--content-box h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.hero-banner-slide-module--content-box p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.hero-banner-slide-module--content-box .btn {
+    border-radius: 25px;
+    padding: 6px 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-banner-slide-module--content-box {
+        width: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+}
+
+/* ===========================
+   Custom Carousel Controls
+=========================== */
+.custom-carousel-control {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(117, 114, 114, 0.274); /* semi-transparent black */
+    border-radius: 50%; /* circular buttons */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.custom-carousel-control:hover {
+    background-color: rgba(0, 123, 255, 0.8); /* blue hover */
+}
+
+.custom-carousel-control .carousel-control-prev-icon,
+.custom-carousel-control .carou sel-control-next-icon {
+    background-size: 50%;
+    filter: invert(1); 
+    width: 50px;  
+    height: 50px; 
+}
+
+.custom-carousel-control.carousel-control-prev {
+    left: 50px;
+}
+
+.custom-carousel-control.carousel-control-next {
+    right: 50px;
+}
+
+/* Optional: enlarge on hover */
+.custom-carousel-control:hover .carousel-control-prev-icon,
+.custom-carousel-control:hover .carousel-control-next-icon {
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+/* ===========================
+   Mobile View Adjustments
+=========================== */
+@media (max-width: 991px) {
+    /* Make the carousel section full width & reduce spacing */
+    section.container.my-5.text-center {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Make carousel images responsive */
+    #carouselExampleIndicators .carousel-inner img {
+        width: 100%;
+        height: auto; /* maintain aspect ratio */
+    }
+
+    /* Move hero content box below image */
+    .hero-banner-slide-module--content-box.left {
+        position: relative;       /* stop absolute positioning */
+        top: auto;                /* reset top */
+        left: auto;               /* reset left */
+        transform: none;          /* remove translate */
+        width: 90%;               /* almost full width */
+        margin: 10px auto 0 auto; /* spacing below image */
+        text-align: center;       /* center text */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Optional: adjust buttons inside hero box */
+    .hero-banner-slide-module--content-box.left .btn {
+        width: 70%; /* make button wider on mobile */
+        margin-top: 10px;
+    }
+
+    /* Optional: adjust carousel controls for mobile */
+    .custom-carousel-control {
+        width: 40px;
+        height: 40px;
+    }
+    .custom-carousel-control .carousel-control-prev-icon,
+    .custom-carousel-control .carousel-control-next-icon {
+        background-size: 70%; /* smaller icon */
+    }
+}

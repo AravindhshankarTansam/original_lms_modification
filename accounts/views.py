@@ -1,4 +1,5 @@
 # Create your views here.
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegisterForm, LoginForm, ProfileForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout
@@ -9,6 +10,36 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+import json
+
+
+
+def landing_page(request):
+    # Paths to JSON files
+    slides_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'slides.json')
+    services_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'service.json')
+    popular_courses_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'popular_courses.json')
+
+    # Load slides
+    with open(slides_path, 'r', encoding='utf-8') as f:
+        slides = json.load(f)
+
+    # Load services
+    with open(services_path, 'r', encoding='utf-8') as f:
+        services = json.load(f)
+
+    # Load popular courses
+    with open(popular_courses_path, 'r', encoding='utf-8') as f:
+        popular_courses = json.load(f)
+
+    # Pass all data to template
+    context = {
+        'slides': slides,
+        'services': services,
+        'popular_courses': popular_courses,
+    }
+
+    return render(request, 'index.html', context)
 
 
 # helper decorator

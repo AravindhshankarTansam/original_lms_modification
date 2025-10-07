@@ -1,0 +1,154 @@
+.container{
+    font-family: "Figtree", sans-serif;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+/* Section title */
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Carousel wrapper */
+.carousel {
+  margin: 0 auto;
+  padding: 20px 0;
+  overflow: hidden;
+  display: flex;
+  max-width: 100%;
+  position: relative;
+}
+
+/* Group of cards (scrolling container) */
+.group {
+  display: flex;
+  gap: 20px;
+  padding-right: 20px;
+  will-change: transform;
+  animation: scrolling 50s linear infinite;
+}
+
+/* Pause animation on hover */
+.carousel:hover .group {
+  animation-play-state: paused;
+}
+
+/* Keyframes for continuous horizontal scrolling */
+@keyframes scrolling {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Individual course card */
+.card {
+  flex: 0 0 300px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Course image */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Info section */
+.info {
+  padding: 1rem;
+  text-align: left;
+}
+
+.info a{
+    text-decoration: none;
+
+}
+
+.info h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.info p {
+  font-size: 0.9rem;
+  color: #666;
+  min-height: 48px;
+}
+
+.info .btn {
+  background-color: #55a08d;
+  border: none;
+  font-size: 0.85rem;
+  transition: background 0.3s ease;
+}
+
+.info .btn:hover {
+  background-color: #3e7d6b;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card {
+    flex: 0 0 220px;
+  }
+
+  .group {
+    gap: 12px;
+    animation-duration: 45s;
+  }
+}
+/* Button row inside each course card */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+/* Make buttons equal width and visually balanced */
+.btn-row .btn {
+  flex: 1;
+  text-align: center;
+}
+
+/* Primary button style */
+.info .btn-primary {
+  background-color: #55a08d;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.info .btn-primary:hover {
+  background-color: #3e7d6b;
+}
+
+/* Outline secondary button style */
+.info .btn-outline-secondary {
+  border-color: #55a08d;
+  color: #55a08d;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.info .btn-outline-secondary:hover {
+  background-color: #55a08d;
+  color: #fff;
+}
