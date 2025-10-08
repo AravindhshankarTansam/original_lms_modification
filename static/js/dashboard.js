@@ -235,13 +235,13 @@ if (track) {
 })();
 
 
-
+// explore more section
 
 document.addEventListener("DOMContentLoaded", function () {
-  const nav = document.getElementById("lavaNav");
+  const nav = document.querySelector("#lavaNav");
   const links = nav.querySelectorAll(".lava-link");
   const animation = nav.querySelector(".animation");
-  const content = document.getElementById("lavaContent");
+  const content = document.querySelector("#lavaContent");
 
   const contentMap = {
     curriculum: `
