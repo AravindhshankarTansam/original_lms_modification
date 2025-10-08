@@ -1,3 +1,4 @@
+// === Sidebar toggle ===
 const toggleBtn = document.querySelector("#toggleSidebar");
 const sidebar = document.querySelector("#sidebar");
 const navbar = document.querySelector("#mainNavbar");
@@ -57,150 +58,19 @@ if (track) {
   }
 }
 
-
 // ===== Trend Carousel: dropdowns, nav, drag, indicator =====
 (function () {
   const courseBtn = document.getElementById('courseFilterBtn');
   const topicBtn = document.getElementById('topicFilterBtn');
   const courseDd = document.getElementById('courseDropdown');
   const topicDd = document.getElementById('topicDropdown');
-  const closeDropdowns = (e) => {
-    if (!courseBtn.contains(e.target) && !courseDd.contains(e.target)) courseDd.style.display = 'none';
-    if (!topicBtn.contains(e.target) && !topicDd.contains(e.target)) topicDd.style.display = 'none';
-  };
 
-  courseBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    courseDd.style.display = courseDd.style.display === 'block' ? 'none' : 'block';
-    topicDd.style.display = 'none';
-  });
-  topicBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    topicDd.style.display = topicDd.style.display === 'block' ? 'none' : 'block';
-    courseDd.style.display = 'none';
-  });
-  document.addEventListener('click', closeDropdowns);
-
-  // handle dropdown selection (placeholder behavior)
-  document.querySelectorAll('#courseDropdown li').forEach(li => {
-    li.addEventListener('click', () => {
-      courseBtn.querySelector('span').innerText = li.innerText;
-      courseDd.style.display = 'none';
-      // TODO: perform filter action (AJAX or template reload)
-    });
-  });
-  document.querySelectorAll('#topicDropdown li').forEach(li => {
-    li.addEventListener('click', () => {
-      topicBtn.querySelector('span').innerText = li.innerText;
-      topicDd.style.display = 'none';
-      // TODO: perform filter action
-    });
-  });
-
-  // Carousel controls
-  const carousel = document.getElementById('trendCarousel');
-  const prevBtn = document.querySelector('.carousel-nav.prev');
-  const nextBtn = document.querySelector('.carousel-nav.next');
-  const indicator = document.getElementById('trendIndicator');
-  const segs = indicator?.querySelectorAll('.seg') || [];
-
-  function updateIndicator() {
-    if (!carousel) return;
-    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
-    if (maxScrollLeft <= 0) {
-      segs.forEach((s, i) => s.classList.toggle('active', i === 0));
-      return;
-    }
-    const pct = carousel.scrollLeft / maxScrollLeft;
-    const index = Math.min(segs.length - 1, Math.round(pct * (segs.length - 1)));
-    segs.forEach((s, i) => s.classList.toggle('active', i === index));
-  }
-
-  prevBtn?.addEventListener('click', () => {
-    if (!carousel) return;
-    carousel.scrollBy({ left: -carousel.clientWidth * 0.8, behavior: 'smooth' });
-    setTimeout(updateIndicator, 350);
-  });
-
-  nextBtn?.addEventListener('click', () => {
-    if (!carousel) return;
-    carousel.scrollBy({ left: carousel.clientWidth * 0.8, behavior: 'smooth' });
-    setTimeout(updateIndicator, 350);
-  });
-
-  // drag-to-scroll
-  if (carousel) {
-    let isDown = false, startX, scrollLeft;
-    carousel.addEventListener('mousedown', (e) => {
-      isDown = true;
-      carousel.classList.add('dragging');
-      startX = e.pageX - carousel.offsetLeft;
-      scrollLeft = carousel.scrollLeft;
-    });
-    carousel.addEventListener('mouseleave', () => { isDown = false; carousel.classList.remove('dragging'); });
-    carousel.addEventListener('mouseup', () => { isDown = false; carousel.classList.remove('dragging'); });
-    carousel.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - carousel.offsetLeft;
-      const walk = (x - startX) * 1.2;
-      carousel.scrollLeft = scrollLeft - walk;
-      updateIndicator();
-    });
-
-    // touch events for mobile
-    let startTouchX = 0, startTouchScroll = 0;
-    carousel.addEventListener('touchstart', (e) => {
-      startTouchX = e.touches[0].pageX;
-      startTouchScroll = carousel.scrollLeft;
-    });
-    carousel.addEventListener('touchmove', (e) => {
-      const dx = e.touches[0].pageX - startTouchX;
-      carousel.scrollLeft = startTouchScroll - dx;
-      updateIndicator();
-    });
-
-    // update indicator on native scroll
-    carousel.addEventListener('scroll', updateIndicator);
-    // initial indicator state
-    updateIndicator();
-  }
+  // This dropdown logic below is replaced by the unified dropdown filter code below
+  // So you can remove this old block if you want
 })();
 
-
-// scrollable for trending 
-
-
-
-// Trending Carousel
-(function() {
-  const track = document.getElementById('trendingTrack');
-  const leftBtn = document.getElementById('trendLeft');
-  const rightBtn = document.getElementById('trendRight');
-
-  const items = track.querySelectorAll('.trending-item');
-  let index = 0;
-
-  function updateCarousel() {
-    const offset = index * track.clientWidth;
-    track.style.transform = `translateX(-${offset}px)`;
-  }
-
-  leftBtn.addEventListener('click', () => {
-    index--;
-    if (index < 0) index = items.length - 1;
-    updateCarousel();
-  });
-
-  rightBtn.addEventListener('click', () => {
-    index++;
-    if (index >= items.length) index = 0;
-    updateCarousel();
-  });
-})();
-
-
-(function() {
+// ===== Trending Carousel navigation & dots =====
+(function () {
   const track = document.getElementById('trendingTrack');
   const leftBtn = document.getElementById('trendLeft');
   const rightBtn = document.getElementById('trendRight');
@@ -212,7 +82,6 @@ if (track) {
   function updateCarousel() {
     const offset = index * track.clientWidth;
     track.style.transform = `translateX(-${offset}px)`;
-
     dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
   }
 
@@ -255,9 +124,66 @@ if (track) {
   });
 })();
 
+// ===== Dropdown filter logic (Unified & corrected) =====
+(function () {
+  const dropdowns = [
+    { btnId: 'courseFilterBtn', listId: 'courseDropdown' },
+    { btnId: 'topicFilterBtn', listId: 'topicDropdown' },
+    { btnId: 'levelFilterBtn', listId: 'levelDropdown' },
+  ];
 
-// explore more section
+  function closeAllDropdowns(except = null) {
+    dropdowns.forEach(({ btnId, listId }) => {
+      const dropdown = document.getElementById(listId);
+      const button = document.getElementById(btnId);
+      if (listId !== except) {
+        if (dropdown) dropdown.style.display = 'none';
+        if (button) button.parentElement.classList.remove('open');
+      }
+    });
+  }
 
+  dropdowns.forEach(({ btnId, listId }) => {
+    const button = document.getElementById(btnId);
+    const dropdown = document.getElementById(listId);
+
+    if (!button || !dropdown) return;
+
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = dropdown.style.display === 'block';
+
+      closeAllDropdowns(listId);
+
+      if (!isVisible) {
+        dropdown.style.display = 'block';
+        button.parentElement.classList.add('open');
+      } else {
+        dropdown.style.display = 'none';
+        button.parentElement.classList.remove('open');
+      }
+    });
+
+    dropdown.querySelectorAll('li').forEach(item => {
+      item.addEventListener('click', () => {
+        button.querySelector('span').innerText = item.innerText;
+        dropdown.style.display = 'none';
+        button.parentElement.classList.remove('open');
+
+        // 👉 Add filtering logic here
+        console.log(`[${btnId}] selected: ${item.innerText}`);
+      });
+    });
+  });
+
+  // Close dropdown on clicking outside
+  document.addEventListener('click', () => {
+    closeAllDropdowns();
+  });
+})();
+
+
+// ===== Explore More Section =====
 document.addEventListener("DOMContentLoaded", function () {
   const nav = document.querySelector("#lavaNav");
   const links = nav.querySelectorAll(".lava-link");

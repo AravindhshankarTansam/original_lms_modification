@@ -449,6 +449,88 @@ body {
   background-color: #0d6efd;
 }
 
+
+/* dropdown for trending filter section */
+
+
+/* Dropdown wrapper */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+/* Dropdown toggle button */
+.dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 160px;
+  /* background: #fff;
+  border: 1px solid #ccc; */
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+
+.dropdown-toggle:hover {
+  background: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+/* Arrow icon */
+.dropdown-toggle .arrow {
+  margin-left: 10px;
+  width: 8px;
+  height: 8px;
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  transform: rotate(45deg);
+  transition: transform 0.3s;
+}
+
+/* Rotate arrow when open */
+.custom-dropdown.open .arrow {
+  transform: rotate(-135deg);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border-radius: 8px;
+  margin-top: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 20;
+  display: none;
+  width: 100%;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.dropdown-menu li {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f1f1f1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 /* 
 dropdown explore more section  */
 
@@ -493,3 +575,5 @@ dropdown explore more section  */
 .lava-link.active {
   color: #fff;
 }
+
+

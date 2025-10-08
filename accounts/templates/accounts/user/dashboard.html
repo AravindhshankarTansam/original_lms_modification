@@ -92,13 +92,57 @@
   <div class="filter-container">
     <h4 class="fw-bold mb-3">Filters</h4>
     <div class="filter-tags">
-      <button class="filter-btn">Course Name</button>
-      <button class="filter-btn">Topics</button>
-      <button class="filter-btn">Level</button>
+
+      <!-- Course Name Dropdown -->
+      <div class="custom-dropdown">
+        <button id="courseFilterBtn" class="filter-btn dropdown-toggle">
+          <span>Course Name</span>
+          <!-- <i class="arrow"></i> -->
+        </button>
+        <ul id="courseDropdown" class="dropdown-menu">
+          <li>Data Science</li>
+          <li>Web Dev</li>
+          <li>AI & ML</li>
+          <li>Cloud</li>
+          <li>UI/UX</li>
+        </ul>
+      </div>
+
+      <!-- Topics Dropdown -->
+      <div class="custom-dropdown">
+        <button id="topicFilterBtn" class="filter-btn dropdown-toggle">
+          <span>Topics</span>
+          <!-- <i class="arrow"></i> -->
+        </button>
+        <ul id="topicDropdown" class="dropdown-menu">
+          <li>Machine Learning</li>
+          <li>Front-end</li>
+          <li>Back-end</li>
+          <li>Databases</li>
+          <li>DevOps</li>
+        </ul>
+      </div>
+
+      <!-- Levels Dropdown -->
+      <div class="custom-dropdown">
+        <button id="levelFilterBtn" class="filter-btn dropdown-toggle">
+          <span>Level</span>
+          <!-- <i class="arrow"></i> -->
+        </button>
+        <ul id="levelDropdown" class="dropdown-menu">
+          <li>Beginner</li>
+          <li>Intermediate</li>
+          <li>Advanced</li>
+          <li>Expert</li>
+        </ul>
+      </div>
+
       <button class="filter-btn">Duration</button>
       <button class="filter-btn">Tags</button>
     </div>
   </div>
+</div>
+
 
   <!-- Trending Topics Title -->
   <h4 class="fw-bold mb-3 mt-4">Trending Topics</h4>
