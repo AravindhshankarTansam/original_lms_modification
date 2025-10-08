@@ -20,6 +20,7 @@ if (track) {
   let scrollPosition = 0;
   const speed = 0.5; // pixels per frame
   const trackWidth = track.scrollWidth / 2; // original width (before duplication)
+  const cardWidth = track.querySelector(".card")?.offsetWidth || 300; // fallback
 
   function scrollCarousel() {
     scrollPosition += speed;
@@ -34,6 +35,26 @@ if (track) {
   }
 
   requestAnimationFrame(scrollCarousel);
+
+  // === Arrow Navigation ===
+  const leftArrow = document.getElementById("leftArrow");
+  const rightArrow = document.getElementById("rightArrow");
+
+  if (leftArrow && rightArrow) {
+    leftArrow.addEventListener("click", () => {
+      scrollPosition -= cardWidth + 20; // card + gap
+      if (scrollPosition < 0) {
+        scrollPosition += trackWidth;
+      }
+    });
+
+    rightArrow.addEventListener("click", () => {
+      scrollPosition += cardWidth + 20; // card + gap
+      if (scrollPosition >= trackWidth) {
+        scrollPosition = 0;
+      }
+    });
+  }
 }
 
 
