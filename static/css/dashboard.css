@@ -441,8 +441,8 @@ body {
   background: rgba(0,0,0,0.7);
 }
 
-.trend-arrow.left { left: -25px; }
-.trend-arrow.right { right: -25px; }
+.trend-arrow.left { left: 24px; }
+.trend-arrow.right { right: 28px; }
 
 .trend-indicators {
   display: flex;
