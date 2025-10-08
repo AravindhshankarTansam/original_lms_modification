@@ -59,7 +59,7 @@
     <div class="carousel-container" id="carouselContainer">
       <button class="carousel-arrow left-arrow" id="leftArrow">&#10094;</button>
       <div class="carousel-track" id="carouselTrack">
-        {% for i in "1234567" %}
+        {% for i in "12345" %}
         <article class="card">
           <a class="card-link" href="#0">
             <img class="card-img" src="{% static 'images/course'|add:i|add:'.jpg' %}" alt="Course {{ i }}">
@@ -194,6 +194,23 @@
 <!-- ================== End Trending Topics Section ================== -->
 
 
+<!-- ================== Curriculum Navigation ================== -->
+<h2 class="text-center mt-5 text-dark">Explore More</h2>
+<nav class="lava-nav mt-3 mb-4" id="lavaNav">
+  <a href="#" class="lava-link active" data-tab="curriculum">Curriculum</a>
+  <a href="#" class="lava-link" data-tab="projects">Projects</a>
+  <a href="#" class="lava-link" data-tab="quizzes">Quizzes</a>
+  <a href="#" class="lava-link" data-tab="certificates">Certificates</a>
+  <a href="#" class="lava-link" data-tab="resources">Resources</a>
+  <div class="animation start-curriculum"></div>
+</nav>
+
+<!-- Dynamic content container -->
+<div id="lavaContent" class="lava-content p-4 bg-white shadow rounded">
+  <!-- This will be replaced by JS -->
+  <h4>Curriculum</h4>
+  <p>Welcome to the curriculum! Explore lessons, modules, and learning paths.</p>
+</div>
 
 <!-- ================== End Trending Topics Section ================== -->
 <script src="{% static 'js/dashboard.js' %}"></script>

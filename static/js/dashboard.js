@@ -13,34 +13,28 @@ if (toggleBtn && sidebar && navbar && mainContent) {
 
 // === Carousel Logic ===
 const track = document.getElementById("carouselTrack");
-const leftArrow = document.getElementById("leftArrow");
-const rightArrow = document.getElementById("rightArrow");
+if (track) {
+  // duplicate the cards for seamless looping
+  track.innerHTML += track.innerHTML;
 
-let scrollAmount = 0;
-const cardWidth = 320; // card + gap
-const maxScroll = track.scrollWidth - track.parentElement.clientWidth;
+  let scrollPosition = 0;
+  const speed = 0.5; // pixels per frame
+  const trackWidth = track.scrollWidth / 2; // original width (before duplication)
 
-// Manual Arrow Scroll
-rightArrow.addEventListener("click", () => {
-  scrollAmount += cardWidth;
-  if (scrollAmount > maxScroll) scrollAmount = maxScroll;
-  track.style.transform = `translateX(-${scrollAmount}px)`;
-});
+  function scrollCarousel() {
+    scrollPosition += speed;
 
-leftArrow.addEventListener("click", () => {
-  scrollAmount -= cardWidth;
-  if (scrollAmount < 0) scrollAmount = 0;
-  track.style.transform = `translateX(-${scrollAmount}px)`;
-});
+    // reset seamlessly when reaching end of original track
+    if (scrollPosition >= trackWidth) {
+      scrollPosition = 0;
+    }
 
-// Auto Scroll (continuous)
-function autoScroll() {
-  scrollAmount += 1; // speed of auto-scroll
-  if (scrollAmount >= maxScroll) scrollAmount = 0;
-  track.style.transform = `translateX(-${scrollAmount}px)`;
+    track.style.transform = `translateX(-${scrollPosition}px)`;
+    requestAnimationFrame(scrollCarousel);
+  }
+
+  requestAnimationFrame(scrollCarousel);
 }
-
-setInterval(autoScroll, 30); // adjust interval for smoothness
 
 
 // ===== Trend Carousel: dropdowns, nav, drag, indicator =====
@@ -239,3 +233,60 @@ setInterval(autoScroll, 30); // adjust interval for smoothness
     }
   });
 })();
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const nav = document.getElementById("lavaNav");
+  const links = nav.querySelectorAll(".lava-link");
+  const animation = nav.querySelector(".animation");
+  const content = document.getElementById("lavaContent");
+
+  const contentMap = {
+    curriculum: `
+      <h4>Curriculum</h4>
+      <p>Welcome to the curriculum! Explore lessons, modules, and learning paths.</p>
+    `,
+    projects: `
+      <h4>Projects</h4>
+      <p>Hands-on projects to test your knowledge and gain experience.</p>
+    `,
+    quizzes: `
+      <h4>Quizzes</h4>
+      <p>Assess your learning progress with interactive quizzes and exams.</p>
+    `,
+    certificates: `
+      <h4>Certificates</h4>
+      <p>Earn certificates upon course completion to showcase your skills.</p>
+    `,
+    resources: `
+      <h4>Resources</h4>
+      <p>Download notes, tools, and supplementary materials here.</p>
+    `
+  };
+
+  function moveAnimation(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    animation.style.width = `${rect.width}px`;
+    animation.style.left = `${rect.left - navRect.left}px`;
+  }
+
+  links.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      links.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+
+      const tab = link.getAttribute("data-tab");
+      content.innerHTML = contentMap[tab] || "<p>Content not found.</p>";
+
+      moveAnimation(link);
+    });
+  });
+
+  // Initialize animation on first link
+  moveAnimation(nav.querySelector(".lava-link.active"));
+});

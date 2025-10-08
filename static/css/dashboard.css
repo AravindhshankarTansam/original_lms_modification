@@ -1,3 +1,6 @@
+/* =======================
+   Dashboard CSS
+======================= */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -104,105 +107,37 @@ body {
 }
 
 .main-content.adjusted {
-  margin-left: 80px;
+  margin-left: 70px;
 }
 
-/* === Scrollable Cards === */
-.scroll-container {
+.content-section {
+  position: relative;
+  width: 100%;
+}
+
+/* =======================
+   Available Courses Carousel
+======================= */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  margin-left: 0;
+}
+
+.carousel-track {
   display: flex;
   gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scroll-behavior: smooth;
-}
-
-.scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-.course-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  flex: 0 0 auto;
-  transition: transform 0.3s;
-}
-
-.course-card:hover {
-  transform: translateY(-5px);
-}
-
-.course-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.card-body {
-  padding: 15px;
-}
-
-.btn-enroll {
-  width: 100%;
-  background-color: #0d6efd;
-  border: none;
-  color: #fff;
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.btn-enroll:hover {
-  background-color: #0056b3;
-}
-
-
-.main-content {
-  margin-left: 240px; /* leave this near sidebar width */
-  padding-top: 20px; /* reduce top padding */
-}
-
-
-h4.fw-bold.mb-3 {
-  margin-left: 0; /* align heading near left edge */
-  padding-left: 8px; /* small padding for readability */
-}
-
-.scroll-container {
-  display: flex;
-  gap: 0; /* remove gap between cards */
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scroll-behavior: smooth;
-  padding-left: 0; /* remove left padding */
-}
-
-.course-card {
-  margin-right: 10px; /* small margin for spacing */
-  width: 250px;
-}
-
-
-
-/* === Creative Cards === */
-.cards,
-.scroll-track {
-  display: flex;
-  gap: 20px;
+  transition: transform 0.55s linear; /* smooth scroll via JS */
 }
 
 .card {
-  position: relative;
-  width: 250px;
-  height: 350px;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  width: 300px;
+  height: 400px;
   flex: 0 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
 
 .card-link {
@@ -260,31 +195,7 @@ h4.fw-bold.mb-3 {
   cursor: pointer;
 }
 
-/* === Scroll Animation === */
-.scroll-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.scroll-track {
-  animation: scrollLeft 40s linear infinite;
-}
-
-@keyframes scrollLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-
-
-
-
-.carousel-track {
-  display: flex;
-  gap: 20px;
-  transition: transform 0.55s linear; /* smooth scroll */
-}
-
+/* Carousel Arrows */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -297,100 +208,7 @@ h4.fw-bold.mb-3 {
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
-  display: none; /* hidden by default */
-  z-index: 10;
-  transition: background 0.3s;
-}
-
-.carousel-container:hover .carousel-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/* === Main Content & Sidebar Adjustment === */
-.main-content {
-  margin-left: 240px; /* start near sidebar */
-  padding-top: 90px;
-}
-
-.main-content.adjusted {
-  margin-left: 70px;
-}
-
-.content-section {
-   /* full width minus sidebar */
-  position: relative;
-}
-
-/* === Carousel Styles === */
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-  margin-left: 0;
-}
-
-.carousel-track {
-  display: flex;
-  gap: 20px;
-  transition: transform 0.55s ease-in-out;
-}
-
-.card {
-  width: 300px;
-  height: 400px;
-  flex: 0 0 auto;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-}
-
-.card-link {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-details {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  clip-path: circle(15% at 0 0);
-  transition: all 0.4s;
-}
-
-.card:hover .card-details {
-  clip-path: circle(75% at 50% 50%);
-}
-
-/* === Carousel Arrows === */
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.4);
-  border: none;
-  color: #fff;
-  font-size: 30px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: none; /* hidden by default */
+  display: none;
   z-index: 10;
   transition: background 0.3s;
 }
@@ -399,28 +217,18 @@ h4.fw-bold.mb-3 {
   background: rgba(0,0,0,0.8);
 }
 
-.left-arrow {
-  left: 10px;
-}
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
 
-.right-arrow {
-  right: 10px;
-}
-
-/* Show arrows on hover */
 .carousel-container:hover .carousel-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 
-trending topic css */
-
-
-
-
-/* === Trending Topics Section === */
+/* =======================
+   Trending Topics Section
+======================= */
 .trending-section {
   margin-top: 60px;
   padding: 30px 40px;
@@ -455,7 +263,7 @@ trending topic css */
   border-color: #0d6efd;
 }
 
-/* Two-Column Trending Layout */
+/* Two-column layout for trending items */
 .trending-content {
   display: flex;
   gap: 40px;
@@ -466,6 +274,7 @@ trending topic css */
 .trending-left {
   flex: 1;
 }
+
 
 .trend-card {
   background: #fff;
@@ -499,7 +308,6 @@ trending topic css */
   color: #555;
 }
 
-/* Right Info Box */
 .trending-right {
   flex: 1;
   display: flex;
@@ -520,331 +328,28 @@ trending topic css */
   margin-bottom: 8px;
   font-size: 15px;
 }
-
-.trend-info-box strong {
-  color: #333;
-}
-
-.trend-info-box .btn-enroll {
-  margin-top: 10px;
-  width: 100%;
-  background: #0d6efd;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.trend-info-box .btn-enroll:hover {
-  background: #0b5ed7;
-}
-
-/* Moving Line Animation */
-.moving-line {
-  margin-top: 40px;
-  height: 4px;
-  background: linear-gradient(to right, #0d6efd 50%, transparent 50%);
-  background-size: 200% 100%;
-  animation: moveLine 3s linear infinite;
-  border-radius: 2px;
-}
-
-@keyframes moveLine {
-  0% { background-position: 0 0; }
-  100% { background-position: -100% 0; }
-}
-
-.trending-cards {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding-bottom: 1rem;
-}
-
-.trending-cards::-webkit-scrollbar {
-  display: none;
-}
-
-.trending-cards .card {
-  flex: 0 0 300px;
-  background: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  transition: transform 0.3s ease, scale 0.3s ease;
-  cursor: grab;
-}
-
-.trending-cards .card:hover {
-  transform: scale(1.05);
-}
-
-.card-content {
-  display: grid;
-  grid-template-areas: "text img";
-  grid-template-columns: 1fr 1fr;
-  padding: 1rem;
-}
-
-.card-text {
-  grid-area: text;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-text h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.card-text p {
-  font-size: 0.85rem;
-  margin-bottom: 0.8rem;
-  color: #555;
-}
-
-.btn-enroll {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 1rem;
-  background: #0d6efd;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn-enroll:hover {
-  background: #0b5ed7;
-}
-
-.card-content figure {
-  grid-area: img;
-  margin: 0;
-}
-
-.card-content figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 1rem;
-}
-
-
-
-
-
-/* === Creative Cards === */
-.cards,
-.scroll-track {
-  display: flex;
-  gap: 20px;
-}
-
-.card {
-  width: 300px;
-  height: 400px;
-  flex: 0 0 auto;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-}
-
-.card-link {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-details {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  clip-path: circle(15% at 0 0);
-  transition: all 0.4s;
-}
-
-.card:hover .card-details {
-  clip-path: circle(75% at 50% 50%);
-}
-
-.card-title {
-  font-size: 20px;
-  margin: 0 0 10px 0;
-}
-
-.card-subtitle {
-  font-size: 12px;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-
-.card-content {
-  font-size: 12px;
-}
-
-.card-view-more {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  gap: 5px;
-  cursor: pointer;
-}
-
-/* === Carousel Arrows === */
-.carousel-arrow {
+.trend-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.4);
-  border: none;
-  color: #fff;
-  font-size: 30px;
+  background: rgba(0,0,0,0.5);
   width: 50px;
   height: 50px;
+  font-size: 30px;
   border-radius: 50%;
+  display: none; /* hide by default */
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  display: none;
   z-index: 10;
-  transition: background 0.3s;
 }
 
-.carousel-arrow:hover {
-  background: rgba(0,0,0,0.8);
+.trending-carousel-container:hover .trend-arrow {
+  display: flex; /* show on hover */
 }
 
-.left-arrow {
-  left: 10px;
-}
-
-.right-arrow {
-  right: 10px;
-}
-
-.carousel-container:hover .carousel-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* === Trending Topics === */
-.trending-section {
-  margin-top: 60px;
-  padding: 30px 40px;
-  background: #f8f9fc;
-  border-radius: 10px;
-}
-
-.filter-container {
-  margin-bottom: 25px;
-}
-
-.filter-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.filter-btn {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s;
-}
-
-.filter-btn:hover {
-  background: #0d6efd;
-  color: #fff;
-  border-color: #0d6efd;
-}
-
-.trending-content {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.trending-left {
-  flex: 1;
-}
-
-.trend-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease;
-}
-
-.trend-card:hover {
-  transform: translateY(-6px);
-}
-
-.trend-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.trend-details {
-  padding: 15px;
-}
-
-.trend-title {
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.trend-desc {
-  font-size: 14px;
-  color: #555;
-}
-
-.trending-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.trend-info-box {
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  text-align: left;
-  width: 100%;
-  max-width: 350px;
-}
-
-.trend-info-box p {
-  margin-bottom: 8px;
-  font-size: 15px;
-}
+.trend-arrow.left { left: -35px; }   /* outside left */
+.trend-arrow.right { right: -35px; } /* outside right */
 
 .trend-info-box strong {
   color: #333;
@@ -867,6 +372,7 @@ trending topic css */
   background: #0b5ed7;
 }
 
+/* Moving line animation for visual effect */
 .moving-line {
   margin-top: 40px;
   height: 4px;
@@ -881,6 +387,7 @@ trending topic css */
   100% { background-position: -100% 0; }
 }
 
+/* Trending carousel */
 .trending-carousel-container {
   position: relative;
   overflow: hidden;
@@ -940,4 +447,49 @@ trending topic css */
 
 .trend-indicators .dot.active {
   background-color: #0d6efd;
+}
+
+/* 
+dropdown */
+
+.lava-nav {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+  background-color: #34495e;
+  border-radius: 8px;
+  font-size: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lava-nav a {
+  line-height: 50px;
+  height: 100%;
+  font-size: 15px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  padding: 0 25px;
+  transition: color 0.3s;
+}
+
+.lava-nav .animation {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  z-index: 0;
+  transition: all .4s ease;
+  border-radius: 8px;
+  background-color: #1abc9c;
+}
+
+.lava-link.active {
+  color: #fff;
 }
