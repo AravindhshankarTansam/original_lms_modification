@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+.container{
+    font-family: "Figtree", sans-serif;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.bg_service{
+    background-color: #03518d21;
+}
+/* Section title */
+        .title {
+            font-family: "Figtree", sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Service cards */
+        .service-card {
+            background: #fff;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.60rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Hover background using ::before */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--bg-img);
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 0;
+        }
+
+        /* Slight zoom effect on hover */
+        .service-card:hover::before {
+            opacity: 0.1;
+            transform: scale(1.05);
+        }
+
+        /* Text above background */
+        .service-card h2,
+        .service-card h5,
+        .service-card p,
+        .service-card .underline {
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* Number style */
+        .service-card h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #999900; /* initial light yellow */
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            opacity: 0.2;
+        }
+
+        /* Number color change on hover */
+        .service-card:hover h2 {
+            color: #55a08d;
+            opacity: 0.8;
+        }
+
+        /* Card title */
+        .service-card h5 {
+            font-weight: 600;
+            margin-top: 3rem;
+            color: #333;
+            text-align: start;
+            padding-top: 5px;
+        }
+
+        /* Card paragraph */
+        .service-card p {
+            color: #666;
+            text-align: start;
+            padding-top: 5px;
+        }
+
+        /* Underline */
+        .underline {
+            width: 40px;
+            height: 3px;
+            background: #009999;
+            margin-top: 0.5rem;
+        }

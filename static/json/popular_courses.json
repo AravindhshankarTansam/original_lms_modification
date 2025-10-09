@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "image": "images/courses/webdevelopment.jpg",
+        "title": "Full Stack Web Development",
+        "description": "Master HTML, CSS, JavaScript, and backend technologies to build dynamic web applications.",
+        "link": "/courses/web-development/"
+    },
+    {
+        "id": 2,
+        "image": "images/courses/python.jpg",
+        "title": "Python for Beginners",
+        "description": "Learn Python programming from scratch, including data types, loops, and real-world projects.",
+        "link": "/courses/python-for-beginners/"
+    },
+    {
+        "id": 3,
+        "image": "images/courses/data_analysis.jpg",
+        "title": "Data Science & Analytics",
+        "description": "Explore data analysis, visualization, and machine learning with Python and real datasets.",
+        "link": "/courses/data-science/"
+    },
+    {
+        "id": 4,
+        "image": "images/courses/ui_ux.jpg",
+        "title": "UI/UX Design Essentials",
+        "description": "Learn modern design principles, user experience flow, and Figma prototyping tools.",
+        "link": "/courses/ui-ux-design/"
+    },
+    {
+        "id": 5,
+        "image": "images/courses/cyber_sec.jpg",
+        "title": "Cybersecurity Fundamentals",
+        "description": "Understand digital threats, ethical hacking, and secure coding practices.",
+        "link": "/courses/cybersecurity/"
+    },
+    {
+        "id": 6,
+        "image": "images/courses/mo_app.jpg",
+        "title": "Mobile App Development",
+        "description": "Build Android and iOS apps using Flutter and React Native with hands-on projects.",
+        "link": "/courses/mobile-app-development/"
+    },
+    {
+        "id": 7,
+        "image": "images/courses/AI_bas.jpg",
+        "title": "Artificial Intelligence (AI) Basics",
+        "description": "Dive into AI concepts including neural networks, natural language processing, and automation.",
+        "link": "/courses/artificial-intelligence/"
+    },
+    {
+        "id": 8,
+        "image": "images/courses/blockchain.jpg",
+        "title": "Blockchain Technology",
+        "description": "Understand blockchain architecture, smart contracts, and cryptocurrency concepts.",
+        "link": "/courses/blockchain/"
+    },
+    {
+        "id": 9,
+        "image": "images/courses/aws.jpg",
+        "title": "Cloud Computing with AWS",
+        "description": "Learn AWS services, cloud architecture, and deployment strategies for scalable applications.",
+        "link": "/courses/cloud-computing/"
+    },
+    {
+        "id": 10,
+        "image": "images/courses/digital_mart.jpg",
+        "title": "Digital Marketing Masterclass",
+        "description": "Master SEO, social media, Google Ads, and analytics to grow your business online.",
+        "link": "/courses/digital-marketing/"
+    }
+]

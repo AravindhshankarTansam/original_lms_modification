@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tansam e-LMS</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link href="{% static 'css/index.css' %}" rel="stylesheet">
+  <link href="{% static 'css/index_01.css' %}" rel="stylesheet">
+    <link href="{% static 'css/service_text.css' %}" rel="stylesheet">
+    <link href="{% static 'css/popular_courses.css' %}" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+
+      <!-- Left: Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{% static 'images/tansamoldlogo.png' %}" alt="Tansam e-LMS">
+      </a>
+
+      <!-- Toggle (for mobile) -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <!-- Navbar Content -->
+      <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+
+        <!-- Desktop layout -->
+        <div class="d-none d-lg-flex align-items-center mx-auto">
+          <!-- Explore Dropdown -->
+          <div class="dropdown explore-dropdown me-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Explore
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Courses</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Programming</a></li>
+                  <li><a class="dropdown-item" href="#">Design</a></li>
+                  <li><a class="dropdown-item" href="#">Marketing</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Resources</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Blogs</a></li>
+                  <li><a class="dropdown-item" href="#">Tutorials</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-bar">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search courses, topics, or instructors...">
+          </div>
+        </div>
+
+        <!-- Right: Login Button (Desktop) -->
+        <div class="d-none d-lg-block">
+          <a href="/login/" class="btn login-btn">Login</a>
+        </div>
+
+        <!-- Mobile layout -->
+        <div class="d-lg-none w-100 mt-3 text-center">
+          <!-- Explore Dropdown -->
+          <div class="dropdown explore-dropdown mb-2">
+            <button class="btn btn-outline-secondary w-75 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Explore
+            </button>
+            <ul class="dropdown-menu mx-auto text-start">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Courses</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Programming</a></li>
+                  <li><a class="dropdown-item" href="#">Design</a></li>
+                  <li><a class="dropdown-item" href="#">Marketing</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Resources</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Blogs</a></li>
+                  <li><a class="dropdown-item" href="#">Tutorials</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-bar mb-2 mx-auto" style="width: 90%;">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search courses, topics, or instructors...">
+          </div>
+
+          <!-- Login Button -->
+          <a href="/login/" class="btn login-btn w-75 mx-auto">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<!-- Main section -->
+    <section class="container my-5 text-center">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Slides -->
+            <div class="carousel-inner">
+                {% for slide in slides %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %} position-relative">
+                    <img class="d-block w-100" src="{% static slide.image %}" alt="{{ slide.title }}">
+                    <div class="hero-banner-slide-module--content-box left">
+                        <h2>{{ slide.title }}</h2>
+                        <p>{{ slide.description }}</p>
+                        <a href="{{ slide.buttonLink }}" class="btn btn-primary">{{ slide.buttonText }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <!-- Controls -->
+            <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next custom-carousel-control" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+
+        </div>
+    </section>
+
+
+    <!-- Services Section -->
+<section class="py-5 text-center bg_service">
+    <div class="container"> 
+        <h3 class="title mb-5">Our Top-notch Services Include</h3> 
+        <div class="row g-4">
+            {% for service in services %} 
+            <div class="col-md-4">
+                <div class="service-card" style="--bg-img: url('{{ service.image }}')"> 
+                    <h2>{{ forloop.counter|add:"0" }}</h2> 
+                    <h5>{{ service.title }}</h5> 
+                    <p>{{ service.description }}</p> 
+                    <div class="underline"></div> 
+                </div> 
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Text -->
+<section class="text-section py-5">
+    <div class="container text-center">
+        <h3 class="section-title mb-4">Welcome to <span class="text-bold">Tansam e-LMS</span></h3>
+        <p class="section-subtitle mb-5">Your Gateway to Quality Online Education and Skill Development</p>
+        <p class="lead">At <strong>Tansam e-LMS</strong>, we are dedicated to providing a comprehensive and user-friendly online learning platform that empowers individuals to achieve their educational and professional goals. Whether you're a student looking to enhance your knowledge, a professional seeking to upskill, or an organization aiming to train your workforce, our Learning Management System (LMS) offers a wide range of features and benefits designed to meet your needs.</p>
+    </div>
+    <div class="container text-center mt-4">
+        <p class="lead mt-4 text-center">Join thousands of learners and educators who trust <strong>Tansam e-LMS</strong> for their online education needs. Explore our platform today and take the first step towards a brighter future!</p>
+    </div>
+</section>
+
+<!-- All cources list -->
+ {% include 'partials/home_page_course.html' %}
+
+<!-- Popular Courses Section -->
+<section class="py-5">
+  <div class="container1">
+    <h3 class="section-title mb-4 text-center">Popular Courses</h3>
+
+    <div class="carousel">
+      <div class="group">
+        {% for course in popular_courses %}
+        <div class="card">
+          <img src="{% static course.image %}" alt="{{ course.title }}">
+          <div class="info">
+            <h5>{{ course.title }}</h5>
+            <p>{{ course.description }}</p>
+              <div class="btn-row">
+                <a href="{{ course.link }}" class="btn btn-primary btn-sm">Learn More</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- Duplicate once for seamless infinite loop -->
+        {% for course in popular_courses %}
+        <div class="card">
+          <img src="{% static course.image %}" alt="{{ course.title }}">
+          <div class="info">
+            <h5>{{ course.title }}</h5>
+            <p>{{ course.description }}</p>
+            <div class="btn-row">
+                <a href="{{ course.link }}" class="btn btn-primary btn-sm">Learn More</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Why Choose Tansam e-LMS? -->
+<section class="why-choose-lms py-5">
+    <div class="container text-center">
+        <h3 class="section-title mb-4">Why Choose <span>Tansam e-LMS</span>?</h3>
+        <p class="section-subtitle mb-5">Empowering learners and educators with a seamless online learning experience. Explore our features and benefits:</p>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-book-open fa-3x"></i>
+                    <h5>Comprehensive Course Catalog</h5>
+                    <p>Access a diverse selection of courses across various subjects and skill levels.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-user-friends fa-3x"></i>
+                    <h5>User-Friendly Interface</h5>
+                    <p>Navigate our intuitive platform with ease, making learning enjoyable and efficient.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-chalkboard-teacher fa-3x"></i>
+                    <h5>Expert Instructors</h5>
+                    <p>Learn from industry professionals and educators passionate about teaching.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-clock fa-3x"></i>
+                    <h5>Flexible Learning Options</h5>
+                    <p>Study at your own pace with self-paced courses or join live sessions.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-users fa-3x"></i>
+                    <h5>Community Support</h5>
+                    <p>Connect with fellow learners through forums, groups, and collaborative projects.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card">
+                    <i class="fas fa-certificate fa-3x"></i>
+                    <h5>Certifications</h5>
+                    <p>Earn certificates upon course completion to showcase your achievements.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="lead mt-5">Join <strong>Tansam e-LMS</strong> today and take the first step towards achieving your educational and professional goals!</p>
+    </div>
+</section>
+
+<!-- Footer  Start-->
+{% include 'partials/footer.html' %}
+
+<!-- Footer end -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Navbar JS -->
+    <script src="{% static 'js/navbar.js' %}"></script>
+
+</body>
+</html>

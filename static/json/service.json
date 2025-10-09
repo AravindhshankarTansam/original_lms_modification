@@ -1,0 +1,44 @@
+[
+    {
+        "image": "/static/images/service_image/e-lean.jpg",
+        "title": "eLearning Platform",
+        "description": "Our well-rounded e learning platform is designed to accommodate the organization's learning and development needs.",
+        "buttonText": "",
+        "buttonLink": ""
+    },
+    {
+        "image": "/static/images/service_image/content_filling.jpg",
+        "title": "Custom Content Development",
+        "description": "We create custom eLearning content for corporates to make learning fun and engaging with increased knowledge retention.",
+        "buttonText": "",
+        "buttonLink": ""
+    },
+    {
+        "image": "/static/images/service_image/led.jpg",
+        "title": "Instructor-Led Training Content",
+        "description": "Axle e-learning platform contains ILT to resolve challenges and aid in in-depth analysis of training concepts.",
+        "buttonText": "",
+        "buttonLink": ""
+    },
+    {
+        "image": "/static/images/service_image/Ar_Vr.jpg",
+        "title": "Immersive Learning Content – AR & VR",
+        "description": "State-of-art technologies in a simulated learning environment to develop learners' skill levels.",
+        "buttonText": "",
+        "buttonLink": ""
+    },
+    {
+        "image": "/static/images/service_image/mob.jpg",
+        "title": "Mobile App for Learning",
+        "description": "Axle e learning platform can be accessed from anywhere, anytime, from a dedicated app for easy learning.",
+        "buttonText": "",
+        "buttonLink": ""
+    },
+    {
+        "image": "/static/images/service_image/translation.jpg",
+        "title": "Localization (Translation) Services",
+        "description": "Our exhaustive translation services enable multilingual learners to understand content in their language.",
+        "buttonText": "",
+        "buttonLink": ""
+    }
+]

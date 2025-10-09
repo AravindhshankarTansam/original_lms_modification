@@ -1,13 +1,58 @@
 # Create your views here.
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegisterForm, LoginForm, ProfileForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from .models import User
+import re
 import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+import json
+
+def landing_page(request):
+    # Paths to JSON files
+    slides_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'slides.json')
+    services_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'service.json')
+    popular_courses_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'popular_courses.json')
+    trending_courses_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'trending_courses.json')
+
+    # Load JSON data
+    with open(slides_path, 'r', encoding='utf-8') as f:
+        slides = json.load(f)
+    with open(services_path, 'r', encoding='utf-8') as f:
+        services = json.load(f)
+    with open(popular_courses_path, 'r', encoding='utf-8') as f:
+        popular_courses = json.load(f)
+    with open(trending_courses_path, 'r', encoding='utf-8') as f:
+        trending_courses = json.load(f)
+
+    # Define categories
+    categories = [
+        "Innovative Manufacturing",
+        "Smart Factory",
+        "AR/VR/MR",
+        "Product Lifecycle Management",
+        "Asset Performance",
+        "Product Innovation",
+        "Predictive Engineering",
+        "Front-end Development",
+        "Backend Development",
+        "AI/ML",
+    ]
+
+    # Pass data to template
+    context = {
+        'slides': slides,
+        'services': services,
+        'popular_courses': popular_courses,
+        'trending_courses': trending_courses,
+        'categories': categories,  # ✅ pass categories list
+    }
+
+    return render(request, 'index.html', context)
 
 
 # helper decorator
@@ -80,24 +125,53 @@ def set_password(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
+
     user = get_object_or_404(User, id=user_id)
-    if request.method == "POST":
-        form = CustomSetPasswordForm(user, request.POST)
-        if form.is_valid():
-            form.save()
-            password = form.cleaned_data.get('new_password1')
-            user = authenticate(username=user.username, password=password)
-            if user:
-                login(request, user)
-                return redirect("dashboard")
-            else:
-                messages.error(request, "Password set, but login failed.")
-                return redirect("login")
-    else:
-        form = CustomSetPasswordForm(user)
 
-    return render(request, "accounts/setpassword.html", {"form": form})
+    if request.method == 'POST':
+        password1 = request.POST.get('new_password1')
+        password2 = request.POST.get('new_password2')
 
+        # --- Basic Validation ---
+        errors = []
+        if not password1 or not password2:
+            errors.append("Both password fields are required.")
+        elif password1 != password2:
+            errors.append("Passwords do not match.")
+        else:
+            # Password complexity check
+            if len(password1) < 8:
+                errors.append("Password must be at least 8 characters long.")
+            if not re.search(r'[A-Z]', password1):
+                errors.append("Password must contain an uppercase letter.")
+            if not re.search(r'[a-z]', password1):
+                errors.append("Password must contain a lowercase letter.")
+            if not re.search(r'[0-9]', password1):
+                errors.append("Password must contain a number.")
+            if not re.search(r'[!@#$%^&*(),.?\":{}|<>]', password1):
+                errors.append("Password must contain a special character (!@#$%^&*).")
+
+        # --- If errors, show them ---
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'accounts/setpassword.html')
+
+        # --- Save password safely ---
+        user.set_password(password1)
+        user.save()
+
+        # Auto-login after setting password
+        user = authenticate(username=user.username, password=password1)
+        if user:
+            login(request, user)
+            messages.success(request, "Password set successfully!")
+            return redirect('dashboard')
+        else:
+            messages.warning(request, "Password set but login failed.")
+            return redirect('login')
+
+    return render(request, 'accounts/setpassword.html')
 
 
 # login

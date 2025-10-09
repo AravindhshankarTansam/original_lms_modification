@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Additive Manufacturing Techniques",
+    "university": "Tansam Institute of Technology",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Innovative Manufacturing"
+  },
+  {
+    "title": "Industrial Robotics and Automation",
+    "university": "Tansam University",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Innovative Manufacturing"
+  },
+  {
+    "title": "Smart Factory Operations",
+    "university": "Tech Manufacturing Hub",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Smart Factory"
+  },
+  {
+    "title": "IoT in Manufacturing Systems",
+    "university": "MITx",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Smart Factory"
+  },
+  {
+    "title": "Immersive Design with AR/VR",
+    "university": "Stanford XR Lab",
+    "image": "/static/images/service_image/Ar_Vr.jpg",
+    "category": "AR/VR/MR"
+  },
+  {
+    "title": "Mixed Reality for Industrial Training",
+    "university": "Columbia Engineering",
+    "image": "/static/images/service_image/Ar_Vr.jpg",
+    "category": "AR/VR/MR"
+  },
+  {
+    "title": "Product Lifecycle Analytics",
+    "university": "Harvard Business School",
+    "image": "/static/images/courses/blockchain.jpg",
+    "category": "Product Lifecycle Management"
+  },
+  {
+    "title": "Design to Production Integration",
+    "university": "Tansam e-LMS",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Product Lifecycle Management"
+  },
+  {
+    "title": "Asset Reliability Engineering",
+    "university": "Oxford Engineering",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Asset Performance"
+  },
+  {
+    "title": "Maintenance Optimization",
+    "university": "University of Michigan",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Asset Performance"
+  },
+  {
+    "title": "Innovative Product Development",
+    "university": "LSE",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Product Innovation"
+  },
+  {
+    "title": "Rapid Prototyping & Design Thinking",
+    "university": "Wharton",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Product Innovation"
+  },
+  {
+    "title": "Predictive Maintenance with AI",
+    "university": "MIT Sloan",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Predictive Engineering"
+  },
+  {
+    "title": "Simulation-Based Engineering",
+    "university": "Stanford University",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Predictive Engineering"
+  },
+  {
+    "title": "Modern Front-End Development",
+    "university": "Google Developers",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Front-end Development"
+  },
+  {
+    "title": "Advanced React.js Applications",
+    "university": "Meta Education",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Front-end Development"
+  },
+  {
+    "title": "Backend Systems Architecture",
+    "university": "AWS Academy",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "Backend Development"
+  },
+  {
+    "title": "Django and REST APIs",
+    "university": "Tansam e-LMS",
+    "image": "/static/images/courses/python.jpg",
+    "category": "Backend Development"
+  },
+  {
+    "title": "AI for Everyone",
+    "university": "DeepLearning.AI",
+    "image": "/static/images/courses/python.jpg",
+    "category": "AI/ML"
+  },
+  {
+    "title": "Machine Learning Fundamentals",
+    "university": "Stanford Online",
+    "image": "/static/images/courses/aws.jpg",
+    "category": "AI/ML"
+  }
+]

@@ -17,17 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import path, include
-from accounts.views import user_login # Import the user_login view
+from accounts.views import user_login,landing_page   # Import the user_login view
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("", user_login, name="index"),
+    path("", landing_page, name="landing_page"),  # ✅ Make this the first page
+    path("login/", user_login, name="login"),     # ✅ Move login to /login
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
     path('courses/', include('courses.urls')),
-
-    
 ]
 
 
