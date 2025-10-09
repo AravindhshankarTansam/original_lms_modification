@@ -15,35 +15,35 @@
     },
     {
         "id": 3,
-        "image": "images/course_img/datascience.jpg",
+        "image": "images/courses/data_analysis.jpg",
         "title": "Data Science & Analytics",
         "description": "Explore data analysis, visualization, and machine learning with Python and real datasets.",
         "link": "/courses/data-science/"
     },
     {
         "id": 4,
-        "image": "images/course_img/uiux.jpg",
+        "image": "images/courses/ui_ux.jpg",
         "title": "UI/UX Design Essentials",
         "description": "Learn modern design principles, user experience flow, and Figma prototyping tools.",
         "link": "/courses/ui-ux-design/"
     },
     {
         "id": 5,
-        "image": "images/course_img/cybersecurity.jpg",
+        "image": "images/courses/cyber_sec.jpg",
         "title": "Cybersecurity Fundamentals",
         "description": "Understand digital threats, ethical hacking, and secure coding practices.",
         "link": "/courses/cybersecurity/"
     },
     {
         "id": 6,
-        "image": "images/course_img/mobileapp.jpg",
+        "image": "images/courses/mo_app.jpg",
         "title": "Mobile App Development",
         "description": "Build Android and iOS apps using Flutter and React Native with hands-on projects.",
         "link": "/courses/mobile-app-development/"
     },
     {
         "id": 7,
-        "image": "images/course_img/ai.jpg",
+        "image": "images/courses/AI_bas.jpg",
         "title": "Artificial Intelligence (AI) Basics",
         "description": "Dive into AI concepts including neural networks, natural language processing, and automation.",
         "link": "/courses/artificial-intelligence/"
@@ -57,14 +57,14 @@
     },
     {
         "id": 9,
-        "image": "images/course_img/cloud.jpg",
+        "image": "images/courses/aws.jpg",
         "title": "Cloud Computing with AWS",
         "description": "Learn AWS services, cloud architecture, and deployment strategies for scalable applications.",
         "link": "/courses/cloud-computing/"
     },
     {
         "id": 10,
-        "image": "images/course_img/digitalmarketing.jpg",
+        "image": "images/courses/digital_mart.jpg",
         "title": "Digital Marketing Masterclass",
         "description": "Master SEO, social media, Google Ads, and analytics to grow your business online.",
         "link": "/courses/digital-marketing/"

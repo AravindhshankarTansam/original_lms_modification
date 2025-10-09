@@ -1,0 +1,44 @@
+.tabs-carousel-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.tabs-window {
+  overflow: hidden;
+  width: 250px; /* width of the "middle showing tab area" */
+  margin: 0 10px;
+}
+
+#carouselTabs {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+#carouselTabs li {
+  flex: 0 0 auto;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+
+#carouselTabs li.active-tab {
+  background-color: #0f3d3e;
+  color: white;
+}
+
+.carousel-btn {
+  background-color: #0f3d3e;
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}

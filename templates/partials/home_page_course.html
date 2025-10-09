@@ -1,0 +1,102 @@
+{% load static %}
+<link href="{% static 'css/home_page_course.css' %}" rel="stylesheet">
+
+<section class="trending-section py-5">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Trending on Tansam e-LMS</h2>
+
+    <!-- Tabs Carousel -->
+   <div class="tabs-carousel-wrapper d-flex align-items-center justify-content-center">
+  <button class="carousel-btn left-btn" onclick="prevTab()">&#8249;</button>
+
+  <div class="tabs-window">
+    <ul id="carouselTabs" class="list-unstyled m-0 p-0 d-flex">
+      {% for category in categories %}
+        <li class="{% if forloop.first %}active-tab{% endif %}" data-target="{{ category }}">{{ category }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <button class="carousel-btn right-btn" onclick="nextTab()">&#8250;</button>
+</div>
+
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-4" id="carouselTabContent">
+      {% for category in categories %}
+      <div class="tab-pane" id="{{ category }}">
+        <div class="row g-4">
+          {% for course in trending_courses %}
+            {% if course.category == category %}
+            <div class="col-md-3 col-sm-6">
+              <div class="card trending-card h-100">
+                <img src="{{ course.image }}" class="card-img-top" alt="{{ course.title }}">
+                <div class="card-body">
+                  <h6 class="text-muted mb-1">{{ course.university }}</h6>
+                  <h5 class="card-title">{{ course.title }}</h5>
+                  <span class="badge rounded-pill bg-light text-dark px-3 py-2 mt-2">{{ course.category }}</span>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- JS -->
+<script>
+let currentIndex = 0;
+const tabs = document.querySelectorAll("#carouselTabs li");
+const tabContent = document.querySelectorAll("#carouselTabContent .tab-pane");
+const tabsContainer = document.getElementById("carouselTabs");
+const tabsWindow = document.querySelector(".tabs-window");
+
+function updateTab() {
+  // Update active tab
+  tabs.forEach(tab => tab.classList.remove("active-tab"));
+  tabs[currentIndex].classList.add("active-tab");
+
+  // Show related content
+  tabContent.forEach(pane => pane.style.display = "none");
+  const targetId = tabs[currentIndex].getAttribute("data-target");
+  const activePane = document.getElementById(targetId);
+  if(activePane) activePane.style.display = "block";
+
+  // CENTER the active tab
+  let tabWidth = tabs[currentIndex].offsetWidth;
+  let tabLeft = tabs[currentIndex].offsetLeft;
+  let windowWidth = tabsWindow.offsetWidth;
+
+  // Translate so the active tab is in the center
+  let translateX = tabLeft - (windowWidth / 2 - tabWidth / 2);
+
+  // Clamp values to prevent empty space
+  const maxTranslate = tabsContainer.scrollWidth - windowWidth;
+  if (translateX < 0) translateX = 0;
+  if (translateX > maxTranslate) translateX = maxTranslate;
+
+  tabsContainer.style.transform = `translateX(-${translateX}px)`;
+}
+
+// Initialize
+updateTab();
+
+function nextTab() {
+  if (currentIndex < tabs.length - 1) {
+    currentIndex++;
+    updateTab();
+  }
+}
+
+function prevTab() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateTab();
+  }
+}
+
+</script>

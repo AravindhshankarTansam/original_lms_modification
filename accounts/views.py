@@ -12,31 +12,44 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import json
 
-
-
 def landing_page(request):
     # Paths to JSON files
     slides_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'slides.json')
     services_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'service.json')
     popular_courses_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'popular_courses.json')
+    trending_courses_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'trending_courses.json')
 
-    # Load slides
+    # Load JSON data
     with open(slides_path, 'r', encoding='utf-8') as f:
         slides = json.load(f)
-
-    # Load services
     with open(services_path, 'r', encoding='utf-8') as f:
         services = json.load(f)
-
-    # Load popular courses
     with open(popular_courses_path, 'r', encoding='utf-8') as f:
         popular_courses = json.load(f)
+    with open(trending_courses_path, 'r', encoding='utf-8') as f:
+        trending_courses = json.load(f)
 
-    # Pass all data to template
+    # Define categories
+    categories = [
+        "Innovative Manufacturing",
+        "Smart Factory",
+        "AR/VR/MR",
+        "Product Lifecycle Management",
+        "Asset Performance",
+        "Product Innovation",
+        "Predictive Engineering",
+        "Front-end Development",
+        "Backend Development",
+        "AI/ML",
+    ]
+
+    # Pass data to template
     context = {
         'slides': slides,
         'services': services,
         'popular_courses': popular_courses,
+        'trending_courses': trending_courses,
+        'categories': categories,  # ✅ pass categories list
     }
 
     return render(request, 'index.html', context)
