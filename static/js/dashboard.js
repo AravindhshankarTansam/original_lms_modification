@@ -237,3 +237,32 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize animation on first link
   moveAnimation(nav.querySelector(".lava-link.active"));
 });
+
+
+// filter blur sidebar
+
+document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("openFilterBtn");
+  const closeBtn = document.getElementById("closeFilterBtn");
+  const overlay = document.getElementById("filterOverlay");
+  const drawer = document.getElementById("filterDrawer");
+  const clearBtn = drawer.querySelector(".clear-btn"); // select clear all button
+
+  const toggleDrawer = (open) => {
+    drawer.classList.toggle("active", open);
+    overlay.classList.toggle("active", open);
+  };
+
+  openBtn.addEventListener("click", () => toggleDrawer(true));
+  closeBtn.addEventListener("click", () => toggleDrawer(false));
+  overlay.addEventListener("click", () => toggleDrawer(false));
+
+  // ===== Clear All Checkboxes =====
+  clearBtn.addEventListener("click", () => {
+    const checkboxes = drawer.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+  });
+});
+

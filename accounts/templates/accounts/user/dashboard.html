@@ -82,67 +82,64 @@
       </div>
       <button class="carousel-arrow right-arrow" id="rightArrow">&#10095;</button>
     </div>
-
   </div>
 </div>
-<!-- ================== Trending Topics Section ================== -->
+
+<!-- ========================= FILTER DRAWER ========================= -->
+
+
 <!-- ================== Trending Topics Section ================== -->
 <div class="trending-section">
-  <!-- Filter Bar -->
-  <div class="filter-container">
-    <h4 class="fw-bold mb-3">Filters</h4>
-    <div class="filter-tags">
+  
+  <!-- FILTER DRAWER + BUTTON -->
+  <div class="filter-wrapper">
+    <div class="filter-overlay" id="filterOverlay"></div>
 
-      <!-- Course Name Dropdown -->
-      <div class="custom-dropdown">
-        <button id="courseFilterBtn" class="filter-btn dropdown-toggle">
-          <span>Course Name</span>
-          <!-- <i class="arrow"></i> -->
-        </button>
-        <ul id="courseDropdown" class="dropdown-menu">
-          <li>Data Science</li>
-          <li>Web Dev</li>
-          <li>AI & ML</li>
-          <li>Cloud</li>
-          <li>UI/UX</li>
-        </ul>
+    <aside class="filter-drawer" id="filterDrawer">
+      <div class="filter-header">
+        <h4>Filters</h4>
+        <button id="closeFilterBtn" class="close-filter">&times;</button>
       </div>
 
-      <!-- Topics Dropdown -->
-      <div class="custom-dropdown">
-        <button id="topicFilterBtn" class="filter-btn dropdown-toggle">
-          <span>Topics</span>
-          <!-- <i class="arrow"></i> -->
-        </button>
-        <ul id="topicDropdown" class="dropdown-menu">
-          <li>Machine Learning</li>
-          <li>Front-end</li>
-          <li>Back-end</li>
-          <li>Databases</li>
-          <li>DevOps</li>
-        </ul>
+      <div class="filter-body">
+        <!-- Ratings -->
+        <div class="filter-block">
+          <h5>Ratings</h5>
+          <label><input type="checkbox"> ★ 4.5 & up (10,000)</label>
+          <label><input type="checkbox"> ★ 4.0 & up (8,000)</label>
+          <label><input type="checkbox"> ★ 3.5 & up (6,000)</label>
+        </div>
+
+        <!-- Language -->
+        <div class="filter-block">
+          <h5>Language</h5>
+          <label><input type="checkbox"> English</label>
+          <label><input type="checkbox"> Español</label>
+          <label><input type="checkbox"> Français</label>
+          <label><input type="checkbox"> Türkçe</label>
+        </div>
+
+        <!-- Hands-on Practice -->
+        <div class="filter-block">
+          <h5>Hands-on Practice</h5>
+          <label><input type="checkbox"> Quizzes</label>
+          <label><input type="checkbox"> Coding Exercises</label>
+          <label><input type="checkbox"> Practice Tests</label>
+          <label><input type="checkbox"> Role Plays</label>
+        </div>
       </div>
 
-      <!-- Levels Dropdown -->
-      <div class="custom-dropdown">
-        <button id="levelFilterBtn" class="filter-btn dropdown-toggle">
-          <span>Level</span>
-          <!-- <i class="arrow"></i> -->
-        </button>
-        <ul id="levelDropdown" class="dropdown-menu">
-          <li>Beginner</li>
-          <li>Intermediate</li>
-          <li>Advanced</li>
-          <li>Expert</li>
-        </ul>
+      <div class="filter-footer">
+        <button class="clear-btn">Clear All</button>
+        <button class="apply-btn">Apply</button>
       </div>
+    </aside>
 
-      <button class="filter-btn">Duration</button>
-      <!-- <button class="filter-btn">Tags</button> -->
-    </div>
+    <!-- Filter Button -->
+    <button id="openFilterBtn" class="open-filter-btn">
+      <i class="fas fa-filter"></i> Filters
+    </button>
   </div>
-</div>
-
 
   <!-- Trending Topics Title -->
   <h4 class="fw-bold mb-3 mt-4">Trending Topics</h4>
@@ -235,8 +232,6 @@
     </div>
   </div>
 </div>
-<!-- ================== End Trending Topics Section ================== -->
-
 
 <!-- ================== Curriculum Navigation ================== -->
 <h2 class="text-center mt-5 text-dark">Explore More</h2>
@@ -251,11 +246,9 @@
 
 <!-- Dynamic content container -->
 <div id="lavaContent" class="lava-content p-4 bg-white shadow rounded">
-  <!-- This will be replaced by JS -->
   <h4>Curriculum</h4>
   <p>Welcome to the curriculum! Explore lessons, modules, and learning paths.</p>
 </div>
 
-<!-- ================== End Trending Topics Section ================== -->
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
