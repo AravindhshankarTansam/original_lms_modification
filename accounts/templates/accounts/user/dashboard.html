@@ -9,43 +9,38 @@
 {% endblock %}
 
 {% block content %}
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <h3 class="sidebar-title">eLearning</h3>
-    <i class="fas fa-bars toggle-btn" id="toggleSidebar"></i>
-  </div>
 
-  <ul class="sidebar-menu">
-    <li><a href="/dashboard/" class="active"><i class="fas fa-home me-2"></i><span>Dashboard</span></a></li>
-    <li><a href=""><i class="fas fa-book me-2"></i><span>Courses</span></a></li>
-    <li><a href=""><i class="fas fa-user me-2"></i><span>Profile</span></a></li>
-    <li><a href="/logout/"><i class="fas fa-sign-out-alt me-2"></i><span>Logout</span></a></li>
-  </ul>
-</div>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3 shadow-sm full-navbar" id="mainNavbar">
-  <div class="navbar-container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3 shadow-sm full-navbar w-100" id="mainNavbar">
+  <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+
+    <!-- Left Section -->
     <div class="left-section">
       <h5 class="text-white mb-0 fw-semibold" id="dashboardTitle">Dashboard</h5>
     </div>
 
-    <div class="right-section dropdown">
-      <a
-        class="nav-link dropdown-toggle text-white d-flex align-items-center"
-        href="#"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <i class="fas fa-user-circle fa-lg me-2"></i>
-        Welcome, {{ request.user.username }}
-      </a>
-      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-        <li><a class="dropdown-item" href="/profile/">Profile</a></li>
-        <li><a class="dropdown-item" href="/logout/">Logout</a></li>
-      </ul>
+    <!-- Right Section -->
+    <div class="right-section d-flex align-items-center gap-3">
+      <a href="/courses/" class="text-white text-decoration-none fw-medium">Courses</a>
+      <a href="/profile/" class="text-white text-decoration-none fw-medium">Profile</a>
+
+      <div class="dropdown">
+        <a
+          class="nav-link dropdown-toggle text-white d-flex align-items-center"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-user-circle fa-lg me-2"></i>
+          Welcome, {{ request.user.username }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+          <li><a class="dropdown-item" href="/profile/">Profile</a></li>
+          <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>

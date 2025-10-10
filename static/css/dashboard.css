@@ -7,88 +7,31 @@ body {
   background-color: #f5f6fa;
 }
 
-/* === Sidebar === */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 240px;
-  height: 100vh;
-  background-color: #212529;
-  color: #fff;
-  transition: width 0.3s ease;
-  z-index: 1000;
-  overflow: hidden;
-}
 
-.sidebar.collapsed {
-  width: 70px;
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-}
-
-.toggle-btn {
-  cursor: pointer;
-  font-size: 20px;
-  color: #fff;
-}
-
-.sidebar-title {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-}
-
-.sidebar-menu li a {
-  display: flex;
-  align-items: center;
-  padding: 12px 25px;
-  color: #fff;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-
-.sidebar-menu li a:hover,
-.sidebar-menu li a.active {
-  background-color: #0d6efd;
-  border-left: 4px solid #fff;
-}
-
-.sidebar.collapsed .sidebar-title,
-.sidebar.collapsed span {
-  display: none;
-}
-
-.sidebar.collapsed .sidebar-menu li a {
-  justify-content: center;
-  padding: 12px 0;
-}
-
+/* === Navbar === */
 /* === Navbar === */
 .full-navbar {
   position: fixed;
   top: 0;
-  left: 240px;
-  width: calc(100% - 240px);
+  left: 0;
+  width: 100%; /* changed from calc(100% - 240px) */
   background-color: #87CEEB !important;
-  transition: all 0.3s ease;
   z-index: 999;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
+/* You can remove .full-navbar.adjusted and .main-content.adjusted */
 .full-navbar.adjusted {
-  left: 70px;
-  width: calc(101% - 80px);
+  left: 0;
+  width: 100%;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 0; /* changed from 240px */
+  padding-top: 90px;
+  transition: margin-left 0.3s ease;
 }
 
 .navbar-container {
