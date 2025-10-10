@@ -242,11 +242,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // filter blur sidebar
 
 document.addEventListener("DOMContentLoaded", () => {
-  const openBtn = document.getElementById("openFilterBtn");
-  const closeBtn = document.getElementById("closeFilterBtn");
-  const overlay = document.getElementById("filterOverlay");
-  const drawer = document.getElementById("filterDrawer");
-  const clearBtn = drawer.querySelector(".clear-btn"); // select clear all button
+  const openBtn = document.querySelector("#openFilterBtn");
+  const closeBtn = document.querySelector("#closeFilterBtn");
+  const overlay = document.querySelector("#filterOverlay");
+  const drawer = document.querySelector("#filterDrawer");
+  const clearBtn = drawer.querySelector(".clear-btn");
+  const applyBtn = drawer.querySelector(".apply-btn");
 
   const toggleDrawer = (open) => {
     drawer.classList.toggle("active", open);
@@ -257,12 +258,44 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", () => toggleDrawer(false));
   overlay.addEventListener("click", () => toggleDrawer(false));
 
-  // ===== Clear All Checkboxes =====
+  // Clear all checkboxes and show all course cards
   clearBtn.addEventListener("click", () => {
     const checkboxes = drawer.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
       checkbox.checked = false;
     });
+
+    // Show all cards
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.display = "block";
+    });
+  });
+
+  // Apply filter logic
+  applyBtn.addEventListener("click", () => {
+    const checkedBoxes = drawer.querySelectorAll('input[type="checkbox"]:checked');
+
+    const selectedLanguages = Array.from(checkedBoxes)
+      .filter(cb => ['English', 'Español', 'Français', 'Türkçe'].includes(cb.nextSibling.textContent.trim()))
+      .map(cb => cb.nextSibling.textContent.trim());
+
+    const selectedRatings = Array.from(checkedBoxes)
+      .filter(cb => cb.nextSibling.textContent.trim().includes('★'))
+      .map(cb => parseFloat(cb.nextSibling.textContent.trim().match(/★ ([\d.]+)/)?.[1]));
+
+    // Filter cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      const cardLang = card.dataset.language;
+      const cardRating = parseFloat(card.dataset.rating);
+
+      const matchesLang = selectedLanguages.length === 0 || selectedLanguages.includes(cardLang);
+      const matchesRating = selectedRatings.length === 0 || selectedRatings.some(rating => cardRating >= rating);
+
+      card.style.display = (matchesLang && matchesRating) ? "block" : "none";
+    });
+
+    toggleDrawer(false);
   });
 });
 

@@ -60,24 +60,28 @@
       <button class="carousel-arrow left-arrow" id="leftArrow">&#10094;</button>
       <div class="carousel-track" id="carouselTrack">
         {% for i in "12345" %}
-        <article class="card">
-          <a class="card-link" href="#0">
-            <img class="card-img" src="{% static 'images/course'|add:i|add:'.jpg' %}" alt="Course {{ i }}">
-            <div class="card-details">
-              <div>
-                <div class="card-subtitle">Course {{ i }}</div>
-                <h3 class="card-title">Course Name {{ i }}</h3>
-                <div class="card-content">Brief description of the course goes here. Learn and improve your skills.</div>
-              </div>
-              <div class="card-view-more">
-                View more
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
-                </svg>
-              </div>
-            </div>
-          </a>
-        </article>
+      <article class="card"
+         data-language="English"
+         data-rating="4.5"
+         data-title="Course Name {{ i }}">
+  <a class="card-link" href="#0">
+    <img class="card-img" src="{% static 'images/course'|add:i|add:'.jpg' %}" alt="Course {{ i }}">
+    <div class="card-details">
+      <div>
+        <div class="card-subtitle">Course {{ i }}</div>
+        <h3 class="card-title">Course Name {{ i }}</h3>
+        <div class="card-content">Brief description of the course goes here. Learn and improve your skills.</div>
+      </div>
+      <div class="card-view-more">
+        View more
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <path d="M7 7h8.586L5.293 17.293l1.414 1.414L17 8.414V17h2V5H7v2z" />
+        </svg>
+      </div>
+    </div>
+  </a>
+</article>
+
         {% endfor %}
       </div>
       <button class="carousel-arrow right-arrow" id="rightArrow">&#10095;</button>
@@ -167,7 +171,7 @@
               <p><strong>Estimation:</strong> 6 Weeks</p>
               <p><strong>Assessment:</strong> Included</p>
               <p><strong>Price:</strong> ₹2499</p>
-              <button class="btn-enroll">Enroll Now</button>
+              <button class="btn-enroll">Enroll Now</button></button><button class="btn-cart">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -191,7 +195,8 @@
               <p><strong>Estimation:</strong> 8 Weeks</p>
               <p><strong>Assessment:</strong> Included</p>
               <p><strong>Price:</strong> ₹2999</p>
-              <button class="btn-enroll">Enroll Now</button>
+              <button class="btn-enroll">Enroll Now</button><button class="btn-cart">Add to Cart</button>
+
             </div>
           </div>
         </div>
@@ -215,7 +220,7 @@
               <p><strong>Estimation:</strong> 5 Weeks</p>
               <p><strong>Assessment:</strong> Included</p>
               <p><strong>Price:</strong> ₹1999</p>
-              <button class="btn-enroll">Enroll Now</button>
+              <button class="btn-enroll">Enroll Now</button></button><button class="btn-cart">Add to Cart</button>
             </div>
           </div>
         </div>
