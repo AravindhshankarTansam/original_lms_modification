@@ -1,17 +1,1 @@
-<div class="container mx-auto mt-10">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Dashboard</h1>
-        <a href="{% url 'logout' %}" 
-           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-            Logout
-        </a>
-    </div>
 
-    {% if user.role == 'superuser' %}
-        <p>Superuser access: Full control</p>
-    {% elif user.role == 'admin' %}
-        <p>Admin access: Manage courses and assessments</p>
-    {% else %}
-        <p>User access: Enroll in courses</p>
-    {% endif %}
-</div>
