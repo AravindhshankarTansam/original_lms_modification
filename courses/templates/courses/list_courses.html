@@ -1,14 +1,52 @@
-<div class="container mx-auto mt-10">
-    <h2 class="text-2xl font-bold mb-4">Available Courses</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for course in courses %}
-            <div class="p-4 border rounded shadow">
-                <h3 class="text-xl font-bold">{{ course.title }}</h3>
-                <p>{{ course.description }}</p>
-                {% if user.role == 'user' %}
-                    <a href="{% url 'enroll_course' course.id %}" class="bg-green-600 text-white p-2 rounded mt-2 inline-block">Enroll</a>
-                {% endif %}
-            </div>
-        {% endfor %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <!-- ===================== HEADER ===================== -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="m-0">Courses</h1>
+  </div>
+
+  <!-- ===================== COURSES TABLE ===================== -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white fw-semibold">
+      Saved Courses
     </div>
+    <div class="card-body p-0">
+      <table class="table table-striped table-hover m-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Course Title</th>
+            <th>Status</th>
+            <th>Created By</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ course.title }}</td>
+            <td>
+              <span class="badge bg-{{ course.status == 'Active'|yesno:'success,secondary' }}">
+                {{ course.status }}
+              </span>
+            </td>
+            <td>{{ course.created_by.username }}</td>
+            <td>{{ course.created_at|date:"d M Y, H:i" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No courses found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
+{% endblock %}
