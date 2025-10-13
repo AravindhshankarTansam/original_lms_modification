@@ -213,27 +213,41 @@ def admin_dashboard(request):
 # profile
 @login_required
 def profile(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("profile")
+    if request.user.role in ['admin', 'superuser']:
+        # Admin profile logic
+        if request.method == "POST":
+            form = ProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("profile")
+        else:
+            form = ProfileForm(instance=request.user)
+
+        return render(request, "accounts/admin/profile.html", {"form": form, "user": request.user})
+
     else:
-        form = ProfileForm(instance=request.user)
+        # User profile logic
+        if request.method == "POST":
+            form = ProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("profile")
+        else:
+            form = ProfileForm(instance=request.user)
 
-    return render(request, "accounts/admin/profile.html", {"form": form, "user": request.user})
+        return render(request, "accounts/user/profile.html", {"form": form, "user": request.user})
 
-@login_required
-def profile(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("user_profile")  # redirect to same profile page
-    else:
-        form = ProfileForm(instance=request.user)
+# @login_required
+# def profile(request):
+#     if request.method == "POST":
+#         form = ProfileForm(request.POST, request.FILES, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("user_profile")  # redirect to same profile page
+#     else:
+#         form = ProfileForm(instance=request.user)
 
-    return render(request, "accounts/user/profile.html", {
-        "form": form,
-        "user": request.user
-    })
+#     return render(request, "accounts/user/profile.html", {
+#         "form": form,
+#         "user": request.user
+#     })
