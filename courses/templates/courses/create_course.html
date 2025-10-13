@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
     <!-- ===================== COURSES DATA ===================== -->
-    <script id="courses-data" type="application/json">{{ courses_json|safe }}</script>
+    {% comment %} <script id="courses-data" type="application/json">{{ courses_json|safe }}</script>
 
 
     <!-- ===================== HEADER ===================== -->
@@ -37,7 +37,7 @@
             </table>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 
 <!-- ===================== COURSE MODAL ===================== -->
 <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">

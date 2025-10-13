@@ -5,6 +5,14 @@ from django.conf import settings
 from .models import Course, Module, Chapter, Question
 from accounts.views import role_required
 
+
+@role_required('admin')
+@login_required
+def course_table(request):
+    """Show table of all courses"""
+    courses = Course.objects.all()
+    return render(request, 'courses/course_table.html', {'courses': courses})
+
 @role_required('admin')
 @login_required
 def list_courses(request):
