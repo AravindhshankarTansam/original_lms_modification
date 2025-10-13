@@ -5,6 +5,8 @@
            class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
             Logout
         </a>
+        <a href="{% url 'user_profile' %}" class="btn password-btn">User Profile</a>
+
     </div>
 
     {% if user.role == 'superuser' %}
@@ -15,3 +17,173 @@
         <p>User access: Enroll in courses</p>
     {% endif %}
 </div>
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MxD Learn Clone</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo">
+      <img src="{% static 'images/logo-placeholder.png' %}" alt="MxD Learn Logo">
+    </div>
+    <div class="icons">
+      <span class="icon">🔍</span>
+      <span class="icon">✉️</span>
+      <span class="icon new-icon">🆕</span>
+      <span class="icon">☰</span>
+    </div>
+  </header>
+
+  <div class="welcome-banner">
+    <h2>Welcome Anu pv</h2>
+  </div>
+<section class="main-content-wrapper">
+  <button class="slider-btn left-btn">&#10094;</button>
+  <div class="main-content-slider">
+    <div class="panel">
+      <div class="video-placeholder">Video Placeholder</div>
+    </div>
+    <div class="panel">
+      <div class="video-placeholder">Video Placeholder</div>
+    </div>
+    <div class="panel">
+      <div class="video-placeholder">Video Placeholder</div>
+    </div>
+    <div class="panel center-panel">
+      <h3>MxD Learn</h3>
+      <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
+      <button>VIEW COURSES</button>
+    </div>
+    <div class="panel right-panel">
+      <h3>CAPITAL</h3>
+      <p>Data Annotator</p>
+      <ul>
+        <li>Data Annotator (100)</li>
+        <li>Data Annotator (200)</li>
+        <li>Data Annotator (300)</li>
+      </ul>
+      <button>VIEW COURSES</button>
+    </div>
+  </div>
+  <button class="slider-btn right-btn">&#10095;</button>
+</section>
+
+
+
+<section class="card-grid">
+  <div class="card card-my-courses">My Courses</div>
+  <div class="card card-mxd-content">MxD Content</div>
+  <div class="card card-partner-content">Partner Content</div>
+  <div class="card card-resources">Resources</div>
+  <div class="card card-cybersecurity">Cybersecurity</div>
+  <div class="card card-manufacturing">Manufacturing</div>
+</section>
+
+  <section class="faq-catalog-section">
+    <div class="faq">
+      <h3>📌 Frequently Asked Questions</h3>
+      <p>The answers to your questions</p>
+      <button class="faq-btn">What is the Virtual Training Center?</button>
+      <button class="faq-btn">What is MxD?</button>
+      <button class="faq-btn">What type of work does MxD do?</button>
+      <button class="faq-btn">What is the CAPITAL program?</button>
+      <button class="faq-btn">How can I attend an event?</button>
+    </div>
+    <div class="catalog-banner">
+      <h1>CAPITAL</h1>
+      <p class="catalog-subtitle">Catalog</p>
+      <p class="joint-cert">JOINT CERTIFICATION</p>
+    </div>
+  </section>
+
+  <section class="leader-poll">
+    <div class="leaderboard">
+      <h4>📊 Leaderboards</h4>
+      <p>Your company leaderboards</p>
+      <div class="rank-bar">
+        <span>Course Completions</span>
+        <span>Rank 207</span>
+      </div>
+    </div>
+    <div class="polls">
+      <h4>🗳️ Polls & Surveys</h4>
+      <p>Vote on the latest topics</p>
+      <p class="poll-question">
+        Have you taken the new Introduction to Standards Development courses?
+      </p>
+      <button class="vote-btn">Vote!</button>
+    </div>
+    <div class="resume-box">
+      <img src="{% static 'images/learn-icon.png' %}" alt="MxD Learn" />
+      <div>
+        <p><strong>Cybersecurity Analyst (100)</strong><br/> Resume ▶</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-courses">
+    <h3>Featured Courses</h3>
+    <div class="course-card">
+      <img src="{% static 'images/course-thumb.jpg' %}" alt="Course" />
+      <div>
+        <h4>Advanced Manufacturing Penetration Testing</h4>
+        <p>Online Course<br/><span class="badge">⭐ Featured</span> 5 (1)</p>
+      </div>
+      <span class="start">Start ▶</span>
+    </div>
+    <div class="course-card">
+      <img src="{% static 'images/course-thumb.jpg' %}" alt="Course" />
+      <div>
+        <h4>Cybersecurity Analyst (100)</h4>
+        <p>Online Course<br/><span class="badge">⭐ Featured</span></p>
+      </div>
+      <span class="start">Resume ▶</span>
+    </div>
+  </section>
+
+  <section class="latest-news">
+    <h3>📰 Latest News</h3>
+    <ul>
+      <li><span>MxD Learn & SACA Co-developed Credential!</span><span>2 months ago</span></li>
+      <li><span>University of Michigan and MxD Launch Groundbreaking EV Hiring Guide</span><span>4 months ago</span></li>
+      <li><span>New Curriculum: Pre-Metaverse Integration Technologist</span><span>5 months ago</span></li>
+    </ul>
+  </section>
+
+  <section class="catalog-carousel">
+    <h3>Catalog</h3>
+    <div class="carousel-wrapper">
+      <div class="carousel">
+        <!-- Course cards as in your HTML -->
+        <!-- Add your course images and info here -->
+      </div>
+      <div class="carousel-dots"> ● ● ● ● ● </div>
+    </div>
+  </section>
+
+  <section class="personalized-journey">
+    <div class="journey-left">
+      <p class="new-badge">★New</p>
+      <h3>Start your personalized learning journey</h3>
+      <p>Select a role that you are interested in to build a list of recommended course content.</p>
+      <button class="start-btn">Get started</button>
+    </div>
+    <div class="journey-right">
+      <img src="{% static 'images/journey-graphic.png' %}" alt="Learning Journey Illustration" />
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="language-selector">🌐 EN</div>
+  </footer>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>
