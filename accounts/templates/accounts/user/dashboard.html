@@ -1,1 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MxD Learn Clone</title>
+  <style>
+    /* Base Styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    .top-bar {
+      background: linear-gradient(to right, #1e2a38, #79242f);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      animation: slideDown 0.5s ease-out;
+    }
+    .logo img {
+      height: 30px;
+    }
+    .icons .icon {
+      margin-left: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .new-icon {
+      position: relative;
+    }
+    .welcome-banner {
+      background-color: #2e3b4e;
+      color: white;
+      padding: 15px 20px;
+      animation: fadeIn 1s ease-out;
+    }
+    .main-content {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      background-color: white;
+      animation: slideIn 0.8s ease-out;
+    }
+    .left-panel, .center-panel, .right-panel {
+      flex: 1;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    .video-placeholder {
+      background-color: black;
+      color: white;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: slideLeft 1s ease-out;
+    }
+    .highlight-red {
+      color: red;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #5e7ca3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #3e597b;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      padding: 20px;
+      background-color: white;
+      animation: slideUp 1s ease-out;
+    }
+    .card {
+      background-color: #1e2a38;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      font-size: 18px;
+      border-radius: 5px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .faq-catalog-section {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+    .faq {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      animation: fadeIn 1s ease-out;
+    }
+    .faq-btn {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      background: black;
+      color: white;
+      border: none;
+      text-align: left;
+      transition: background 0.3s ease;
+    }
+    .faq-btn:hover {
+      background: #444;
+    }
+    .catalog-banner {
+      flex: 1;
+      background: black;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 6px;
+      animation: fadeIn 1.5s ease-out;
+    }
+    .catalog-subtitle {
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    .joint-cert {
+      font-size: 0.9em;
+      opacity: 0.6;
+    }
+    /* Leaderboards + Polls */
+    .leader-poll {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+    .leaderboard, .polls, .resume-box {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      animation: fadeIn 1.5s ease-out;
+    }
+    .rank-bar {
+      display: flex;
+      justify-content: space-between;
+      background: black;
+      color: white;
+      padding: 5px 10px;
+      margin-top: 10px;
+    }
+    .vote-btn {
+      margin-top: 10px;
+      padding: 10px;
+      background: black;
+      color: white;
+      border: none;
+      width: 100%;
+    }
+    .resume-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .resume-box img {
+      width: 60px;
+      height: 60px;
+    }
+    /* Featured Courses */
+    .featured-courses {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      animation: fadeIn 1.8s ease-out;
+    }
+    .course-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+    .course-card:hover {
+      transform: translateY(-10px);
+    }
+    .course-card img {
+      width: 70px;
+      height: 70px;
+    }
+    .badge {
+      color: gold;
+    }
+    .start {
+      margin-left: auto;
+      font-weight: bold;
+    }
+    /* News */
+    .latest-news {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .latest-news ul {
+      list-style: none;
+      padding: 0;
+    }
+    .latest-news li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: black;
+      color: white;
+      margin: 5px 0;
+      border-radius: 4px;
+    }
+    .catalog-carousel {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      animation: slideIn 1s ease-out;
+    }
+    .carousel-wrapper {
+      overflow-x: auto;
+    }
+    .carousel {
+      display: flex;
+      gap: 15px;
+      padding: 10px 0;
+    }
+    .course-card-carousel {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      width: 180px;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .course-card-carousel:hover {
+      transform: translateY(-10px);
+    }
+    .course-card-carousel img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+    .course-info {
+      padding: 10px;
+      font-size: 14px;
+    }
+    .label {
+      font-size: 12px;
+      color: gray;
+    }
+    .rating {
+      color: #f4c150;
+      font-size: 12px;
+    }
+    .enroll-btn {
+      background: black;
+      color: white;
+      border: none;
+      padding: 6px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    .carousel-dots {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+    /* Personalized Journey */
+    .personalized-journey {
+      display: flex;
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 6px;
+      animation: fadeIn 2s ease-out;
+    }
+    .journey-left {
+      flex: 1;
+      padding: 10px 20px;
+    }
+    .new-badge {
+      color: red;
+      font-weight: bold;
+    }
+    .start-btn {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .journey-right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .journey-right img {
+      max-width: 90%;
+      height: auto;
+    }
+    /* Footer */
+    .footer {
+      background: #f8f8f8;
+      padding: 15px;
+      text-align: left;
+      border-top: 1px solid #ccc;
+      margin-top: 20px;
+    }
+    .language-selector {
+      font-size: 14px;
+    }
 
+    /* Keyframe Animations */
+    @keyframes slideDown {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes slideLeft {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes slideUp {
+      0% { transform: translateY(100%); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo">
+      <img src="logo-placeholder.png" alt="MxD Learn Logo">
+    </div>
+    <div class="icons">
+      <span class="icon">🔍</span>
+      <span class="icon">✉️</span>
+      <span class="icon new-icon">🆕</span>
+      <span class="icon">☰</span>
+    </div>
+  </header>
+  <div class="welcome-banner">
+    <h2>Welcome Anu pv</h2>
+  </div>
+  <section class="main-content">
+    <div class="left-panel">
+      <div class="video-placeholder">Video Placeholder</div>
+    </div>
+    <div class="center-panel">
+      <h3>MxD Learn</h3>
+      <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
+      <p>Our FREE virtual training programs deliver the skills, training and qualifications that students, new workers and professionals need.</p>
+      <button>VIEW COURSES</button>
+    </div>
+    <div class="right-panel">
+      <h3>CAPITAL</h3>
+      <p>Data Annotator</p>
+      <ul>
+        <li>Data Annotator (100): Introduction to Data Annotation</li>
+        <li>Data Annotator (200): Practical Data Annotation</li>
+        <li>Data Annotator (300): Advanced Data Annotation</li>
+      </ul>
+      <button>VIEW COURSES</button>
+    </div>
+  </section>
+
+  <section class="card-grid">
+    <div class="card">My Courses</div>
+    <div class="card">MxD Content</div>
+    <div class="card">Partner Content</div>
+    <div class="card">Resources</div>
+    <div class="card">Cybersecurity</div>
+    <div class="card">Manufacturing</div>
+  </section>
+
+  <section class="faq-catalog-section">
+    <div class="faq">
+      <h3>📌 Frequently Asked Questions</h3>
+      <p>The answers to your questions</p>
+      <button class="faq-btn">What is the Virtual Training Center?</button>
+      <button class="faq-btn">What is MxD?</button>
+      <button class="faq-btn">What type of work does MxD do?</button>
+      <button class="faq-btn">What is the CAPITAL program?</button>
+      <button class="faq-btn">How can I attend an event?</button>
+    </div>
+    <div class="catalog-banner">
+      <h1>CAPITAL</h1>
+      <p class="catalog-subtitle">Catalog</p>
+      <p class="joint-cert">JOINT CERTIFICATION</p>
+    </div>
+  </section>
+
+  <section class="leader-poll">
+    <div class="leaderboard">
+      <h4>📊 Leaderboards</h4>
+      <p>Your company leaderboards</p>
+      <div class="rank-bar">
+        <span>Course Completions</span>
+        <span>Rank 207</span>
+      </div>
+    </div>
+    <div class="polls">
+      <h4>🗳️ Polls & Surveys</h4>
+      <p>Vote on the latest topics</p>
+      <p class="poll-question">
+        Have you taken the new Introduction to Standards Development courses?
+      </p>
+      <button class="vote-btn">Vote!</button>
+    </div>
+    <div class="resume-box">
+      <img src="learn-icon.png" alt="MxD Learn" />
+      <div>
+        <p><strong>Cybersecurity Analyst (100)</strong><br/> Resume ▶</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-courses">
+    <h3>Featured Courses</h3>
+    <div class="course-card">
+      <img src="course-thumb.jpg" alt="Course" />
+      <div>
+        <h4>Advanced Manufacturing Penetration Testing</h4>
+        <p>Online Course<br/><span class="badge">⭐ Featured</span> 5 (1)</p>
+      </div>
+      <span class="start">Start ▶</span>
+    </div>
+    <div class="course-card">
+      <img src="course-thumb.jpg" alt="Course" />
+      <div>
+        <h4>Cybersecurity Analyst (100)</h4>
+        <p>Online Course<br/><span class="badge">⭐ Featured</span></p>
+      </div>
+      <span class="start">Resume ▶</span>
+    </div>
+  </section>
+
+  <section class="latest-news">
+    <h3>📰 Latest News</h3>
+    <ul>
+      <li><span>MxD Learn & SACA Co-developed Credential!</span><span>2 months ago</span></li>
+      <li><span>University of Michigan and MxD Launch Groundbreaking EV Hiring Guide</span><span>4 months ago</span></li>
+      <li><span>New Curriculum: Pre-Metaverse Integration Technologist</span><span>5 months ago</span></li>
+    </ul>
+  </section>
+
+  <section class="catalog-carousel">
+    <h3>Catalog</h3>
+    <div class="carousel-wrapper">
+      <div class="carousel">
+        <div class="course-card-carousel">
+          <img src="ai-course.jpg" alt="AI Course" />
+          <div class="course-info">
+            <p><strong>Artificial Intelligence (AI): Natural Language...</strong></p>
+            <p class="label">Online Course</p>
+            <p class="rating">⭐⭐⭐☆☆ (1)</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+        <div class="course-card-carousel">
+          <img src="briefly.jpg" alt="Briefly Course" />
+          <div class="course-info">
+            <p><strong>$100M Offers: How To Make Offers So Good...</strong></p>
+            <p class="label">Online Course</p>
+            <p class="rating">⭐⭐☆☆☆ (2)</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+        <div class="course-card-carousel placeholder">
+          <div class="placeholder-icon">📘</div>
+          <div class="course-info">
+            <p><strong>.NET 8 Backend Bootcamp</strong></p>
+            <p class="label">Online Course</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+        <div class="course-card-carousel placeholder">
+          <div class="placeholder-icon">📘</div>
+          <div class="course-info">
+            <p><strong>.NET 8 Microservices</strong></p>
+            <p class="label">Online Course</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+        <div class="course-card-carousel">
+          <img src="packt.jpg" alt=".NET Core Microservices" />
+          <div class="course-info">
+            <p><strong>.NET Core Microservices</strong></p>
+            <p class="label">Online Course</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+        <div class="course-card-carousel placeholder">
+          <div class="placeholder-icon">📘</div>
+          <div class="course-info">
+            <p><strong>.NET Core Microservices: The Complete Guide</strong></p>
+            <p class="label">Online Course</p>
+            <p class="rating">☆☆☆☆☆ (0)</p>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+      </div>
+      <!-- Carousel dots -->
+      <div class="carousel-dots"> ● ● ● ● ● </div>
+    </div>
+  </section>
+
+  <section class="personalized-journey">
+    <div class="journey-left">
+      <p class="new-badge">★New</p>
+      <h3>Start your personalized learning journey</h3>
+      <p>Select a role that you are interested in to build a list of recommended course content.</p>
+      <button class="start-btn">Get started</button>
+    </div>
+    <div class="journey-right">
+      <img src="journey-graphic.png" alt="Learning Journey Illustration" />
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="language-selector">🌐 EN</div>
+  </footer>
+</body>
+</html>

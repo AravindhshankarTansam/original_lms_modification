@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Capital Program — Catalog</title>
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent:#d92b20; /* red accent */
+      --card-bg:#ffffff;
+      --muted:#8a8f98;
+      --hero-height:170px;
+      --shadow: 0 5px 14px rgba(19,24,33,0.08);
+    }
+    html,body{height:100%}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:#efefef;
+      color:#222;
+    }
+
+    /* Header */
+    .topbar{
+      background:#fff;
+      border-bottom:1px solid rgba(0,0,0,0.06);
+      padding:10px 18px;
+      position:sticky;
+      top:0;
+      z-index:1030;
+    }
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .brand-logo {
+      width:64px;
+      height:34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff;
+      border:2px solid #d23b30;
+      border-radius:4px;
+      box-shadow: inset 0 0 0 2px #fff;
+      font-weight:700;
+      color:var(--accent);
+    }
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      font-weight:600;
+      letter-spacing:0.2px;
+    }
+
+    .topbar .icons{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .topbar .icon-btn{
+      width:36px;
+      height:36px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:6px;
+      cursor:pointer;
+    }
+    .topbar .icon-btn svg{opacity:.78}
+
+    /* Hero / banner */
+    .hero{
+      height:var(--hero-height);
+      background:
+        linear-gradient(180deg, rgba(8,14,28,0.54), rgba(8,14,28,0.38)),
+        repeating-linear-gradient(120deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 60px),
+        #0e1b2a;
+      background-size:cover;
+      display:flex;
+      align-items:center;
+      padding:28px 30px;
+      color:#fff;
+      margin-bottom:18px;
+    }
+    .hero h2{
+      font-size:28px;
+      margin:0;
+      letter-spacing:0.6px;
+      font-weight:700;
+    }
+    .hero .back-btn{
+      width:46px;
+      height:46px;
+      background:rgba(0,0,0,0.45);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-right:18px;
+      border-radius:6px;
+    }
+
+    /* content container */
+    .page-content{
+      max-width:1250px;
+      margin:-36px auto 60px;
+      padding:22px;
+    }
+
+    /* toolbar row */
+    .catalog-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+      gap:12px;
+      padding:10px 8px;
+      background:rgba(255,255,255,0.7);
+      border-radius:6px;
+      box-shadow: none;
+    }
+    .breadcrumb-custom{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* cards grid */
+    .cards-row{ margin-top:8px; }
+    .course-card{
+      background:var(--card-bg);
+      border-radius:6px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,0.06);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease;
+      min-height:320px;
+    }
+    .course-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 14px 30px rgba(19,24,33,0.12);
+    }
+
+    .course-thumb{
+      height:132px;
+      width:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .card-body-custom{
+      padding:12px 12px 14px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .course-title{
+      font-size:13px;
+      font-weight:600;
+      line-height:1.15;
+      color:#222;
+      margin-bottom:8px;
+      min-height:40px;
+    }
+    .course-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .rating-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      margin-bottom:10px;
+    }
+    .stars{
+      display:inline-flex;
+      gap:2px;
+      color:#f6c85f; /* gold */
+    }
+    .stars .star-empty{ opacity:.25; color:#cfcfcf }
+
+    .card-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      width:100%;
+    }
+    .btn-enroll{
+      border-radius:8px;
+      background:#0b0b0b;
+      color:#fff;
+      padding:7px 14px;
+      border:none;
+      font-weight:600;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow: 0 6px 12px rgba(11,11,11,0.12);
+    }
+    .btn-enroll .plus{
+      width:28px;
+      height:28px;
+      background:#fff;
+      color:#000;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      font-weight:700;
+      font-size:16px;
+    }
+    .small-black{
+      background:#000;
+      color:#fff;
+      padding:6px 10px;
+      border-radius:6px;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* small badge for card state */
+    .status-badge{
+      position:absolute;
+      left:12px;
+      bottom:14px;
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:6px;
+      background:rgba(0,0,0,0.7);
+      color:#fff;
+      transform:translateY(0);
+    }
+
+    /* responsive tweaks to mimic tight grid from screenshot */
+    @media(min-width:1400px){
+      .page-content{ max-width:1380px; }
+      .course-thumb{ height:136px; }
+    }
+
+    /* tiny helpers */
+    .muted{ color:var(--muted); font-size:13px; }
+    .rating-count{ color:#6b6f76; font-size:12px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- topbar -->
+  <div class="topbar">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <div class="brand me-3">
+          <div class="brand-logo">M D</div>
+          <div>
+            <h1 style="font-size:18px;margin-bottom:0">Learn</h1>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Catalog</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="icons d-flex align-items-center">
+        <div class="icon-btn" title="Search">
+          <!-- Search icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="#333" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="icon-btn" title="Mail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7.5v9A2.5 2.5 0 0 0 5.5 19h13A2.5 2.5 0 0 0 21 16.5v-9" stroke="#333" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7.5L12 13 3 7.5" stroke="#333" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="icon-btn" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 17H9a3 3 0 0 1-3-3V9a6 6 0 1 1 12 0v5a3 3 0 0 1-3 3z" stroke="#333" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="icon-btn" title="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="#333" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div class="hero">
+    <div class="container-fluid d-flex align-items-center">
+      <div class="d-flex align-items-center">
+        <div class="back-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>CAPITAL PROGRAM</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- page content -->
+  <div class="page-content container">
+    <!-- toolbar / breadcrumb -->
+    <div class="catalog-toolbar">
+      <div class="d-flex align-items-center gap-3">
+        <div class="breadcrumb-custom">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10h4l3 9 4-18 3 9h4" stroke="#c2c2c2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="muted">Catalog</span>
+          <span style="color:#d23b30">›</span>
+          <span style="font-weight:600">CAPITAL Program</span>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <div class="me-3">
+          <select class="form-select form-select-sm" id="sortSelect" style="width:180px">
+            <option>Alphabetical</option>
+            <option>Newest</option>
+            <option>Most Popular</option>
+            <option>Highest Rated</option>
+          </select>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+          <button class="btn btn-sm btn-outline-secondary" id="gridViewBtn" title="Grid view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.4"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.4"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#333" stroke-width="1.4"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="#333" stroke-width="1.4"/></svg>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" id="listViewBtn" title="List view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="3" rx="1" stroke="#333" stroke-width="1.4"/><rect x="3" y="10.5" width="18" height="3" rx="1" stroke="#333" stroke-width="1.4"/><rect x="3" y="17" width="18" height="3" rx="1" stroke="#333" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- grid of cards -->
+    <div class="row g-3 cards-row" id="cardsGrid">
+
+      <!-- Card 1 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Cybersecurity Analyst (100): Cybersecurity Analyst…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span title="star">★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                </div>
+                <div class="rating-count">(2)</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between">
+              <button class="small-black">Resume</button>
+              <div class="status-badge"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Cybersecurity Analyst (200): Advanced Cybersecurity…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Start <div class="plus">▶</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Cybersecurity Analyst (300): Cybersecurity Manageme…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Data Annotator (100): Introduction to Data…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span class="star-empty">☆</span>
+                </div>
+                <div class="rating-count">(9)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Data Annotator (200): Practical Data Annotation</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <div class="rating-count">(3)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Data Annotator (300): Advanced Data Annotation</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span class="star-empty">☆</span>
+                </div>
+                <div class="rating-count">(3)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Manufacturing Analytics Associate (100)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span class="star-empty">☆</span>
+                </div>
+                <div class="rating-count">(1)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Manufacturing Analytics Associate (200)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Manufacturing Analytics Associate (300)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 10 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Pre-Metaverse Integration Technologist (100)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span>★</span><span>★</span><span>★</span><span class="star-empty">☆</span><span class="star-empty">☆</span>
+                </div>
+                <div class="rating-count">(1)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 11 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Pre-Metaverse Integration Technologist (200)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 12 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Pre-Metaverse Integration Technologist (300)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 13 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Supply Chain Cybersecurity Compliance Specialist (100)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 14 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Supply Chain Cybersecurity Compliance Specialist (200)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 15 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Supply Chain Cybersecurity Compliance Specialist (300)…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 16 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="course-card">
+          <img class="course-thumb" src="https://via.placeholder.com/360x160.png?text=Course+Image" alt="thumb">
+          <div class="card-body-custom">
+            <div>
+              <div class="course-title">Misc Course Example (100): Example Title…</div>
+              <div class="course-sub">Online Course</div>
+
+              <div class="rating-row">
+                <div class="stars">
+                  <span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span><span class="star-empty">★</span>
+                </div>
+                <div class="rating-count">(0)</div>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-enroll">Enroll <div class="plus">+</div></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /row -->
+  </div> <!-- /page-content -->
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Simple JS to toggle between Grid / List view (keeps static markup)
+    const gridBtn = document.getElementById('gridViewBtn');
+    const listBtn = document.getElementById('listViewBtn');
+    const cardsGrid = document.getElementById('cardsGrid');
+
+    gridBtn.addEventListener('click', () => {
+      // reset: each card is placed in a col-* wrapper — to mimic grid keep as-is
+      if (!gridBtn.classList.contains('active')) {
+        // remove list view class
+        cardsGrid.classList.remove('list-mode');
+        // ensure cols are grid-like
+        document.querySelectorAll('#cardsGrid > div').forEach(col => {
+          col.classList.remove('col-12');
+          col.classList.add('col-6','col-sm-4','col-md-3','col-lg-2');
+        });
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+      }
+    });
+
+    listBtn.addEventListener('click', () => {
+      // convert to a 1-column list look
+      document.querySelectorAll('#cardsGrid > div').forEach(col => {
+        col.classList.remove('col-6','col-sm-4','col-md-3','col-lg-2');
+        col.classList.add('col-12');
+      });
+      listBtn.classList.add('active');
+      gridBtn.classList.remove('active');
+    });
+
+    // small initial active state
+    gridBtn.classList.add('active');
+
+    // sort select: purely demo behavior
+    document.getElementById('sortSelect').addEventListener('change', function(){
+      // This demo does not sort card content; in a dynamic implementation you would reorder DOM nodes here.
+      const val = this.value;
+      console.log('Sort by:', val);
+      // flash to show change
+      this.classList.add('border-success');
+      setTimeout(()=> this.classList.remove('border-success'),600);
+    });
+  </script>
+
+</body>
+</html>
