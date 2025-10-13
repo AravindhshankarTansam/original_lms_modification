@@ -69,15 +69,16 @@ button:hover {
 /* Card Grid */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);  /* ✅ 3 columns */
   gap: 20px;
-
-  max-width: 1000px;         /* 👈 Limit total width */
-  margin: 0 auto;            /* 👈 Center the grid */
-  padding: 0 40px 40px;      /* 👈 Add left & right padding */
+  
+  max-width: 1200px;            /* Optional: increase max width for more space */
+  margin: 0 auto;
+  padding: 0 40px 40px;
   background-color: white;
   animation: slideUp 1s ease-out;
 }
+
 
 
 .card {
@@ -96,9 +97,9 @@ button:hover {
 .faq-catalog-section {
   display: flex;
   gap: 20px;
-  padding: 20px 40px 40px; /* match card-grid padding */
-  max-width: 1000px;       /* match card-grid width */
-  margin: 0 auto;          /* center horizontally */
+  padding: 0 40px 40px;   /* ✅ match card-grid padding */
+  max-width: 1200px;       /* ✅ match card-grid width */
+  margin: 0 auto;          /* ✅ center horizontally */
 }
 
 .faq {
@@ -124,13 +125,14 @@ button:hover {
 }
 .catalog-banner {
   flex: 1;
-  background: black;
+  background: black url("../images/Developer.png") center/cover no-repeat; /* ✅ Update path & style */
   color: white;
   text-align: center;
   padding: 40px 20px;
   border-radius: 6px;
   animation: fadeIn 1.5s ease-out;
 }
+
 .catalog-subtitle {
   font-size: 1.2em;
   margin: 10px 0;
@@ -143,8 +145,11 @@ button:hover {
 .leader-poll {
   display: flex;
   gap: 20px;
-  padding: 20px;
+  padding: 0 40px 40px;   /* ✅ Matches .faq-catalog-section */
+  max-width: 1200px;       /* ✅ Matches .faq-catalog-section */
+  margin: 0 auto;          /* ✅ Center horizontally */
 }
+
 .leaderboard, .polls, .resume-box {
   flex: 1;
   background: white;
@@ -178,55 +183,131 @@ button:hover {
   height: 60px;
 }
 /* Featured Courses */
-.featured-courses {
+.featured-latest-wrapper {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  padding: 0 40px 40px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.featured-courses-scroll {
+  flex: 2;
   background: white;
   padding: 20px;
-  margin-top: 20px;
-  animation: fadeIn 1.8s ease-out;
-}
-.course-card {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background: #f9f9f9;
-  padding: 10px;
-  margin: 10px 0;
   border-radius: 6px;
+  overflow-x: auto;
+}
+.featured-courses-scroll-container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.featured-courses-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.featured-courses-scroll-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.course-card {
+  flex: 0 0 350px;  /* fixed width, don’t shrink, no grow */
+  background: #f9f9f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center; /* vertical center */
+  gap: 15px;
+  padding: 10px 15px;
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
-.course-card:hover {
-  transform: translateY(-10px);
-}
+
 .course-card img {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
+
+.course-card div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.course-card h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.course-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
 .badge {
-  color: gold;
+  background-color: gold;
+  color: black;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 3px;
+  margin-left: 5px;
 }
+
 .start {
   margin-left: auto;
   font-weight: bold;
+  color: #5e7ca3;
+  cursor: pointer;
+  user-select: none;
 }
-/* News */
-.latest-news {
+
+
+/* .course-card {
+  min-width: 300px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  flex-shrink: 0;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+} */
+
+.latest-news-box {
+  flex: 1;
   background: white;
   padding: 20px;
-  margin-top: 20px;
+  border-radius: 6px;
 }
-.latest-news ul {
+
+.latest-news-box ul {
   list-style: none;
   padding: 0;
 }
-.latest-news li {
+
+.latest-news-box li {
   display: flex;
   justify-content: space-between;
   padding: 10px;
   background: black;
   color: white;
-  margin: 5px 0;
+  margin-bottom: 10px;
   border-radius: 4px;
 }
+
 /* Personalized Journey */
 .personalized-journey {
   display: flex;
@@ -363,11 +444,11 @@ button:hover {
 
 /* Common card background styling */
 .card {
-  height: 250px;
+  height: 120px;  /* ✅ Reduced height for rectangular shape */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2em;
+  font-size: 1.1em;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -375,4 +456,146 @@ button:hover {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
   border-radius: 8px;
   transition: transform 0.3s ease;
+}
+
+
+
+/* --- Catalog Carousel --- */
+.catalog-carousel {
+  padding: 30px 40px;
+  border-radius: 8px;
+  margin: 40px auto;
+  max-width: 1200px;
+}
+
+.catalog-carousel h3 {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.catalog-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.catalog-scroll {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* ENABLE horizontal scroll */
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.catalog-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.catalog-scroll::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 4px;
+}
+
+.catalog-card {
+  flex: 0 0 260px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  text-align: left;
+}
+
+.catalog-card:hover {
+  transform: translateY(-5px);
+}
+
+.catalog-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.catalog-card h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 10px;
+}
+
+.catalog-card p {
+  font-size: 0.9em;
+  color: #555;
+  margin: 0 10px 5px;
+}
+
+.stars {
+  color: #f5b50a;
+  font-size: 0.9em;
+  margin: 0 10px 10px;
+}
+
+.enroll-btn {
+  display: block;
+  width: 90%;
+  margin: 0 auto 15px;
+  background: black;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.enroll-btn:hover {
+  background: #333;
+}
+
+/* Arrows */
+.catalog-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  /* background: white; */
+  border: none;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: block; /* Always visible */
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+/* .catalog-container:hover .catalog-btn {
+  display: block;
+} */
+
+.catalog-btn.left-btn { left: 10px; }
+.catalog-btn.right-btn { right: 10px; }
+
+.catalog-dots {
+  text-align: center;
+  font-size: 20px;
+  color: #bbb;
+  margin-top: 10px;
+}
+.catalog-scroll {
+  overflow: hidden; /* disable manual scroll */
+  scroll-behavior: smooth;
+}
+
+.catalog-dots .dot {
+  cursor: pointer;
+  color: #bbb;
+  transition: color 0.3s;
+}
+
+.catalog-dots .dot.active {
+  color: #333;
+  font-weight: bold;
 }
