@@ -21,3 +21,4 @@ class User(AbstractUser):
         upload_to=user_profile_image_path,
         default="profile_images/default/no_bg_user.png"
     )
+

@@ -282,3 +282,10 @@ def profile(request):
 #         "form": form,
 #         "user": request.user
 #     })
+
+
+@login_required
+def courses_catalog(request):
+    # Optionally fetch courses to pass to template
+    courses = Course.objects.all()  # or filtered, paginated, etc.
+    return render(request, 'accounts/user/course.html', {'courses': courses})
