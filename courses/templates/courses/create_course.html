@@ -2,12 +2,10 @@
 {% load static %}
 
 {% block content %}
-<!-- Favicon -->
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
 <div class="container-fluid">
-    <!-- keep courses-data so your JS that expects it still works -->
     <script id="courses-data" type="application/json">{{ courses_json|safe }}</script>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,13 +13,13 @@
         <a href="{% url 'course_table' %}" class="btn btn-secondary fw-semibold">← Back to Courses</a>
     </div>
 
-    <!-- === START: modal content moved here as a page (unchanged internals) === -->
     <div class="card">
         <div class="card-body">
             <form id="courseForm" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" id="courseId" name="course_id">
-                <!-- ===================== COURSE DETAILS ===================== -->
+
+                <!-- COURSE DETAILS -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header bg-primary text-white fw-semibold">Course Details</div>
                     <div class="card-body">
@@ -53,7 +51,7 @@
                     </div>
                 </div>
 
-                <!-- ===================== MODULES ===================== -->
+                <!-- MODULES -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header bg-secondary text-white fw-semibold d-flex justify-content-between align-items-center">
                         Modules
@@ -72,271 +70,268 @@
             </form>
         </div>
     </div>
-    <!-- === END: modal content moved here === -->
-
 </div>
 
-<!-- STYLES (kept same) -->
 <style>
     .quill-editor { height: 150px; }
     .bg-light, .bg-white { border: 1px solid #dee2e6; }
 </style>
 
-<!-- SCRIPTS (kept identical to your modal page) -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <script>
-    // ===================== DOM ELEMENTS =====================
-    const modulesContainer = document.getElementById("modulesContainer");
-    const addModuleBtn = document.getElementById("addModuleBtn");
-    const saveBtn = document.getElementById("saveCourseBtn");
+const modulesContainer = document.getElementById("modulesContainer");
+const addModuleBtn = document.getElementById("addModuleBtn");
+const saveBtn = document.getElementById("saveCourseBtn");
 
-    // ===================== QUILL EDITORS =====================
-    const courseDescriptionEditor = new Quill('#courseDescriptionEditor', { theme: 'snow' });
-    const overviewEditor = new Quill('#overviewEditor', { theme: 'snow' });
-    const requirementsEditor = new Quill('#requirementsEditor', { theme: 'snow' });
+// Initialize Quill editors
+const courseDescriptionEditor = new Quill('#courseDescriptionEditor', { theme: 'snow' });
+const overviewEditor = new Quill('#overviewEditor', { theme: 'snow' });
+const requirementsEditor = new Quill('#requirementsEditor', { theme: 'snow' });
 
-    // ===================== LOAD COURSES (if present) =====================
-    let rawDataEl = document.getElementById('courses-data');
-    let courses = [];
-    if (rawDataEl) {
-        try { courses = JSON.parse(rawDataEl.textContent.trim() || '[]'); }
-        catch (e) { console.error("Invalid courses-data JSON", e); }
-    }
+// Load courses JSON
+let rawDataEl = document.getElementById('courses-data');
+let courses = [];
+if (rawDataEl) {
+    try { courses = JSON.parse(rawDataEl.textContent.trim() || '[]'); }
+    catch (e) { console.error("Invalid courses-data JSON", e); }
+}
 
-    // ===================== MODULE / CHAPTER / QUESTION LOGIC =====================
-    function addModule(existing = null) {
-        const index = modulesContainer.children.length + 1;
-        const moduleDiv = document.createElement("div");
-        moduleDiv.className = "border rounded p-3 mb-3 bg-light";
-        moduleDiv.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="fw-bold">Module ${index}</h5>
-                <button type="button" class="btn btn-sm btn-danger removeModuleBtn">Remove Module</button>
+// ---------------- MODULE / CHAPTER / QUESTION ----------------
+function addModule(existing = null) {
+    const index = modulesContainer.children.length + 1;
+    const moduleDiv = document.createElement("div");
+    moduleDiv.className = "border rounded p-3 mb-3 bg-light";
+    moduleDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold">Module ${index}</h5>
+            <button type="button" class="btn btn-sm btn-danger removeModuleBtn">Remove Module</button>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Module Title</label>
+            <input type="text" class="form-control moduleTitle" value="${existing?.title || ''}" required>
+        </div>
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label fw-semibold">Chapters</label>
+                <button type="button" class="btn btn-outline-primary btn-sm addChapterBtn">+ Add Chapter</button>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Module Title</label>
-                <input type="text" class="form-control moduleTitle" value="${existing?.title || ''}" required>
+            <div class="chaptersContainer"></div>
+        </div>
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label fw-semibold">Questions</label>
+                <button type="button" class="btn btn-outline-secondary btn-sm addQuestionBtn">+ Add Question</button>
             </div>
-            <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <label class="form-label fw-semibold">Chapters</label>
-                    <button type="button" class="btn btn-outline-primary btn-sm addChapterBtn">+ Add Chapter</button>
-                </div>
-                <div class="chaptersContainer"></div>
-            </div>
-            <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <label class="form-label fw-semibold">Questions</label>
-                    <button type="button" class="btn btn-outline-secondary btn-sm addQuestionBtn">+ Add Question</button>
-                </div>
-                <div class="questionsContainer"></div>
-            </div>
-        `;
-        modulesContainer.appendChild(moduleDiv);
+            <div class="questionsContainer"></div>
+        </div>
+    `;
+    modulesContainer.appendChild(moduleDiv);
 
-        moduleDiv.querySelector(".removeModuleBtn").addEventListener("click", () => moduleDiv.remove());
-        const chaptersContainer = moduleDiv.querySelector(".chaptersContainer");
-        moduleDiv.querySelector(".addChapterBtn").addEventListener("click", () => addChapter(chaptersContainer));
-        const questionsContainer = moduleDiv.querySelector(".questionsContainer");
-        moduleDiv.querySelector(".addQuestionBtn").addEventListener("click", () => addQuestion(questionsContainer));
-    }
+    moduleDiv.querySelector(".removeModuleBtn").addEventListener("click", () => moduleDiv.remove());
+    const chaptersContainer = moduleDiv.querySelector(".chaptersContainer");
+    moduleDiv.querySelector(".addChapterBtn").addEventListener("click", () => addChapter(chaptersContainer));
+    const questionsContainer = moduleDiv.querySelector(".questionsContainer");
+    moduleDiv.querySelector(".addQuestionBtn").addEventListener("click", () => addQuestion(questionsContainer));
 
-    function addChapter(container, existing = null) {
-        const index = container.children.length + 1;
-        const chDiv = document.createElement("div");
-        chDiv.className = "border p-3 mb-2 rounded bg-white";
-        chDiv.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-bold">Chapter ${index}</h6>
-                <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Chapter Title</label>
-                <input type="text" class="form-control chapterTitle" value="${existing?.title || ''}" required>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Description</label>
-                <div class="chapterEditor quill-editor">${existing?.desc || ''}</div>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Study Material</label>
-                <select class="form-select materialType">
-                    <option disabled selected>Select Type</option>
-                    <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
-                    <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
-                    <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
+    if (existing?.chapters) existing.chapters.forEach(ch => addChapter(chaptersContainer, ch));
+    if (existing?.questions) existing.questions.forEach(q => addQuestion(questionsContainer, q));
+}
+
+function addChapter(container, existing = null) {
+    const index = container.children.length + 1;
+    const chDiv = document.createElement("div");
+    chDiv.className = "border p-3 mb-2 rounded bg-white";
+    chDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold">Chapter ${index}</h6>
+            <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Chapter Title</label>
+            <input type="text" class="form-control chapterTitle" value="${existing?.title || ''}" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Description</label>
+            <div class="chapterEditor quill-editor"></div>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Study Material</label>
+            <select class="form-select materialType">
+                <option disabled selected>Select Type</option>
+                <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
+                <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
+                <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
+            </select>
+            <input type="file" class="form-control mt-2 materialFile" accept=".mp4,.pdf,.ppt,.pptx">
+        </div>
+    `;
+    container.appendChild(chDiv);
+
+    const quillInstance = new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
+    if (existing?.desc) quillInstance.root.innerHTML = existing.desc;
+
+    chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => chDiv.remove());
+}
+
+function addQuestion(container, existing = null) {
+    const index = container.children.length + 1;
+    const qDiv = document.createElement("div");
+    qDiv.className = "border p-3 mb-2 rounded bg-white";
+    qDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold">Question ${index}</h6>
+            <button type="button" class="btn btn-sm btn-danger removeQuestionBtn">Remove</button>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Question Type</label>
+            <select class="form-select questionType">
+                <option disabled selected>Select Type</option>
+                <option value="mcq" ${existing?.type === "mcq" ? "selected" : ""}>Multiple Choice</option>
+                <option value="truefalse" ${existing?.type === "truefalse" ? "selected" : ""}>True / False</option>
+                <option value="short" ${existing?.type === "short" ? "selected" : ""}>Short Answer</option>
+            </select>
+        </div>
+        <div class="questionDetails"></div>
+    `;
+    container.appendChild(qDiv);
+
+    qDiv.querySelector(".removeQuestionBtn").addEventListener("click", () => qDiv.remove());
+    const typeSelect = qDiv.querySelector(".questionType");
+    const detailsDiv = qDiv.querySelector(".questionDetails");
+
+    const populateDetails = (type, existing = null) => {
+        detailsDiv.innerHTML = "";
+        if (type === "mcq") {
+            detailsDiv.innerHTML = `
+                <label class="form-label">Question</label>
+                <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
+                <label>Options</label>
+                <input type="text" class="form-control mb-1 option1" placeholder="Option 1" value="${existing?.option1 || ''}">
+                <input type="text" class="form-control mb-1 option2" placeholder="Option 2" value="${existing?.option2 || ''}">
+                <input type="text" class="form-control mb-1 option3" placeholder="Option 3" value="${existing?.option3 || ''}">
+                <input type="text" class="form-control mb-1 option4" placeholder="Option 4" value="${existing?.option4 || ''}">
+                <input type="text" class="form-control correctAnswer" placeholder="Correct Answer" value="${existing?.cAns || ''}">
+            `;
+        } else if (type === "truefalse") {
+            detailsDiv.innerHTML = `
+                <label class="form-label">Statement</label>
+                <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
+                <select class="form-select correctAnswer">
+                    <option value="True" ${existing?.cAns === "True" ? "selected" : ""}>True</option>
+                    <option value="False" ${existing?.cAns === "False" ? "selected" : ""}>False</option>
                 </select>
-                <input type="file" class="form-control mt-2 materialFile" accept=".mp4,.pdf,.ppt,.pptx">
-            </div>
-        `;
-        container.appendChild(chDiv);
-        new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
-        chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => chDiv.remove());
-    }
+            `;
+        } else {
+            detailsDiv.innerHTML = `
+                <label class="form-label">Question</label>
+                <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
+                <input type="text" class="form-control correctAnswer" placeholder="Expected Answer" value="${existing?.cAns || ''}">
+            `;
+        }
+    };
 
-    function addQuestion(container, existing = null) {
-        const index = container.children.length + 1;
-        const qDiv = document.createElement("div");
-        qDiv.className = "border p-3 mb-2 rounded bg-white";
-        qDiv.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-bold">Question ${index}</h6>
-                <button type="button" class="btn btn-sm btn-danger removeQuestionBtn">Remove</button>
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Question Type</label>
-                <select class="form-select questionType">
-                    <option disabled selected>Select Type</option>
-                    <option value="mcq" ${existing?.type === "mcq" ? "selected" : ""}>Multiple Choice</option>
-                    <option value="truefalse" ${existing?.type === "truefalse" ? "selected" : ""}>True / False</option>
-                    <option value="short" ${existing?.type === "short" ? "selected" : ""}>Short Answer</option>
-                </select>
-            </div>
-            <div class="questionDetails"></div>
-        `;
-        container.appendChild(qDiv);
+    typeSelect.addEventListener("change", () => populateDetails(typeSelect.value));
+    if (existing) populateDetails(existing.type, existing);
+}
 
-        qDiv.querySelector(".removeQuestionBtn").addEventListener("click", () => qDiv.remove());
-        const typeSelect = qDiv.querySelector(".questionType");
-        const detailsDiv = qDiv.querySelector(".questionDetails");
+addModuleBtn.addEventListener("click", () => addModule());
 
-        const populateDetails = (type, existing = null) => {
-            detailsDiv.innerHTML = "";
-            if (type === "mcq") {
-                detailsDiv.innerHTML = `
-                    <label class="form-label">Question</label>
-                    <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
-                    <label>Options</label>
-                    <input type="text" class="form-control mb-1 option1" placeholder="Option 1" value="${existing?.option1 || ''}">
-                    <input type="text" class="form-control mb-1 option2" placeholder="Option 2" value="${existing?.option2 || ''}">
-                    <input type="text" class="form-control mb-1 option3" placeholder="Option 3" value="${existing?.option3 || ''}">
-                    <input type="text" class="form-control mb-1 option4" placeholder="Option 4" value="${existing?.option4 || ''}">
-                    <input type="text" class="form-control correctAnswer" placeholder="Correct Answer" value="${existing?.cAns || ''}">
-                `;
-            } else if (type === "truefalse") {
-                detailsDiv.innerHTML = `
-                    <label class="form-label">Statement</label>
-                    <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
-                    <select class="form-select correctAnswer">
-                        <option value="True" ${existing?.cAns === "True" ? "selected" : ""}>True</option>
-                        <option value="False" ${existing?.cAns === "False" ? "selected" : ""}>False</option>
-                    </select>
-                `;
-            } else {
-                detailsDiv.innerHTML = `
-                    <label class="form-label">Question</label>
-                    <input type="text" class="form-control mb-2 questionText" value="${existing?.qText || ''}">
-                    <input type="text" class="form-control correctAnswer" placeholder="Expected Answer" value="${existing?.cAns || ''}">
-                `;
-            }
-        };
+// ---------------- AUTO LOAD COURSE FROM URL ----------------
+const urlParts = window.location.pathname.split('/');
+const courseIdFromUrl = urlParts.includes('update') ? urlParts[urlParts.indexOf('update') + 1] : null;
 
-        typeSelect.addEventListener("change", () => populateDetails(typeSelect.value));
-        if (existing) populateDetails(existing.type, existing);
-    }
-
-    addModuleBtn.addEventListener("click", () => addModule());
-
-    // ========= Edit-course helper: populates form from courses JSON (if present) =========
-    window.editCourse = (id) => {
-        const course = courses.find(c => c.id === id);
-        if (!course) return;
+if (courseIdFromUrl && courses.length > 0) {
+    const course = courses.find(c => c.id == courseIdFromUrl);
+    if (course) {
         document.getElementById("courseTitle").value = course.title;
-        courseDescriptionEditor.root.innerHTML = course.description;
-        overviewEditor.root.innerHTML = course.overview;
-        requirementsEditor.root.innerHTML = course.requirements;
+        courseDescriptionEditor.root.innerHTML = course.description || '';
+        overviewEditor.root.innerHTML = course.overview || '';
+        requirementsEditor.root.innerHTML = course.requirements || '';
         document.getElementById("courseStatus").checked = course.status === "Active";
         document.getElementById("courseId").value = course.id;
         modulesContainer.innerHTML = "";
         course.modules?.forEach(m => addModule(m));
-        // scroll to form top
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    }
+}
 
-    // ===================== SAVE COURSE =====================
-    saveBtn.addEventListener("click", async () => {
-        const courseIdInput = document.getElementById("courseId");
-        const courseId = courseIdInput ? courseIdInput.value : null;
-        const title = document.getElementById("courseTitle").value.trim();
-        const description = courseDescriptionEditor.root.innerHTML.trim();
-        const overview = overviewEditor.root.innerHTML.trim();
-        const requirements = requirementsEditor.root.innerHTML.trim();
-        const status = document.getElementById("courseStatus").checked ? "true" : "false";
-        const imageInput = document.getElementById("courseImage");
-        const image = imageInput.files[0];
+// ---------------- SAVE COURSE ----------------
+saveBtn.addEventListener("click", async () => {
+    const courseId = document.getElementById("courseId").value || null;
+    const title = document.getElementById("courseTitle").value.trim();
+    const description = courseDescriptionEditor.root.innerHTML.trim();
+    const overview = overviewEditor.root.innerHTML.trim();
+    const requirements = requirementsEditor.root.innerHTML.trim();
+    const status = document.getElementById("courseStatus").checked ? "true" : "false";
+    const imageInput = document.getElementById("courseImage");
+    const image = imageInput.files[0];
 
-        // Collect Modules, Chapters, and Questions
-        const modulesData = [];
-        document.querySelectorAll("#modulesContainer > div").forEach((modDiv) => {
-            const moduleTitle = modDiv.querySelector(".moduleTitle").value.trim();
-            const chapters = [];
-            const questions = [];
+    const modulesData = [];
+    document.querySelectorAll("#modulesContainer > div").forEach(modDiv => {
+        const moduleTitle = modDiv.querySelector(".moduleTitle").value.trim();
+        const chapters = [];
+        const questions = [];
 
-            modDiv.querySelectorAll(".chaptersContainer > div").forEach((chDiv) => {
-                const chEditor = chDiv.querySelector(".chapterEditor .ql-editor");
-                chapters.push({
-                    title: chDiv.querySelector(".chapterTitle").value.trim(),
-                    desc: chEditor ? chEditor.innerHTML.trim() : "",
-                    type: chDiv.querySelector(".materialType").value,
-                });
+        modDiv.querySelectorAll(".chaptersContainer > div").forEach(chDiv => {
+            const chEditor = chDiv.querySelector(".chapterEditor .ql-editor");
+            chapters.push({
+                title: chDiv.querySelector(".chapterTitle").value.trim(),
+                desc: chEditor ? chEditor.innerHTML.trim() : "",
+                type: chDiv.querySelector(".materialType").value,
             });
-
-            modDiv.querySelectorAll(".questionsContainer > div").forEach((qDiv) => {
-                const type = qDiv.querySelector(".questionType").value;
-                const qText = qDiv.querySelector(".questionText")?.value || "";
-                const cAns = qDiv.querySelector(".correctAnswer")?.value || "";
-                const question = { type, qText, cAns };
-
-                if (type === "mcq") {
-                    question.option1 = qDiv.querySelector(".option1")?.value || "";
-                    question.option2 = qDiv.querySelector(".option2")?.value || "";
-                    question.option3 = qDiv.querySelector(".option3")?.value || "";
-                    question.option4 = qDiv.querySelector(".option4")?.value || "";
-                }
-
-                questions.push(question);
-            });
-
-            modulesData.push({ title: moduleTitle, chapters, questions });
         });
 
-        // Create FormData to include text + file fields
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("overview", overview);
-        formData.append("requirements", requirements);
-        formData.append("status", status);
-        formData.append("modules_json", JSON.stringify(modulesData));
-        if (image) formData.append("image", image);
-
-        // CSRF token
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        const url = courseId ? `/courses/update/${courseId}/` : `{% url 'create_course' %}`;
-
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "X-CSRFToken": csrfToken },
-                body: formData,
-            });
-
-            if (response.redirected) {
-                window.location.href = response.url;  // Django redirect to list page
-            } else if (response.ok) {
-                alert("Course saved successfully!");
-                location.href = "{% url 'course_table' %}";
-            } else {
-                alert("Error saving course!");
-                console.error(await response.text());
+        modDiv.querySelectorAll(".questionsContainer > div").forEach(qDiv => {
+            const type = qDiv.querySelector(".questionType").value;
+            const qText = qDiv.querySelector(".questionText")?.value || "";
+            const cAns = qDiv.querySelector(".correctAnswer")?.value || "";
+            const question = { type, qText, cAns };
+            if (type === "mcq") {
+                question.option1 = qDiv.querySelector(".option1")?.value || "";
+                question.option2 = qDiv.querySelector(".option2")?.value || "";
+                question.option3 = qDiv.querySelector(".option3")?.value || "";
+                question.option4 = qDiv.querySelector(".option4")?.value || "";
             }
-        } catch (error) {
-            console.error("Save failed:", error);
-            alert("Save failed. Check console for details.");
-        }
+            questions.push(question);
+        });
+
+        modulesData.push({ title: moduleTitle, chapters, questions });
     });
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("overview", overview);
+    formData.append("requirements", requirements);
+    formData.append("status", status);
+    formData.append("modules_json", JSON.stringify(modulesData));
+    if (image) formData.append("image", image);
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const url = courseId ? `/courses/update/${courseId}/` : `{% url 'create_course' %}`;
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "X-CSRFToken": csrfToken },
+            body: formData,
+        });
+
+        if (response.redirected) window.location.href = response.url;
+        else if (response.ok) {
+            alert("Course saved successfully!");
+            location.href = "{% url 'course_table' %}";
+        } else {
+            alert("Error saving course!");
+            console.error(await response.text());
+        }
+    } catch (error) {
+        console.error("Save failed:", error);
+        alert("Save failed. Check console for details.");
+    }
+});
 </script>
 
 {% endblock %}
