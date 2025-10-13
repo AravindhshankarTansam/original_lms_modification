@@ -81,9 +81,6 @@ def create_or_update_course(request, course_id=None):
         # Clear existing modules if editing
         if course_id:
             course.modules.all().delete()
-
-        # Save modules, chapters, questions
-        import json
         try:
             modules_data = json.loads(modules_json or '[]')
             for m in modules_data:
