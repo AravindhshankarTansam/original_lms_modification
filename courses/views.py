@@ -1,30 +1,18 @@
 import json
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from .models import Course, Module, Chapter, Question
 from accounts.views import role_required
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.conf import settings
 
-# Only admins can create courses
-# @role_required('admin')
-# def create_course(request):
-#     if request.method == 'POST':
-#         title = request.POST.get('title')
-#         description = request.POST.get('description')
-#         Course.objects.create(title=title, description=description, created_by=request.user)
-#         return redirect('list_courses')
-#     return render(request, 'courses/create_course.html')
-
-# Anyone can see the course list
 @role_required('admin')
 @login_required
 def list_courses(request):
-    courses_qs = Course.objects.all()
+    """List all courses and send JSON data to template"""
+    courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     data = []
 
     for c in courses_qs:
-        # Convert each course to a dict for JS
         data.append({
             "id": c.id,
             "title": c.title,
@@ -32,7 +20,7 @@ def list_courses(request):
             "description": c.description or "",
             "overview": c.overview or "",
             "requirements": c.requirements or "",
-            # Optionally, you can send modules too if you want to prefill the edit modal
+            "image_url": c.image.url if c.image else "",
             "modules": [
                 {
                     "title": m.title,
@@ -58,21 +46,15 @@ def list_courses(request):
             ]
         })
 
-    return render(request, 'courses/create_course.html', {'courses': json.dumps(data)})
+    return render(request, 'courses/create_course.html', {
+        'courses_json': json.dumps(data, ensure_ascii=False)
+    })
 
-
-
-# Enroll the logged-in user in a course
-def enroll_course(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
-    course.students.add(request.user)
-    return redirect('dashboard')
 
 @role_required('admin')
 @login_required
-def create_course(request):
+def create_or_update_course(request, course_id=None):
     if request.method == 'POST':
-        # Course basic info
         title = request.POST.get('title')
         description = request.POST.get('description')
         overview = request.POST.get('overview')
@@ -80,35 +62,39 @@ def create_course(request):
         status = 'Active' if request.POST.get('status') == 'true' else 'Inactive'
         image = request.FILES.get('image')
 
-        course = Course.objects.create(
-            title=title,
-            description=description,
-            overview=overview,
-            requirements=requirements,
-            status=status,
-            image=image,
-            created_by=request.user
-        )
+        if course_id:
+            course = get_object_or_404(Course, id=course_id)
+            course.title = title
+            course.description = description
+            course.overview = overview
+            course.requirements = requirements
+            course.status = status
+            if image:
+                course.image = image
+            course.save()
+            course.modules.all().delete()  # Clear old modules
+        else:
+            course = Course.objects.create(
+                title=title,
+                description=description,
+                overview=overview,
+                requirements=requirements,
+                status=status,
+                image=image,
+                created_by=request.user
+            )
 
-        # Handle modules
-        modules = request.POST.getlist('modules')  # JSON or stringified structure
-        import json
+        # Save modules, chapters, questions
         modules_data = json.loads(request.POST.get('modules_json', '[]'))
-
         for m in modules_data:
             module = Module.objects.create(course=course, title=m['title'])
-
             for ch in m.get('chapters', []):
-                # Save chapter file
-                material_file = request.FILES.get(ch.get('material_name')) if ch.get('material_name') else None
                 Chapter.objects.create(
                     module=module,
                     title=ch['title'],
                     description=ch['desc'],
-                    material_type=ch.get('type'),
-                    material_file=material_file
+                    material_type=ch.get('type')
                 )
-
             for q in m.get('questions', []):
                 Question.objects.create(
                     module=module,

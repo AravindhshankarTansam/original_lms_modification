@@ -8,9 +8,8 @@
 
 <div class="container-fluid">
     <!-- ===================== COURSES DATA ===================== -->
-    <script id="courses-data" type="application/json">
-        {{ courses|safe }}
-    </script>
+    <script id="courses-data" type="application/json">{{ courses_json|safe }}</script>
+
 
     <!-- ===================== HEADER ===================== -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -51,6 +50,7 @@
 
             <form id="courseForm" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                <input type="hidden" id="courseId" name="course_id">
                 <div class="modal-body">
                     <!-- ===================== COURSE DETAILS ===================== -->
                     <div class="card mb-4 shadow-sm">
@@ -134,6 +134,7 @@
     let rawData = document.getElementById('courses-data').textContent.trim();
     let courses = rawData ? JSON.parse(rawData) : [];
     console.log("Loaded courses:", courses);
+
 
     function renderCourses() {
         courseTableBody.innerHTML = "";
@@ -302,10 +303,96 @@
         overviewEditor.root.innerHTML = course.overview;
         requirementsEditor.root.innerHTML = course.requirements;
         document.getElementById("courseStatus").checked = course.status === "Active";
+        document.getElementById("courseId").value = course.id;
         modulesContainer.innerHTML = "";
         course.modules?.forEach(m => addModule(m));
         new bootstrap.Modal(document.getElementById('courseModal')).show();
     };
+
+    // ===================== SAVE COURSE =====================
+saveBtn.addEventListener("click", async () => {
+    const courseIdInput = document.getElementById("courseId");
+    const courseId = courseIdInput ? courseIdInput.value : null;
+    const title = document.getElementById("courseTitle").value.trim();
+    const description = courseDescriptionEditor.root.innerHTML.trim();
+    const overview = overviewEditor.root.innerHTML.trim();
+    const requirements = requirementsEditor.root.innerHTML.trim();
+    const status = document.getElementById("courseStatus").checked ? "true" : "false";
+    const imageInput = document.getElementById("courseImage");
+    const image = imageInput.files[0];
+
+    // Collect Modules, Chapters, and Questions
+    const modulesData = [];
+    document.querySelectorAll("#modulesContainer > div").forEach((modDiv) => {
+        const moduleTitle = modDiv.querySelector(".moduleTitle").value.trim();
+        const chapters = [];
+        const questions = [];
+
+        modDiv.querySelectorAll(".chaptersContainer > div").forEach((chDiv) => {
+            const chEditor = chDiv.querySelector(".chapterEditor .ql-editor");
+            chapters.push({
+                title: chDiv.querySelector(".chapterTitle").value.trim(),
+                desc: chEditor ? chEditor.innerHTML.trim() : "",
+                type: chDiv.querySelector(".materialType").value,
+            });
+        });
+
+        modDiv.querySelectorAll(".questionsContainer > div").forEach((qDiv) => {
+            const type = qDiv.querySelector(".questionType").value;
+            const qText = qDiv.querySelector(".questionText")?.value || "";
+            const cAns = qDiv.querySelector(".correctAnswer")?.value || "";
+            const question = { type, qText, cAns };
+
+            if (type === "mcq") {
+                question.option1 = qDiv.querySelector(".option1")?.value || "";
+                question.option2 = qDiv.querySelector(".option2")?.value || "";
+                question.option3 = qDiv.querySelector(".option3")?.value || "";
+                question.option4 = qDiv.querySelector(".option4")?.value || "";
+            }
+
+            questions.push(question);
+        });
+
+        modulesData.push({ title: moduleTitle, chapters, questions });
+    });
+
+    // Create FormData to include text + file fields
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("overview", overview);
+    formData.append("requirements", requirements);
+    formData.append("status", status);
+    formData.append("modules_json", JSON.stringify(modulesData));
+    if (image) formData.append("image", image);
+
+    // CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const url = courseId ? `/courses/update/${courseId}/` : `{% url 'create_course' %}`;
+
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "X-CSRFToken": csrfToken },
+            body: formData,
+        });
+
+        if (response.redirected) {
+            window.location.href = response.url;  // Django redirect to list page
+        } else if (response.ok) {
+            alert("Course saved successfully!");
+            location.reload();
+        } else {
+            alert("Error saving course!");
+            console.error(await response.text());
+        }
+    } catch (error) {
+        console.error("Save failed:", error);
+        alert("Save failed. Check console for details.");
+    }
+});
+
 </script>
 
 {% endblock %}
