@@ -4,13 +4,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegisterForm, LoginForm, ProfileForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from .models import User
+from .models import User  
+from courses.models import Course  # Import Course model
 import re
 import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import json
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 def landing_page(request):
     # Paths to JSON files
@@ -207,7 +210,35 @@ def dashboard(request):
 def admin_dashboard(request):
     if request.user.role not in ['admin', 'superuser']:
         return redirect('dashboard')  # normal users cannot access
-    return render(request, 'accounts/admin/base.html')
+
+    total_users = User.objects.count()
+    total_courses = Course.objects.count()
+
+    # Get search query
+    query = request.GET.get('q', '')
+
+    # Filter users based on search
+    users = User.objects.all()
+    if query:
+        users = users.filter(
+            Q(username__icontains=query) |
+            Q(email__icontains=query) |
+            Q(phone_number__icontains=query)  # replace with your actual phone field name
+        )
+
+    # Pagination: 10 users per page
+    paginator = Paginator(users, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'total_users': total_users,
+        'total_courses': total_courses,
+        'page_obj': page_obj,
+        'query': query
+    }
+
+    return render(request, 'accounts/admin/base.html', context)
 
 
 # profile
