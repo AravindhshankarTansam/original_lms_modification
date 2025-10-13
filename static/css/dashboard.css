@@ -71,7 +71,6 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);  /* ✅ 3 columns */
   gap: 20px;
-  
   max-width: 1200px;            /* Optional: increase max width for more space */
   margin: 0 auto;
   padding: 0 40px 40px;
