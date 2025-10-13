@@ -201,11 +201,14 @@ button:hover {
 }
 .featured-courses-scroll-container {
   display: flex;
+  flex-direction: column;      /* Stack vertically */
   gap: 15px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  max-height: 400px;           /* You can adjust height */
+  overflow-y: auto;            /* Enable vertical scrolling */
+  padding-right: 10px;
   scroll-behavior: smooth;
 }
+
 
 .featured-courses-scroll-container::-webkit-scrollbar {
   height: 8px;
@@ -215,18 +218,24 @@ button:hover {
   background: #888;
   border-radius: 4px;
 }
-
 .course-card {
-  flex: 0 0 350px;  /* fixed width, don’t shrink, no grow */
+  flex: -5 0 350px;
   background: #f9f9f9;
   border-radius: 6px;
   display: flex;
-  align-items: center; /* vertical center */
+  align-items: center;
   gap: 15px;
   padding: 10px 15px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, border-right 0.3s ease;
+  position: relative;
+  border-right: 4px solid transparent;  /* default no border */
 }
+
+.course-card:hover {
+  border-left: 4px solid red;  /* red line on hover */
+}
+
 
 .course-card img {
   width: 80px;
