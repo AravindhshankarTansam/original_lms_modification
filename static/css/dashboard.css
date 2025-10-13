@@ -70,11 +70,16 @@ button:hover {
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  padding: 20px;
+  gap: 20px;
+
+  max-width: 1000px;         /* 👈 Limit total width */
+  margin: 0 auto;            /* 👈 Center the grid */
+  padding: 0 40px 40px;      /* 👈 Add left & right padding */
   background-color: white;
   animation: slideUp 1s ease-out;
 }
+
+
 .card {
   background-color: #1e2a38;
   color: white;
@@ -91,8 +96,11 @@ button:hover {
 .faq-catalog-section {
   display: flex;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 40px 40px; /* match card-grid padding */
+  max-width: 1000px;       /* match card-grid width */
+  margin: 0 auto;          /* center horizontally */
 }
+
 .faq {
   flex: 1;
   background: white;
@@ -276,57 +284,95 @@ button:hover {
 
 .main-content-wrapper {
   position: relative;
-  overflow: hidden; /* keep hidden for visual */
-  padding: 0 50px; /* space for arrows */
+  overflow: hidden;
   margin: 20px 0;
+  padding: 0 50px; /* space for buttons */
 }
 
 .main-content-slider {
   display: flex;
   gap: 20px;
-  transition: transform 0.5s ease; /* optional smooth snapping */
+  overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 .panel {
   min-width: 300px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  background-color: #f0f0f0;
+  background: #f0f0f0;
   padding: 20px;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 
-/* Optional: hide scrollbar if using scrollLeft */
-.main-content-slider::-webkit-scrollbar {
-  display: none;
+.video-placeholder {
+  background: black;
+  color: white;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Slider Buttons */
+/* --- Arrows --- */
 .slider-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #fff9;
-  box-shadow: 0 0 10px 3px #0000004d;
-  cursor: pointer;
-  font-size: 24px;
-  height: 60px;
-  width: 40px;
+  background: #fff9;
   border: none;
-  border-radius: 5px;
-  transition: 0.2s;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
   z-index: 10;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
+
+.left-btn { left: 10px; }
+.right-btn { right: 10px; }
 
 .slider-btn:hover {
-  background-color: #ffffffcc;
+  background: white;
 }
 
-.left-btn {
-  left: 0;
-  border-radius: 0 5px 5px 0;
+
+
+.card-my-courses {
+  background-image: url("../images/course1.png");
 }
 
-.right-btn {
-  right: 0;
-  border-radius: 5px 0 0 5px;
+.card-mxd-content {
+  background-image: url("../images/course2.png");
+}
+
+.card-partner-content {
+  background-image: url("../images/course3.png");
+}
+
+.card-resources {
+  background-image: url("../images/course4.png");
+}
+
+.card-cybersecurity {
+  background-image: url("../images/course5.png");
+}
+
+.card-manufacturing {
+  background-image: url("../images/course6.png");
+}
+
+/* Common card background styling */
+.card {
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
 }
