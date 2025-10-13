@@ -13,6 +13,16 @@ def course_table(request):
     courses = Course.objects.all()
     return render(request, 'courses/course_table.html', {'courses': courses})
 
+
+from django.shortcuts import redirect, get_object_or_404
+from .models import Course
+
+def delete_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    course.delete()
+    return redirect('course_table')
+
+
 @role_required('admin')
 @login_required
 def list_courses(request):
