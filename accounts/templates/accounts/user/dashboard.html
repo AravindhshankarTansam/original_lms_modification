@@ -38,6 +38,10 @@
       <span class="icon">✉️</span>
       <span class="icon new-icon">🆕</span>
         <a href="{% url 'user_profile' %}" class="btn password-btn">User Profile</a>
+           <a href="{% url 'logout' %}" 
+           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+            Logout
+        </a>
       <span class="icon">☰</span>
     </div>
   </header>
@@ -58,7 +62,8 @@
     <div class="panel center-panel">
       <h3>MxD Learn</h3>
       <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
-      <button>VIEW COURSES</button>
+     <button> <a href="{% url 'courses_catalog' %}" class="btn-view-courses">VIEW COURSES</a></button>
+
     </div>
 
     <div class="panel right-panel">
@@ -69,7 +74,7 @@
         <li>Data Annotator (200)</li>
         <li>Data Annotator (300)</li>
       </ul>
-      <button>VIEW COURSES</button>
+     <button> <a href="{% url 'courses_catalog' %}" class="btn-view-courses">VIEW COURSES</a></button>
     </div>
   </div>
 
