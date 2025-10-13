@@ -608,3 +608,142 @@ button:hover {
   color: #333;
   font-weight: bold;
 }
+
+
+/* ========================
+   Responsive Media Queries
+===========================*/
+
+/* Smartphones - 320px to 420px */
+@media (max-width: 420px) {
+  .top-bar, .welcome-banner, .card-grid, .faq-catalog-section, .leader-poll,
+  .featured-latest-wrapper, .personalized-journey, .catalog-carousel {
+    padding: 15px;
+    flex-direction: column;
+  }
+
+  .icons {
+    font-size: 16px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr; /* Stack cards vertically */
+  }
+
+  .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
+    flex-direction: column;
+  }
+
+  .main-content-wrapper {
+    padding: 0 15px;
+  }
+
+  .catalog-card {
+    flex: 0 0 90%;
+    margin: 0 auto;
+  }
+
+  .panel {
+    min-width: 100%;
+  }
+
+  .slider-btn,
+  .catalog-btn {
+    display: none;
+  }
+
+  .featured-courses-scroll-container {
+    max-height: unset;
+    flex-direction: column;
+  }
+
+  .footer {
+    text-align: center;
+  }
+
+  .journey-right {
+    margin-top: 20px;
+  }
+
+  .resume-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Small tablets - 475px to 767px */
+@media (min-width: 421px) and (max-width: 767px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
+    flex-direction: column;
+  }
+
+  .main-content-wrapper {
+    padding: 0 20px;
+  }
+
+  .slider-btn,
+  .catalog-btn {
+    display: none;
+  }
+
+  .catalog-card {
+    flex: 0 0 80%;
+    margin: 0 auto;
+  }
+}
+
+/* Tablets - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
+    flex-direction: column;
+  }
+
+  .catalog-card {
+    flex: 0 0 48%;
+  }
+}
+
+/* Medium Desktop - 1024px to 1439px */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .catalog-card {
+    flex: 0 0 30%;
+  }
+}
+
+/* Large Desktop - 1440px to 2369px */
+@media (min-width: 1440px) and (max-width: 2369px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .catalog-card {
+    flex: 0 0 260px;
+  }
+}
+
+/* Ultra-Wide Screens - 2370px and up */
+@media (min-width: 2370px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .catalog-card {
+    flex: 0 0 280px;
+  }
+
+  .main-content-wrapper, .catalog-carousel, .faq-catalog-section, .leader-poll {
+    max-width: 1800px;
+  }
+}
