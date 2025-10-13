@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Environments</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+    }
+
+    .course-header {
+      padding: 1rem 1.5rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #222;
+      border-bottom: 1px solid #ddd;
+      background: white;
+    }
+
+    /* Main container flex layout */
+    .main-container {
+      display: flex;
+      flex-direction: row;
+      height: calc(100vh - 60px); /* Adjust for header */
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .video-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .main-card {
+      background-color: #2a3948;
+      color: white;
+      border-radius: 0.25rem;
+      position: relative;
+      overflow: hidden;
+      height: 350px;
+    }
+
+    .main-card .red-arrow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 350px;
+      background: #d4362d;
+      clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%, 70% 50%);
+      z-index: 1;
+    }
+
+    .main-card .content-wrapper {
+      position: relative;
+      z-index: 2;
+      padding: 2.5rem 3rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .main-card .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      user-select: none;
+    }
+
+    .main-card .logo .box {
+      background: #d4362d;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.15rem;
+      font-size: 1rem;
+      color: white;
+      font-weight: 700;
+      font-family: monospace;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-card .logo .box + .box {
+      margin-left: -0.35rem;
+      border: 3px solid #2a3948;
+    }
+
+    .main-card .logo-text {
+      color: white;
+      font-weight: 600;
+    }
+
+    .main-card .course-code {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-bottom: 0.25rem;
+    }
+
+    .main-card .course-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-start {
+      background-color: #d4362d;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem 1.5rem;
+      width: 180px;
+    }
+
+    .btn-start:hover {
+      background-color: #a62a23;
+    }
+
+    .bottom-icons {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      display: flex;
+      gap: 12px;
+      color: #bbb;
+      cursor: pointer;
+    }
+
+    .bottom-icons:hover {
+      color: #d4362d;
+    }
+
+    .bottom-icons svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      background: white;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #333;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.05);
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .sidebar h6 {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .sidebar .section {
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar .section label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .sidebar .section input[type="radio"] {
+      margin-right: 0.5rem;
+    }
+
+    .sidebar .progress-bar-custom {
+      height: 6px;
+      background-color: #d4362d;
+      border-radius: 3px;
+    }
+
+    .sidebar .progress-wrapper {
+      background-color: #eee;
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 0.7rem;
+    }
+
+    .sidebar .locked {
+      font-size: 0.85rem;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .sidebar .locked svg {
+      width: 16px;
+      height: 16px;
+      fill: #888;
+    }
+
+    /* Tabs below video */
+    .tab-content {
+      background: white;
+      border-radius: 0.25rem;
+      padding: 1rem 1.5rem;
+      margin-top: 1rem;
+      overflow-y: auto;
+      flex-grow: 1;
+      max-height: 300px;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.05);
+    }
+
+    .nav-tabs .nav-link.active {
+      border-color: transparent transparent #d4362d transparent !important;
+      color: #d4362d !important;
+      font-weight: 600;
+    }
+
+    .nav-tabs .nav-link {
+      color: #555;
+      font-weight: 500;
+      border: none;
+      padding: 0.5rem 1rem;
+    }
+
+    .course-description {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #444;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+
+    .tag {
+      background-color: #e5e5e5;
+      padding: 0.25rem 0.7rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: #666;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    /* Scrollbar for tab-content */
+    .tab-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .tab-content::-webkit-scrollbar-thumb {
+      background-color: #d4362d;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 991px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="course-header">
+    Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Environments
+  </div>
+
+  <div class="main-container">
+    <!-- Video Section + Tabs -->
+    <div class="video-section">
+      <div class="main-card position-relative">
+        <div class="red-arrow"></div>
+        <div class="content-wrapper">
+          <div class="logo">
+            <div class="box">M</div>
+            <div class="box">D</div>
+            <div class="logo-text ms-2">Learn</div>
+          </div>
+          <div class="course-code">CA-SMM201 - Operational Defense &amp; Incident Management</div>
+          <div class="course-title">Network Segmentation &amp; Access Control</div>
+          <button class="btn btn-start">Start Lesson</button>
+
+          <div class="bottom-icons" title="Audio and Settings">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11.536 14.01a.5.5 0 0 0 .708-.705l-3.182-3.182a.5.5 0 0 0-.708.707l3.182 3.18zm-5.52-4.21a.5.5 0 0 0 .708-.707l-3.18-3.182a.5.5 0 0 0-.706.706l3.178 3.182z"/>
+              <path fill-rule="evenodd" d="M10 2a.5.5 0 0 1 .5.5v9.793l3.146-3.147a.5.5 0 1 1 .708.708l-4 4a.498.498 0 0 1-.708 0l-4-4a.5.5 0 1 1 .708-.708L9.5 12.293V2.5A.5.5 0 0 1 10 2z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 3a5 5 0 0 0-5 5v1a2 2 0 0 0-1 1.732V12h12v-1.268a2 2 0 0 0-1-1.732v-1a5 5 0 0 0-5-5z"/>
+              <path d="M5 12v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v1H4v-1h1z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs below video -->
+      <ul class="nav nav-tabs mt-3" id="courseTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="lesson-details-tab" data-bs-toggle="tab" data-bs-target="#lesson-details" type="button" role="tab">Lesson Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="courseTabContent">
+        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+          <p class="course-description">
+            This 200-level course will equip cybersecurity analysts in manufacturing environments with advanced skills necessary to address complex security challenges. The training covers endpoint protection, system architectures, specialized environments like SCADA, network security components, intrusion detection, social engineering countermeasures, IoT security, and the importance of cyber defense partnerships.
+          </p>
+          <div class="tags">
+            <div class="tag">200-Level Course</div>
+            <div class="tag">advanced manufacturing</div>
+            <div class="tag">Course</div>
+            <div class="tag">Cyber Defense</div>
+            <div class="tag">Digital Manufacturing</div>
+            <div class="tag">Importance</div>
+            <div class="tag">Intrusion Detection</div>
+            <div class="tag">IoT Security</div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="lesson-details" role="tabpanel" aria-labelledby="lesson-details-tab">
+          <p>Lesson details content goes here...</p>
+        </div>
+        <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+          <p>Resources content goes here...</p>
+        </div>
+        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+          <p>Reviews content goes here...</p>
+        </div>
+        <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
+          <p>Recommendations content goes here...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar on right -->
+    <div class="sidebar">
+      <div class="section mb-3">
+        <h6>Network Segmentation &amp; Access</h6>
+        <div class="progress-wrapper mb-2">
+          <div class="progress-bar-custom" style="width: 0%;"></div>
+        </div>
+        <div>
+          <input type="radio" id="segment-access" name="segment" checked />
+          <label for="segment-access" class="mb-0">CA-SMM200 L1 Network Segmentation &amp; Access...</label>
+        </div>
+      </div>
+
+      <div class="section mb-3">
+        <h6>Threat Detection &amp; Monitoring <span class="badge bg-danger small">0</span></h6>
+        <div>
+          <input type="radio" id="threat-detection" name="segment" />
+          <label for="threat-detection" class="mb-0">CA-SMM200 L2 Threat...</label>
+        </div>
+      </div>
+
+      <div class="section mb-3">
+        <h6>Incident Response Planning &amp; Ex</h6>
+        <div>
+          <input type="radio" id="incident-response" name="segment" />
+          <label for="incident-response" class="mb-0">CA-SMM200 L3 Incident...</label>
+        </div>
+      </div>
+
+      <div class="section mb-3">
+        <h6>Vendor Risk Management &amp; Clou</h6>
+        <div>
+          <input type="radio" id="vendor-risk" name="segment" />
+          <label for="vendor-risk" class="mb-0">CA-SMM200 L4 Vendor Risk...</label>
+        </div>
+      </div>
+
+      <div class="section">
+        <h6>Course Tasks <span class="badge bg-danger small">0/1</span></h6>
+        <div class="locked">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 1a3 3 0 0 0-3 3v3h6V4a3 3 0 0 0-3-3zM5 7V4a3 3 0 0 1 6 0v3h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1z"/>
+          </svg>
+          Course Evaluation
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

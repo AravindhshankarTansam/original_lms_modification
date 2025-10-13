@@ -3,14 +3,14 @@
 }
 
 .footer-link {
-  text-decoration: none;            /* Remove underline */
-  color: #ffffff;                   /* Default color (white text) */
+  text-decoration: none;       /* Remove underline */
+  color: #ffffff;           /* Default color (white text) */
   transition: color 0.3s ease; 
   gap: 10px !important;     /* Smooth color transition */
 }
 
 .footer-link:hover {
-  color: #00569A;                   /* Bootstrap primary blue (hover color) */
+  color: #00569A;                  /* Bootstrap primary blue (hover color) */
   text-decoration: none;            /* Keep no underline on hover */
 }
 

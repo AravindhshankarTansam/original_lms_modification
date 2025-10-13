@@ -244,27 +244,48 @@ def admin_dashboard(request):
 # profile
 @login_required
 def profile(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("profile")
-    else:
-        form = ProfileForm(instance=request.user)
+    if request.user.role in ['admin', 'superuser']:
+        # Admin profile logic
+        if request.method == "POST":
+            form = ProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("profile")
+        else:
+            form = ProfileForm(instance=request.user)
 
-    return render(request, "accounts/admin/profile.html", {"form": form, "user": request.user})
+        return render(request, "accounts/admin/profile.html", {"form": form, "user": request.user})
+
+    else:
+        # User profile logic
+        if request.method == "POST":
+            form = ProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("profile")
+        else:
+            form = ProfileForm(instance=request.user)
+
+        return render(request, "accounts/user/profile.html", {"form": form, "user": request.user})
+
+# @login_required
+# def profile(request):
+#     if request.method == "POST":
+#         form = ProfileForm(request.POST, request.FILES, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("user_profile")  # redirect to same profile page
+#     else:
+#         form = ProfileForm(instance=request.user)
+
+#     return render(request, "accounts/user/profile.html", {
+#         "form": form,
+#         "user": request.user
+#     })
+
 
 @login_required
-def profile(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("user_profile")  # redirect to same profile page
-    else:
-        form = ProfileForm(instance=request.user)
-
-    return render(request, "accounts/user/profile.html", {
-        "form": form,
-        "user": request.user
-    })
+def courses_catalog(request):
+    # Optionally fetch courses to pass to template
+    courses = Course.objects.all()  # or filtered, paginated, etc.
+    return render(request, 'accounts/user/course.html', {'courses': courses})
