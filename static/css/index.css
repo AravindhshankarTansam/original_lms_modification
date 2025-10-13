@@ -355,31 +355,69 @@ body {
         height: auto; /* maintain aspect ratio */
     }
 
-    /* Move hero content box below image */
-    .hero-banner-slide-module--content-box.left {
-        position: relative;       /* stop absolute positioning */
-        top: auto;                /* reset top */
-        left: auto;               /* reset left */
-        transform: none;          /* remove translate */
-        width: 90%;               /* almost full width */
-        margin: 10px auto 0 auto; /* spacing below image */
-        text-align: center;       /* center text */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+/* ===========================
+   Hero Section - Desktop
+=========================== */
+.hero-banner-slide-module--content-box {
+    position: absolute;
+    top: 50%;
+    left: 190px;
+    transform: translateY(-50%);
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    color: #000;
+    text-align: left;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   Mobile Adjustments
+=========================== */
+@media (max-width: 991px) {
+    /* Make carousel section full width */
+    section.container.my-5.text-center {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+        text-align: center;
     }
-    
-    /* Optional: adjust buttons inside hero box */
-    .hero-banner-slide-module--content-box.left .btn {
-        width: 70%; /* make button wider on mobile */
+
+    /* Make carousel images responsive */
+    #carouselExampleIndicators .carousel-inner img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Hero box on mobile: relative positioning avoids overlap */
+    .hero-banner-slide-module--content-box {
+        position: relative;   /* remove absolute */
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 90%;
+        margin: -100px auto 0 auto; /* adjust vertical spacing */
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        z-index: 5;
+    }
+
+    .hero-banner-slide-module--content-box .btn {
+        width: auto;
         margin-top: 10px;
     }
 
-    /* Optional: adjust carousel controls for mobile */
+    /* Carousel controls smaller on mobile */
     .custom-carousel-control {
         width: 40px;
         height: 40px;
     }
     .custom-carousel-control .carousel-control-prev-icon,
     .custom-carousel-control .carousel-control-next-icon {
-        background-size: 70%; /* smaller icon */
+        background-size: 70%;
     }
+}
 }
