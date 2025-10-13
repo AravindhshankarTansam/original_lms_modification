@@ -1,4 +1,4 @@
-<div class="container mx-auto mt-10">
+<!-- <div class="container mx-auto mt-10">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Dashboard</h1>
         <a href="{% url 'logout' %}" 
@@ -17,7 +17,7 @@
         <p>User access: Enroll in courses</p>
     {% endif %}
 </div>
-
+ -->
 
 {% load static %}
 <!DOCTYPE html>
@@ -37,6 +37,7 @@
       <span class="icon">🔍</span>
       <span class="icon">✉️</span>
       <span class="icon new-icon">🆕</span>
+        <a href="{% url 'user_profile' %}" class="btn password-btn">User Profile</a>
       <span class="icon">☰</span>
     </div>
   </header>
@@ -46,21 +47,20 @@
   </div>
 <section class="main-content-wrapper">
   <button class="slider-btn left-btn">&#10094;</button>
+
   <div class="main-content-slider">
-    <div class="panel">
-      <div class="video-placeholder">Video Placeholder</div>
-    </div>
-    <div class="panel">
-      <div class="video-placeholder">Video Placeholder</div>
-    </div>
-    <div class="panel">
-      <div class="video-placeholder">Video Placeholder</div>
-    </div>
+    <div class="panel panel-1"></div>
+
+    <div class="panel panel-2"></div>
+
+    <div class="panel panel-3"></div>
+
     <div class="panel center-panel">
       <h3>MxD Learn</h3>
       <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
       <button>VIEW COURSES</button>
     </div>
+
     <div class="panel right-panel">
       <h3>CAPITAL</h3>
       <p>Data Annotator</p>
@@ -72,8 +72,10 @@
       <button>VIEW COURSES</button>
     </div>
   </div>
+
   <button class="slider-btn right-btn">&#10095;</button>
 </section>
+
 
 
 
@@ -105,7 +107,7 @@
 
   <section class="leader-poll">
     <div class="leaderboard">
-      <h4>📊 Leaderboards</h4>
+      <h4>📊 Leaderboards</h4>  
       <p>Your company leaderboards</p>
       <div class="rank-bar">
         <span>Course Completions</span>

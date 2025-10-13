@@ -747,3 +747,118 @@ button:hover {
     max-width: 1800px;
   }
 }
+
+
+
+
+.main-content-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin: 20px auto;
+  padding: 0 50px; /* space for arrows */
+}
+
+.main-content-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+
+.main-content-slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Panels with background images */
+.panel {
+  min-width: 950px;
+  height: 366px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  position: relative;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* Text panels */
+.center-panel, .right-panel {
+  background-color: #f0f0f0;
+  color: #333;
+  min-width: 300px;
+  max-width: 300px;
+  height: 366px;
+  padding: 20px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.highlight-red {
+  color: red;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #5e7ca3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3e597b;
+}
+
+/* Arrow Buttons */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  user-select: none;
+}
+
+.left-btn {
+  left: 10px;
+}
+
+.right-btn {
+  right: 10px;
+}
+
+.slider-btn:hover {
+  background: white;
+}
+/* Background images moved to CSS */
+
+.panel-1 {
+  background-image: url('https://d1vy0qa05cdjr5.cloudfront.net/b83fc21b-1ebd-40e6-abb1-980da34a897d/Public/Billboards/20b0bfcb-e60a-4b2e-8cdd-d70a3544ea8f/2024%20CyMOT%20Courses_General_No%20CTA.png');
+}
+
+.panel-2 {
+  background-image: url('https://d1vy0qa05cdjr5.cloudfront.net/b83fc21b-1ebd-40e6-abb1-980da34a897d/Public/Billboards/20b0bfcb-e60a-4b2e-8cdd-d70a3544ea8f/2024%20CyMOT%20Courses_General_No%20CTA.png');
+}
+
+.panel-3 {
+  background-image: url('https://d1vy0qa05cdjr5.cloudfront.net/b83fc21b-1ebd-40e6-abb1-980da34a897d/Public/Billboards/20b0bfcb-e60a-4b2e-8cdd-d70a3544ea8f/2024%20CyMOT%20Courses_General_No%20CTA.png');
+}
