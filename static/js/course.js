@@ -77,3 +77,65 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// to back button
+
+document.addEventListener('DOMContentLoaded', function() {
+  const backBtn = document.querySelector('.back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', function() {
+      history.back();
+    });
+  }
+});
+
+// search field in topbar
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchIcon = document.getElementById('searchIcon');
+  const searchInput = document.getElementById('searchInput');
+  const cardsGrid = document.getElementById('cardsGrid');
+  const noCoursesMessage = document.getElementById('noCoursesMessage');
+  const courseCards = cardsGrid.querySelectorAll('.course-card');
+
+  // Toggle search input visibility when clicking search icon
+  searchIcon.addEventListener('click', () => {
+    if (searchInput.style.display === 'none') {
+      searchInput.style.display = 'block';
+      searchInput.focus();
+    } else {
+      searchInput.value = '';
+      filterCourses('');
+      searchInput.style.display = 'none';
+    }
+  });
+
+  // Filter function
+  function filterCourses(query) {
+    const q = query.trim().toLowerCase();
+    let visibleCount = 0;
+
+    courseCards.forEach(card => {
+      // Find the course title inside this card
+      const titleElem = card.querySelector('.course-title');
+      const titleText = titleElem ? titleElem.textContent.toLowerCase() : '';
+
+      if (titleText.includes(q)) {
+        card.parentElement.style.display = ''; // show column div (col-6 etc)
+        visibleCount++;
+      } else {
+        card.parentElement.style.display = 'none';
+      }
+    });
+
+    // Show or hide "no courses" message
+    noCoursesMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  // Listen to input event on search box
+  searchInput.addEventListener('input', (e) => {
+    filterCourses(e.target.value);
+  });
+
+  // Also, existing code you have for enroll buttons, grid/list toggle, etc...
+});
