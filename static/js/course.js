@@ -139,3 +139,72 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Also, existing code you have for enroll buttons, grid/list toggle, etc...
 });
+
+
+
+// sidebar menu
+
+document.addEventListener('DOMContentLoaded', function () {
+  const menuIcon = document.querySelector('[title="Menu"]');
+  const sidebar = document.getElementById('sidebar');
+  const closeBtn = document.getElementById('closeSidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  if (menuIcon && sidebar && closeBtn) {
+    menuIcon.addEventListener('click', function () {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+
+    closeBtn.addEventListener('click', function () {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    overlay.addEventListener('click', function () {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+  }
+
+  // Optional: Logout logic
+  const logoutBtn = document.querySelector('.logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function () {
+      // Replace with actual logout logic
+      alert('Logging out...');
+      // window.location.href = '/logout/';
+    });
+  }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const enrollButtons = document.querySelectorAll(".btn-enroll");
+
+  enrollButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      if (button.disabled) return;
+
+      button.disabled = true;
+      button.innerHTML = "Enrolling...";
+
+      setTimeout(() => {
+        // Update button to "Start" and enable it
+        const courseUrl = button.getAttribute("data-url"); // ✅ get URL from HTML
+        button.innerHTML = 'Start <div class="plus">▶</div>';
+        button.classList.remove("btn-enroll");
+        button.classList.add("btn-start");
+        button.disabled = false;
+
+        // Redirect to course play page when clicked
+        button.addEventListener("click", function () {
+          if (courseUrl) {
+            window.location.href = courseUrl;
+          }
+        }, { once: true }); // only run once
+      }, 550); // mimic enroll delay
+    });
+  });
+});

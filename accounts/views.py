@@ -290,7 +290,11 @@ def courses_catalog(request):
     courses = Course.objects.all()  # or filtered, paginated, etc.
     return render(request, 'accounts/user/course.html', {'courses': courses})
 
-def course_play(request, id):
-    course = get_object_or_404(Course, id=id)
-    # Your logic here
-    return render(request, 'course_play.html', {'course': course})
+# @login_required
+# def course_play(request, id):
+#     course = get_object_or_404(Course, id=id)
+#     return render(request, 'accounts/user/course_play.html', {'course': course})
+
+
+def course_play(request):
+    return render(request, 'accounts/user/course_play.html')
