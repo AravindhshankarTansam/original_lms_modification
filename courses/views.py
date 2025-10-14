@@ -162,7 +162,7 @@ def create_or_update_course(request, course_id=None):
                 } for m in c.modules.all()
             ]
         })
-
+        
     return render(request, 'courses/create_course.html', {
         'courses_json': json.dumps(data, ensure_ascii=False)
     })
