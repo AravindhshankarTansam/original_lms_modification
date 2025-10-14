@@ -291,22 +291,11 @@ def courses_catalog(request):
     courses = Course.objects.all()  # or filtered, paginated, etc.
     return render(request, 'accounts/user/course.html', {'courses': courses})
 
-@login_required
-def my_courses(request):
-    enrollments = Enrollment.objects.filter(user=request.user).select_related('course')
-    return render(request, 'accounts/user/my_courses.html', {'enrollments': enrollments})
+# @login_required
+# def course_play(request, id):
+#     course = get_object_or_404(Course, id=id)
+#     return render(request, 'accounts/user/course_play.html', {'course': course})
 
-@login_required
-def enroll_course(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
-    
-    # Check if already enrolled
-    already_enrolled = Enrollment.objects.filter(user=request.user, course=course).exists()
-    if already_enrolled:
-        messages.info(request, f"You are already enrolled in {course.title}.")
-        return redirect('courses_catalog')
 
-    # Enroll user
-    Enrollment.objects.create(user=request.user, course=course)
-    messages.success(request, f"You have successfully enrolled in {course.title}!")
-    return redirect('my_courses')  # or wherever you show enrolled courses
+def course_play(request):
+    return render(request, 'accounts/user/course_play.html')
