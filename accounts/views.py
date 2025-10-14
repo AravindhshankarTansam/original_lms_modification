@@ -289,3 +289,8 @@ def courses_catalog(request):
     # Optionally fetch courses to pass to template
     courses = Course.objects.all()  # or filtered, paginated, etc.
     return render(request, 'accounts/user/course.html', {'courses': courses})
+
+def course_play(request, id):
+    course = get_object_or_404(Course, id=id)
+    # Your logic here
+    return render(request, 'course_play.html', {'course': course})

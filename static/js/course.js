@@ -13,32 +13,67 @@ document.addEventListener('DOMContentLoaded', function() {
     cardsGrid.classList.add('list-view');
   });
 
-  // Handle enroll button clicks
   const enrollButtons = document.querySelectorAll('.btn-enroll');
+  const enrollToastEl = document.getElementById('enrollToast');
+  const toast = new bootstrap.Toast(enrollToastEl);
 
   enrollButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // If already enrolled (button text is "Start"), do nothing
-      if (button.textContent.trim().startsWith('Start')) {
+    button.addEventListener('click', function(event) {
+      const isStart = button.textContent.trim().startsWith('Start');
+
+      if (isStart) {
+        const url = button.getAttribute('data-url');
+        if (url) {
+          window.location.href = url; // 👈 Redirect to course_play
+        }
         return;
       }
 
-      // Disable button during "enrolling"
       button.disabled = true;
-
-      // Optionally, show loading state or change text temporarily
       button.textContent = 'Enrolling...';
 
       setTimeout(() => {
-        // Show success message
-        alert('You are enrolled successfully');
+        toast.show();
 
-        // Change button text to "Start ▶"
+        // Change text to "Start ▶" and re-enable button
         button.innerHTML = 'Start <div class="plus">▶</div>';
-
-        // Enable button again
         button.disabled = false;
-      }, 550); // 550ms delay
+      }, 550);
     });
   });
 });
+
+
+// course.js
+document.addEventListener("DOMContentLoaded", function () {
+  const enrollButtons = document.querySelectorAll(".btn-enroll");
+
+  enrollButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      if (button.disabled) return;
+
+      const courseId = button.getAttribute("data-course-id");
+      if (!courseId) {
+        console.error("Missing course ID");
+        return;
+      }
+
+      button.disabled = true;
+      button.innerHTML = "Enrolling...";
+
+      setTimeout(() => {
+        // Update button to "Start" and enable it
+        button.innerHTML = 'Start <div class="plus">▶</div>';
+        button.classList.remove("btn-enroll");
+        button.classList.add("btn-start");
+        button.disabled = false;
+
+        // Redirect to course play page on next click
+        button.addEventListener("click", function () {
+          window.location.href = `/course/${courseId}/`;
+        }, { once: true }); // only run once
+      }, 550);
+    });
+  });
+});
+
