@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}{{ request.user.username }} | Dashboard{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- ===== HEADER (Top Navbar) ===== -->
+  <header class="top-bar d-flex justify-content-between align-items-center px-4 py-2">
+    <div class="logo d-flex align-items-center">
+      <img src="{% static 'images/tansamoldlogo.png' %}" alt="Tansam e-LMS" height="70">
+    </div>
+
+    <div class="header-text flex-grow-1 text-center">
+      <h2 class="mb-0 fw-bold text-light">Tansam e-Learning</h2>
+    </div>
+
+    <div class="icons d-flex align-items-center gap-3">
+      <span id="menu-icon" class="icon fs-4">☰</span>
+    </div>
+  </header>
+
+  <!-- ===== SIDEBAR ===== -->
+  <div id="sidebar" class="sidebar">
+    <span class="sidebar-close" id="sidebar-close">&times;</span>
+
+    <div class="sidebar-content text-center mt-4">
+      <div class="welcome-banner mb-4">
+        <div class="split-text-container">
+          <span class="text-part left">Welcome,</span>
+          <span class="text-part right">{{ request.user.username }}</span>
+        </div>
+      </div>
+
+      <a href="{% url 'user_profile' %}" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+        User Profile
+      </a>
+      <a href="{% url 'course_play' %}" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+        My Courses
+      </a>
+      <a href="{% url 'courses_catalog' %}" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+        Explore Courses
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <button onclick="window.location.href='{% url 'logout' %}'" class="logout-btn w-100 fw-semibold">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== OVERLAY ===== -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- ===== MAIN CONTENT WRAPPER ===== -->
+  <section class="main-content-wrapper p-4">
+    {% block content %}
+    <!-- Page-specific content will go here -->
+    {% endblock %}
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="language-selector">🌐 EN</div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+<script>
+  const menuIcon = document.querySelector('#menu-icon');
+  const sidebar = document.querySelector('#sidebar');
+  const sidebarClose = document.querySelector('#sidebar-close');
+  const overlay = document.querySelector('#sidebar-overlay');
+
+  menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+  });
+
+  sidebarClose.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+  });
+</script>
+
+</body>
+</html>
