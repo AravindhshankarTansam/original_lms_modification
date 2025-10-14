@@ -22,3 +22,15 @@ class User(AbstractUser):
         default="profile_images/default/no_bg_user.png"
     )
 
+
+
+class Enrollment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enrollments")
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name="enrollments")
+    enrolled_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'course')  # prevent duplicate enrollments
+
+    def __str__(self):
+        return f"{self.user.username} enrolled in {self.course.title}"
