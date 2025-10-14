@@ -3,14 +3,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ request.user.username }} | Dashboard</title>
+
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
   <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 </head>
-
 <body>
+
   <!-- ===== HEADER ===== -->
   <header class="top-bar d-flex justify-content-between align-items-center px-4 py-2">
     <div class="logo d-flex align-items-center">
@@ -21,48 +22,231 @@
       <h2 class="mb-0 fw-bold text-light">Tansam e-Learning</h2>
     </div>
 
-    <div class="icons d-flex align-items-center gap-2">
+    <div class="icons d-flex align-items-center gap-3">
       <span id="menu-icon" class="icon fs-4">☰</span>
     </div>
   </header>
 
-  <!-- ===== MAIN CONTENT ===== -->
-  <section class="main-content-wrapper p-4">
-    <h2>Welcome to your Dashboard</h2>
-    <p>Here you can manage your courses, view progress, and explore new learning content.</p>
-  </section>
-
   <!-- ===== SIDEBAR ===== -->
-  <div id="sidebar" class="sidebar">
-    <span class="sidebar-close" id="sidebar-close">&times;</span>
-    
-    <div class="sidebar-content text-center mt-4">
-      <!-- Welcome Banner -->
-      <div class="welcome-banner">
-        <div class="split-text-container">
-          <span class="text-part left">Welcome,</span>
-          <span class="text-part right">{{ request.user.username }}</span>
-        </div>
+<div id="sidebar" class="sidebar">
+  <span class="sidebar-close" id="sidebar-close">&times;</span>
+
+  <div class="sidebar-content text-center mt-4">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner mb-4">
+      <div class="split-text-container">
+        <span class="text-part left">Welcome,</span>
+        <span class="text-part right">{{ request.user.username }}</span>
       </div>
-
-      <!-- User Profile Button -->
-      <a href="{% url 'user_profile' %}" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
-        User Profile
-      </a>
     </div>
 
-    <!-- Logout Button (Fixed at Bottom) -->
-    <div class="sidebar-footer">
-      <button onclick="window.location.href='{% url 'logout' %}'" class="logout-btn w-100 fw-semibold">
-        Logout
-      </button>
-    </div>
+    <!-- Sidebar Buttons -->
+    <a href="{% url 'user_profile' %}" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+      User Profile
+    </a>
+    <a href=" }" class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+      My Courses
+    </a>
+    <a href=" " class="btn btn-outline-primary w-100 mb-3 fw-semibold" role="button">
+      Explore Courses
+    </a>
   </div>
+
+  <div class="sidebar-footer">
+    <button onclick="window.location.href='{% url 'logout' %}'" class="logout-btn w-100 fw-semibold">
+      Logout
+    </button>
+  </div>
+</div>
 
   <!-- ===== OVERLAY ===== -->
   <div id="sidebar-overlay"></div>
 
-  <!-- ===== SCRIPT ===== -->
+  <!-- ===== MAIN DASHBOARD CONTENT ===== -->
+  <section class="main-content-wrapper p-4">
+
+    <!-- Welcome Section -->
+    <div class="welcome-banner mb-4 text-center">
+      <h2>Welcome {{ request.user.username }}</h2>
+    </div>
+
+    <!-- Slider Section -->
+    <section class="main-content-wrapper">
+      <button class="slider-btn left-btn">&#10094;</button>
+
+      <div class="main-content-slider">
+        <div class="panel panel-1"></div>
+        <div class="panel panel-2"></div>
+        <div class="panel panel-3"></div>
+
+        <div class="panel center-panel">
+          <h3>MxD Learn</h3>
+          <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
+          <button>VIEW COURSES</button>
+        </div>
+
+        <div class="panel right-panel">
+          <h3>CAPITAL</h3>
+          <p>Data Annotator</p>
+          <ul>
+            <li>Data Annotator (100)</li>
+            <li>Data Annotator (200)</li>
+            <li>Data Annotator (300)</li>
+          </ul>
+          <button>VIEW COURSES</button>
+        </div>
+      </div>
+
+      <button class="slider-btn right-btn">&#10095;</button>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="card-grid">
+      <div class="card card-my-courses">My Courses</div>
+      <div class="card card-mxd-content">MxD Content</div>
+      <div class="card card-partner-content">Partner Content</div>
+      <div class="card card-resources">Resources</div>
+      <div class="card card-cybersecurity">Cybersecurity</div>
+      <div class="card card-manufacturing">Manufacturing</div>
+    </section>
+
+    <!-- FAQ and Catalog -->
+    <section class="faq-catalog-section">
+      <div class="faq">
+        <h3>📌 Frequently Asked Questions</h3>
+        <p>The answers to your questions</p>
+        <button class="faq-btn">What is the Virtual Training Center?</button>
+        <button class="faq-btn">What is MxD?</button>
+        <button class="faq-btn">What type of work does MxD do?</button>
+        <button class="faq-btn">What is the CAPITAL program?</button>
+        <button class="faq-btn">How can I attend an event?</button>
+      </div>
+      <div class="catalog-banner">
+        <h1>CAPITAL</h1>
+        <p class="catalog-subtitle">Catalog</p>
+        <p class="joint-cert">JOINT CERTIFICATION</p>
+      </div>
+    </section>
+
+    <!-- Leaderboard + Polls -->
+    <section class="leader-poll">
+      <div class="leaderboard">
+        <h4>📊 Leaderboards</h4>  
+        <p>Your company leaderboards</p>
+        <div class="rank-bar">
+          <span>Course Completions</span>
+          <span>Rank 207</span>
+        </div>
+      </div>
+
+      <div class="polls">
+        <h4>🗳️ Polls & Surveys</h4>
+        <p>Vote on the latest topics</p>
+        <p class="poll-question">
+          Have you taken the new Introduction to Standards Development courses?
+        </p>
+        <button class="vote-btn">Vote!</button>
+      </div>
+
+      <div class="resume-box">
+        <img src="{% static 'images/learn-icon.jpg' %}" alt="MxD Learn" />
+        <div>
+          <p><strong>Cybersecurity Analyst (100)</strong><br/> Resume ▶</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured + News -->
+    <section class="featured-latest-wrapper">
+      <div class="featured-courses-scroll">
+        <h3>Featured Courses</h3>
+        <div class="featured-courses-scroll-container">
+          <div class="course-card">
+            <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
+            <div>
+              <h4>Advanced Manufacturing Penetration Testing</h4>
+              <p>Online Course<br/><span class="badge">⭐ Featured</span> 5 (1)</p>
+            </div>
+            <span class="start">Start ▶</span>
+          </div>
+
+          <div class="course-card">
+            <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
+            <div>
+              <h4>Cybersecurity Analyst (100)</h4>
+              <p>Online Course<br/><span class="badge">⭐ Featured</span></p>
+            </div>
+            <span class="start">Resume ▶</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="latest-news-box">
+        <h3>📰 Latest News</h3>
+        <ul>
+          <li><span>MxD Learn & SACA Co-developed Credential!</span><span>2 months ago</span></li>
+          <li><span>University of Michigan and MxD Launch Groundbreaking EV Hiring Guide</span><span>4 months ago</span></li>
+          <li><span>New Curriculum: Pre-Metaverse Integration Technologist</span><span>5 months ago</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Catalog Carousel -->
+    <section class="catalog-carousel">
+      <h3>Catalog</h3>
+      <div class="catalog-container">
+        <button class="catalog-btn left-btn">&#10094;</button>
+
+        <div class="catalog-scroll">
+          <div class="catalog-card">
+            <img src="{% static 'images/course1.png' %}" alt="AI Course">
+            <h4>Artificial Intelligence (AI): Natural Language...</h4>
+            <p>Online Course</p>
+            <div class="stars">⭐ ⭐ ⭐ ⭐ ☆ <span>(1)</span></div>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+          <div class="catalog-card">
+            <img src="{% static 'images/course2.png' %}" alt="Offer Course">
+            <h4>$100M Offers: How To Make Offers...</h4>
+            <p>Online Course</p>
+            <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(2)</span></div>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+          <div class="catalog-card">
+            <img src="{% static 'images/course3.png' %}" alt=".NET Course">
+            <h4>.NET 8 Backend Bootcamp: DDD, CQRS...</h4>
+            <p>Online Course</p>
+            <div class="stars">⭐ ⭐ ⭐ ☆ ☆ <span>(1)</span></div>
+            <button class="enroll-btn">Enroll ➕</button>
+          </div>
+        </div>
+
+        <button class="catalog-btn right-btn">&#10095;</button>
+      </div>
+      <div class="catalog-dots">● ● ● ● ●</div>
+    </section>
+
+    <!-- Personalized Journey -->
+    <section class="personalized-journey">
+      <div class="journey-left">
+        <h3>Start your personalized learning journey</h3>
+        <p>Select a role that you are interested in to build a list of recommended course content.</p>
+        <button class="start-btn">Get started</button>
+      </div>
+      <div class="journey-right">
+        <img src="{% static 'images/course6.png' %}" alt="Learning Journey Illustration" />
+      </div>
+    </section>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="language-selector">🌐 EN</div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script src="{% static 'js/dashboard.js' %}"></script>
   <script>
     const menuIcon = document.getElementById('menu-icon');
     const sidebar = document.getElementById('sidebar');
@@ -73,12 +257,10 @@
       sidebar.classList.add('active');
       overlay.classList.add('active');
     });
-
     sidebarClose.addEventListener('click', () => {
       sidebar.classList.remove('active');
       overlay.classList.remove('active');
     });
-
     overlay.addEventListener('click', () => {
       sidebar.classList.remove('active');
       overlay.classList.remove('active');
