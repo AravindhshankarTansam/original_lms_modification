@@ -22,6 +22,7 @@ html, body {
   gap: 1rem;
 }
 
+/* --------- VIDEO SECTION --------- */
 .video-section {
   flex: 1;
   display: flex;
@@ -136,7 +137,8 @@ html, body {
   height: 18px;
 }
 
-.sidebar {
+/* --------- COURSE SIDEBAR (RENAMED TO AVOID CONFLICT) --------- */
+.course-sidebar {
   width: 300px;
   flex-shrink: 0;
   background: white;
@@ -149,40 +151,40 @@ html, body {
   overflow-y: auto;
 }
 
-.sidebar h6 {
+.course-sidebar h6 {
   font-weight: 600;
   margin-bottom: 0.8rem;
 }
 
-.sidebar .section {
+.course-sidebar .section {
   margin-bottom: 1.5rem;
 }
 
-.sidebar .section label {
+.course-sidebar .section label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
-.sidebar .section input[type="radio"] {
+.course-sidebar .section input[type="radio"] {
   margin-right: 0.5rem;
 }
 
-.sidebar .progress-bar-custom {
+.course-sidebar .progress-bar-custom {
   height: 6px;
   background-color: #d4362d;
   border-radius: 3px;
 }
 
-.sidebar .progress-wrapper {
+.course-sidebar .progress-wrapper {
   background-color: #eee;
   height: 6px;
   border-radius: 3px;
   margin-bottom: 0.7rem;
 }
 
-.sidebar .locked {
+.course-sidebar .locked {
   font-size: 0.85rem;
   color: #888;
   display: flex;
@@ -190,12 +192,13 @@ html, body {
   gap: 0.3rem;
 }
 
-.sidebar .locked svg {
+.course-sidebar .locked svg {
   width: 16px;
   height: 16px;
   fill: #888;
 }
 
+/* --------- TABS --------- */
 .tab-content {
   background: white;
   border-radius: 0.25rem;
@@ -243,6 +246,7 @@ html, body {
   white-space: nowrap;
 }
 
+/* --------- SCROLLBARS --------- */
 .tab-content::-webkit-scrollbar {
   width: 6px;
 }
@@ -252,11 +256,12 @@ html, body {
   border-radius: 10px;
 }
 
+/* --------- RESPONSIVE --------- */
 @media (max-width: 991px) {
   .main-container {
     flex-direction: column;
   }
-  .sidebar {
+  .course-sidebar {
     width: 100%;
     height: auto;
     margin-top: 1rem;
