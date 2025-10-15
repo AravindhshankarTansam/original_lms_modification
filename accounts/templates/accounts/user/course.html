@@ -262,31 +262,7 @@
     </div>
   </div>
 </div>
-<!-- Sidebar -->
-<div id="sidebar" class="sidebar">
-  <div class="sidebar-header">
-    <span class="sidebar-title">Menu</span>
-    <button id="closeSidebar" class="close-btn">&times;</button>
-  </div>
-  <hr class="sidebar-divider">
-  <div class="sidebar-content">
-    <div class="user-profile">
-      <div class="profile-icon"><i class="bi bi-person"></i></div>
-      <div class="profile-details">
-        <div class="username">{{ request.user.username }}</div>
-        <div class="email">{{ user.email }}</div>
-      </div>
-    </div>
-    <hr class="sidebar-divider">
-    <button class="logout-btn">    <a href="{% url 'logout' %}" 
-           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-            Logout
-        </a></button>
-  </div>
-</div>
 
-<!-- Overlay (optional, dim background) -->
-<div id="sidebarOverlay" class="sidebar-overlay"></div>
 
 </body>
 </html>
