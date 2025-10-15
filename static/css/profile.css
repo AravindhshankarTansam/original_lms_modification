@@ -103,3 +103,35 @@
     padding: 10px 20px;
     font-weight: bold;
 }
+
+
+
+/* breadcrumbs */
+
+.breadcrumb-custom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #888; /* matches --muted */
+  margin-bottom: 20px;
+}
+
+.breadcrumb-custom svg {
+  fill: none;
+  stroke: #c2c2c2;
+}
+
+.breadcrumb-custom a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.breadcrumb-custom span {
+  font-weight: 600;
+}
+
+.breadcrumb-custom .breadcrumb-separator {
+  color: #d23b30;
+}
