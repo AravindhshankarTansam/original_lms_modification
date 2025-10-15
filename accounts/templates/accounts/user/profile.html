@@ -1,150 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+
+{% extends "accounts/user/base.html" %}
+{% load static %}
+
   <title>User Security Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap 5.3.3 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(135deg, #f6f9ff 0%, #eef1f8 100%);
-      height: 100vh;
-      font-family: 'Poppins', sans-serif;
-      margin-top: 120px;
-    }
-
-    /* Profile Card */
-    .profile-card {
-      background: linear-gradient(145deg, #ffffff, #f2f5fb);
-      border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
-      padding: 28px 24px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .profile-card::before {
-      content: "";
-      position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 140px;
-      height: 140px;
-      background: radial-gradient(circle at center, #007bff40, transparent 60%);
-      transform: rotate(45deg);
-    }
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
 
 
-
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 4px solid #eaf1ff;
-      margin-bottom: 14px;
-      object-fit: cover;
-    }
-
-    .stats-box {
-      background: #f8faff;
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .stats-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #007bff;
-    }
-
-    .stats-label {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #6c757d;
-    }
-
-    .profile-info div {
-      padding: 6px 0;
-      border-bottom: 1px dashed #e1e4e9;
-    }
-
-    .profile-info div:last-child {
-      border-bottom: none;
-    }
-
-    .btn-edit {
-      min-width: 88px;
-      border-radius: 10px;
-      font-weight: 500;
-    }
-
-    /* Security Card */
-    .security-card {
-          background: linear-gradient(145deg, #ffffff, #f2f5fb);
-      padding: 34px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
-    }
-
-    .change-password-alert {
-      font-size: 1rem;
-      background: #FFF6D9;
-      color: #E6B800;
-      border-radius: 8px;
-      padding: 10px 18px;
-      margin-bottom: 14px;
-      border: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 991.98px) {
-      .container {
-        padding: 8px !important;
-      }
-      .profile-card, .security-card {
-        padding: 16px;
-      }
-    }
-
-    @media (max-width: 767.98px) {
-      .profile-card {
-        margin-bottom: 18px;
-        height: auto;
-      }
-      .d-flex.gap-2 {
-        flex-direction: column !important;
-        gap: 10px !important;
-      }
-    }
-
-    @media (max-width: 575.98px) {
-      .profile-img {
-        width: 80px;
-        height: 80px;
-      }
-      .profile-card, .security-card {
-        padding: 10px;
-        border-radius: 8px;
-      }
-      .stats-value {
-        font-size: 1.1rem;
-      }
-      .stats-label {
-        font-size: 0.9rem;
-      }
-      .change-password-alert {
-        font-size: 0.95rem;
-        padding: 8px 12px;
-      }
-    }
-  </style>
-</head>
-<body>
+    
+{% block content %}
+<div class="catalog-toolbar">
+  <div class="d-flex align-items-center gap-3">
+    <div class="breadcrumb-custom">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M3 10h4l3 9 4-18 3 9h4" stroke="#c2c2c2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <a href="{% url 'dashboard' %}" class="muted" style="text-decoration:none; color: inherit;">Dashboard</a>
+      <span class="breadcrumb-separator">›</span>
+      <span style="font-weight:600">User Profile</span>
+    </div>
+  </div>
+</div>
   <div class="container py-4">
     <div class="row g-4 justify-content-center">
 
@@ -152,8 +33,8 @@
       <div class="col-lg-4 col-md-10 col-12">
         <div class="profile-card text-center">
           <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="User" class="profile-img">
-          <h5 class="fw-semibold mb-0">John Doe</h5>
-          <small class="text-muted">Author</small>
+          <h5 class="fw-semibold mb-0">{{ request.user.username }}</h5>
+          <small class="text-muted">{{ request.user.role }}</small>
 
           <div class="row mt-4 text-center">
             <div class="col">
@@ -171,11 +52,11 @@
           </div>
 
           <div class="profile-info text-start mt-4">
-            <div><i class="bi bi-person-circle text-primary me-2"></i><strong>Username:</strong> johndoe</div>
-            <div><i class="bi bi-envelope text-primary me-2"></i><strong>Email:</strong> johndoe@example.com</div>
+            <div><i class="bi bi-person-circle text-primary me-2"></i><strong>Username:</strong> {{ request.user.username }}</div>
+            <div><i class="bi bi-envelope text-primary me-2"></i><strong>Email:</strong> {{ user.email }}</div>
             <div><i class="bi bi-shield-check text-primary me-2"></i><strong>Status:</strong> Active</div>
-            <div><i class="bi bi-briefcase text-primary me-2"></i><strong>Role:</strong> Author</div>
-            <div><i class="bi bi-telephone text-primary me-2"></i><strong>Contact:</strong> +44 123 456 789</div>
+            <div><i class="bi bi-briefcase text-primary me-2"></i><strong>Role:</strong> {{ request.user.role }}</div>
+            <div><i class="bi bi-telephone text-primary me-2"></i><strong>Contact:</strong> {{ user.phone_number }}</div>
             <div><i class="bi bi-translate text-primary me-2"></i><strong>Languages:</strong> French</div>
             <div><i class="bi bi-geo-alt text-primary me-2"></i><strong>Country:</strong> England</div>
           </div>
@@ -313,50 +194,11 @@
       </div>
     </div>
   </div>
+  {% endblock %}
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Password Toggle
-    const toggleNewPwd = document.getElementById('toggleNewPwd');
-    const toggleConfirmPwd = document.getElementById('toggleConfirmPwd');
-    toggleNewPwd.onclick = function() {
-      const pwd = document.getElementById('newPassword');
-      const icon = this.querySelector('i');
-      pwd.type = pwd.type === 'password' ? 'text' : 'password';
-      icon.classList.toggle('bi-eye');
-      icon.classList.toggle('bi-eye-slash');
-    };
-    toggleConfirmPwd.onclick = function() {
-      const pwd = document.getElementById('confirmNewPassword');
-      const icon = this.querySelector('i');
-      pwd.type = pwd.type === 'password' ? 'text' : 'password';
-      icon.classList.toggle('bi-eye');
-      icon.classList.toggle('bi-eye-slash');
-    };
 
-    // Form Validation
-    document.getElementById('changePasswordForm').onsubmit = function(e) {
-      e.preventDefault();
-      const pwd = document.getElementById('newPassword');
-      const cpwd = document.getElementById('confirmNewPassword');
-      pwd.classList.remove('is-invalid');
-      cpwd.classList.remove('is-invalid');
 
-      const valid = pwd.value.length >= 8 && /[A-Z]/.test(pwd.value) && /[!@#$%^&*?]/.test(pwd.value);
-      if (!valid || pwd.value !== cpwd.value) {
-        if (!valid) pwd.classList.add('is-invalid');
-        if (pwd.value !== cpwd.value) cpwd.classList.add('is-invalid');
-        return;
-      }
-      alert('Password changed successfully!');
-    };
-
-    document.getElementById('editProfileForm').onsubmit = function(e) {
-      e.preventDefault();
-      alert('Profile updated successfully!');
-      bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
-    };
-  </script>
-</body>
-</html>
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
