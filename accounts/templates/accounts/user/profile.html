@@ -170,17 +170,193 @@
             </div>
           </div>
 
-        <!-- Right Content Area -->
-        <div class="profile-main">
-            <div class="learning-path-card">
-                <!-- <span class="badge-new">New</span> -->
-                <h2>Build Your Learning Path</h2>
-                <p>Chart a path to your desired role by assessing your abilities and finding relevant training.</p>
-                <a href="#" class="btn-black">Continue Self-Assessment</a>
-            </div>
-        </div>
-    </div>
+          <div class="profile-info text-start mt-4">
+            <div><i class="bi bi-person-circle text-primary me-2"></i><strong>Username:</strong> johndoe</div>
+            <div><i class="bi bi-envelope text-primary me-2"></i><strong>Email:</strong> johndoe@example.com</div>
+            <div><i class="bi bi-shield-check text-primary me-2"></i><strong>Status:</strong> Active</div>
+            <div><i class="bi bi-briefcase text-primary me-2"></i><strong>Role:</strong> Author</div>
+            <div><i class="bi bi-telephone text-primary me-2"></i><strong>Contact:</strong> +44 123 456 789</div>
+            <div><i class="bi bi-translate text-primary me-2"></i><strong>Languages:</strong> French</div>
+            <div><i class="bi bi-geo-alt text-primary me-2"></i><strong>Country:</strong> England</div>
+          </div>
 
-    <script src="{% static 'js/profile.js' %}"></script>
+          <div class="mt-4">
+            <button class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+              <i class="bi bi-pencil-square me-1"></i>Edit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security / Password / Courses Section -->
+      <div class="col-lg-8 col-md-9 col-12">
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="security" role="tabpanel">
+            
+            <!-- Change Password -->
+            <div class="security-card mb-4">
+              <div class="change-password-alert">
+                Ensure that these requirements are met<br>
+                <span style="font-size:0.98em;">Minimum 8 characters, one uppercase & one symbol</span>
+              </div>
+
+              <form id="changePasswordForm" class="row g-3 align-items-center">
+                <div class="col-md-6">
+                  <label for="newPassword" class="form-label">New Password</label>
+                  <div class="input-group">
+                    <input type="password" class="form-control" id="newPassword" minlength="8" required>
+                    <button type="button" class="btn btn-outline-secondary" id="toggleNewPwd"><i class="bi bi-eye"></i></button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                  <div class="input-group">
+                    <input type="password" class="form-control" id="confirmNewPassword" minlength="8" required>
+                    <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPwd"><i class="bi bi-eye"></i></button>
+                  </div>
+                </div>
+                <div class="col-12 mt-3">
+                  <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Course Tracking -->
+            <div class="security-card mb-4">
+              <h6>Course Tracking</h6>
+              <p class="mb-2">Monitor your ongoing, completed, and pending courses.</p>
+              <table class="table table-sm align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Introduction to Laravel</td>
+                    <td><span class="badge bg-success">Completed</span></td>
+                    <td>
+                      <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-success" style="width: 100%;"></div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>React Native Basics</td>
+                    <td><span class="badge bg-info text-dark">In Progress</span></td>
+                    <td>
+                      <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-info" style="width: 65%;"></div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MySQL Masterclass</td>
+                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                    <td>
+                      <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-warning" style="width: 10%;"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Edit Profile Modal -->
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content" style="border-radius: 14px;">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form id="editProfileForm">
+                    <div class="modal-body">
+                      <div class="mb-2">
+                        <label for="editUsername" class="form-label"><strong>Username:</strong></label>
+                        <input type="text" class="form-control" id="editUsername" value="johndoe" required>
+                      </div>
+                      <div class="mb-2">
+                        <label for="editEmail" class="form-label"><strong>Email:</strong></label>
+                        <input type="email" class="form-control" id="editEmail" value="johndoe@example.com" required>
+                      </div>
+                      <div class="mb-2">
+                        <label for="editStatus" class="form-label"><strong>Status:</strong></label>
+                        <select class="form-select" id="editStatus">
+                          <option value="Active" selected>Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </select>
+                      </div>
+                      <div class="mb-2">
+                        <label for="editRole" class="form-label"><strong>Role:</strong></label>
+                        <input type="text" class="form-control" id="editRole" value="Author" required>
+                      </div>
+                      <div class="mb-2">
+                        <label for="editContact" class="form-label"><strong>Contact:</strong></label>
+                        <input type="text" class="form-control" id="editContact" value="+44 123 456 789" required>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Password Toggle
+    const toggleNewPwd = document.getElementById('toggleNewPwd');
+    const toggleConfirmPwd = document.getElementById('toggleConfirmPwd');
+    toggleNewPwd.onclick = function() {
+      const pwd = document.getElementById('newPassword');
+      const icon = this.querySelector('i');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('bi-eye');
+      icon.classList.toggle('bi-eye-slash');
+    };
+    toggleConfirmPwd.onclick = function() {
+      const pwd = document.getElementById('confirmNewPassword');
+      const icon = this.querySelector('i');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('bi-eye');
+      icon.classList.toggle('bi-eye-slash');
+    };
+
+    // Form Validation
+    document.getElementById('changePasswordForm').onsubmit = function(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('newPassword');
+      const cpwd = document.getElementById('confirmNewPassword');
+      pwd.classList.remove('is-invalid');
+      cpwd.classList.remove('is-invalid');
+
+      const valid = pwd.value.length >= 8 && /[A-Z]/.test(pwd.value) && /[!@#$%^&*?]/.test(pwd.value);
+      if (!valid || pwd.value !== cpwd.value) {
+        if (!valid) pwd.classList.add('is-invalid');
+        if (pwd.value !== cpwd.value) cpwd.classList.add('is-invalid');
+        return;
+      }
+      alert('Password changed successfully!');
+    };
+
+    document.getElementById('editProfileForm').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+      bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+    };
+  </script>
 </body>
 </html>
