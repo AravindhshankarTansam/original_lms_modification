@@ -311,3 +311,149 @@ saveBtn.addEventListener("click", () => {
     .then((data) => console.log("Course saved", data))
     .catch((err) => console.error(err));
 });
+
+// ---------------- DOWNLOAD PDF ----------------
+// ---------------- DOWNLOAD PDF ----------------
+const downloadBtn = document.querySelector("#downloadCourseBtn");
+downloadBtn.addEventListener("click", () => {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const margin = 40;
+  let y = 50;
+
+  const title = document.querySelector("#courseTitle").value;
+  const courseImg = imagePreview.src;
+  const overview = overviewEditor.root.innerText.trim();
+  const requirements = requirementsEditor.root.innerText.trim();
+
+  const toc = [];
+  let addNewLine = (lines = 1) => {
+    y += 15 * lines;
+    if (y > 750) { pdf.addPage(); y = 50; }
+  };
+
+  // Title Page
+  pdf.setFontSize(22);
+  pdf.setFont("helvetica", "bold");
+  pdf.text(title, pageWidth / 2, y, { align: "center" });
+  addNewLine(3);
+
+  // Course Image
+  if (courseImg) {
+    try {
+      const imgProps = pdf.getImageProperties(courseImg);
+      const imgWidth = pageWidth - margin * 2;
+      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+      pdf.addImage(courseImg, 'PNG', margin, y, imgWidth, imgHeight);
+      y += imgHeight + 20;
+    } catch (e) {
+      console.warn("Error adding image to PDF", e);
+    }
+  }
+
+  // Overview
+  if (overview) {
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Overview:", margin, y);
+    addNewLine(2);
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(overview, margin, y, { maxWidth: pageWidth - margin * 2 });
+    addNewLine(overview.split("\n").length + 1);
+  }
+
+  // Requirements
+  if (requirements) {
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Requirements:", margin, y);
+    addNewLine(2);
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(requirements, margin, y, { maxWidth: pageWidth - margin * 2 });
+    addNewLine(requirements.split("\n").length + 1);
+  }
+
+  // Leave page for TOC (we will insert later)
+  pdf.addPage();
+  y = 50;
+
+  // Modules / Chapters / Questions
+  modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach((modDiv, modIdx) => {
+    const modTitle = modDiv.querySelector(".moduleTitle").value;
+    const modulePage = pdf.getCurrentPageInfo().pageNumber;
+
+    pdf.setFontSize(18);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(`Module ${modIdx + 1}: ${modTitle}`, margin, y);
+    addNewLine(2);
+
+    toc.push({ title: `Module ${modIdx + 1}: ${modTitle}`, page: modulePage });
+
+    // Chapters
+    const chapters = modDiv.querySelectorAll(".chaptersContainer > .border.p-3.mb-2.rounded.bg-white");
+    chapters.forEach((chDiv, chIdx) => {
+      const chTitle = chDiv.querySelector(".chapterTitle").value;
+      const desc = chDiv._quillInstance ? chDiv._quillInstance.root.innerText : "";
+      const type = chDiv.querySelector(".materialType").value;
+      const materialLink = chDiv.querySelector(".existingMaterial a")?.textContent || "";
+      const chapterPage = pdf.getCurrentPageInfo().pageNumber;
+
+      pdf.setFontSize(14);
+      pdf.setFont("helvetica", "bold");
+      pdf.text(`Chapter ${chIdx + 1}: ${chTitle}`, margin + 20, y);
+      addNewLine(1);
+
+      toc.push({ title: `  Chapter ${chIdx + 1}: ${chTitle}`, page: chapterPage });
+
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(desc, margin + 30, y, { maxWidth: pageWidth - margin * 2 - 30 });
+      addNewLine(3);
+
+      if (type && materialLink) {
+        pdf.text(`Material: ${materialLink} (${type})`, margin + 30, y);
+        addNewLine(2);
+      }
+    });
+
+    // Questions
+    const questions = modDiv.querySelectorAll(".questionsContainer > .border.p-3.mb-2.rounded.bg-white");
+    questions.forEach((qDiv, qIdx) => {
+      const type = qDiv.querySelector(".questionType").value;
+      const qText = qDiv.querySelector(".questionText")?.value || "";
+      const cAns = qDiv.querySelector(".correctAnswer")?.value || "";
+
+      pdf.setFontSize(12);
+      pdf.setFont("helvetica", "normal");
+      pdf.text(`Q${qIdx + 1} [${type}]: ${qText}`, margin + 30, y);
+      addNewLine(1);
+      pdf.text(`Answer: ${cAns}`, margin + 50, y);
+      addNewLine(2);
+    });
+
+    addNewLine(2);
+  });
+
+  // Insert TOC at page 2
+  pdf.insertPage(2);
+  pdf.setPage(2);
+  y = 50;
+  pdf.setFontSize(18);
+  pdf.setFont("helvetica", "bold");
+  pdf.text("Table of Contents", pageWidth / 2, y, { align: "center" });
+  addNewLine(3);
+
+  pdf.setFontSize(12);
+  pdf.setFont("helvetica", "normal");
+  toc.forEach((entry) => {
+    pdf.text(entry.title, margin, y);
+    pdf.text(`${entry.page}`, pageWidth - margin, y, { align: "right" });
+    addNewLine(1.5);
+  });
+
+  pdf.setPage(1); // go back to title
+  pdf.save(`${title}.pdf`);
+});
