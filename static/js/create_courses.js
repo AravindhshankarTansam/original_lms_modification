@@ -120,6 +120,7 @@ function addChapter(container, existing = null) {
   const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
   const chDiv = document.createElement("div");
   chDiv.className = "border p-3 mb-2 rounded bg-white";
+  // note: make placeholder option have value=""
   chDiv.innerHTML = `
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="fw-bold">Chapter 0</h6>
@@ -136,7 +137,7 @@ function addChapter(container, existing = null) {
     <div class="mb-2">
         <label class="form-label">Study Material</label>
         <select class="form-select materialType">
-            <option disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+            <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
             <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
             <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
             <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
@@ -152,7 +153,7 @@ function addChapter(container, existing = null) {
 
   const fileURL = existing?.file_url || existing?.file || existing?.material_url || null;
   if (fileURL) {
-    chDiv.querySelector(".existingMaterial").innerHTML = `<a href="${fileURL}" target="_blank">View existing ${existing.type}</a>`;
+    chDiv.querySelector(".existingMaterial").innerHTML = `<a href="${fileURL}" target="_blank">View existing ${existing.type || 'material'}</a>`;
   }
 
   chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => {
@@ -267,14 +268,29 @@ if (courseIdFromUrl && courses.length > 0) {
 // ---------------- SAVE / UPDATE ----------------
 saveBtn.addEventListener("click", () => {
   const modulesData = [];
-  modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach((mDiv) => {
+  // We'll collect files into the FormData using a consistent naming scheme
+  const fd = new FormData(form);
+
+  modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach((mDiv, mIdx) => {
     const modTitle = mDiv.querySelector(".moduleTitle").value;
     const chapters = [];
-    mDiv.querySelectorAll(".chaptersContainer > .border.p-3.mb-2.rounded.bg-white").forEach((chDiv) => {
+    mDiv.querySelectorAll(".chaptersContainer > .border.p-3.mb-2.rounded.bg-white").forEach((chDiv, cIdx) => {
       const chTitle = chDiv.querySelector(".chapterTitle").value;
       const desc = chDiv._quillInstance ? chDiv._quillInstance.root.innerHTML : "";
-      const type = chDiv.querySelector(".materialType").value || null;
-      chapters.push({ title: chTitle, desc, type });
+      const type = chDiv.querySelector(".materialType").value || "";
+      // if there is an existing material link, include it so backend can preserve when no new upload
+      const existingLink = chDiv.querySelector(".existingMaterial a")?.href || "";
+
+      // if user selected a file in this chapter, append to FormData with deterministic key
+      const fileInput = chDiv.querySelector(".materialFile");
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        fd.append(`material_${mIdx}_${cIdx}`, fileInput.files[0]);
+        // we can include file metadata in JSON if desired; not required for backend mapping
+        chapters.push({ title: chTitle, desc, type, file_url: existingLink });
+      } else {
+        // no new file selected. keep existing file_url if present (so server can reuse)
+        chapters.push({ title: chTitle, desc, type, file_url: existingLink });
+      }
     });
 
     const questions = [];
@@ -292,13 +308,13 @@ saveBtn.addEventListener("click", () => {
     modulesData.push({ title: modTitle, chapters, questions });
   });
 
-  const fd = new FormData(form);
   fd.set("modules_json", JSON.stringify(modulesData));
   fd.set("description", courseDescriptionEditor.root.innerHTML);
   fd.set("overview", overviewEditor.root.innerHTML);
   fd.set("requirements", requirementsEditor.root.innerHTML);
   fd.set("status", document.querySelector("#courseStatus").checked ? "true" : "false");
 
+  // Send request (multipart/form-data) — CSRF token included via header too
   fetch(form.action, {
     method: form.method,
     body: fd,
@@ -313,7 +329,7 @@ saveBtn.addEventListener("click", () => {
 });
 
 // ---------------- DOWNLOAD PDF ----------------
-// ---------------- DOWNLOAD PDF ----------------
+// (kept unchanged — omitted here for brevity if you prefer, but in your file leave as-is)
 const downloadBtn = document.querySelector("#downloadCourseBtn");
 downloadBtn.addEventListener("click", () => {
   const { jsPDF } = window.jspdf;
@@ -333,13 +349,11 @@ downloadBtn.addEventListener("click", () => {
     if (y > 750) { pdf.addPage(); y = 50; }
   };
 
-  // Title Page
   pdf.setFontSize(22);
   pdf.setFont("helvetica", "bold");
   pdf.text(title, pageWidth / 2, y, { align: "center" });
   addNewLine(3);
 
-  // Course Image
   if (courseImg) {
     try {
       const imgProps = pdf.getImageProperties(courseImg);
@@ -352,7 +366,6 @@ downloadBtn.addEventListener("click", () => {
     }
   }
 
-  // Overview
   if (overview) {
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "bold");
@@ -364,7 +377,6 @@ downloadBtn.addEventListener("click", () => {
     addNewLine(overview.split("\n").length + 1);
   }
 
-  // Requirements
   if (requirements) {
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "bold");
@@ -376,11 +388,9 @@ downloadBtn.addEventListener("click", () => {
     addNewLine(requirements.split("\n").length + 1);
   }
 
-  // Leave page for TOC (we will insert later)
   pdf.addPage();
   y = 50;
 
-  // Modules / Chapters / Questions
   modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach((modDiv, modIdx) => {
     const modTitle = modDiv.querySelector(".moduleTitle").value;
     const modulePage = pdf.getCurrentPageInfo().pageNumber;
@@ -392,7 +402,6 @@ downloadBtn.addEventListener("click", () => {
 
     toc.push({ title: `Module ${modIdx + 1}: ${modTitle}`, page: modulePage });
 
-    // Chapters
     const chapters = modDiv.querySelectorAll(".chaptersContainer > .border.p-3.mb-2.rounded.bg-white");
     chapters.forEach((chDiv, chIdx) => {
       const chTitle = chDiv.querySelector(".chapterTitle").value;
@@ -419,7 +428,6 @@ downloadBtn.addEventListener("click", () => {
       }
     });
 
-    // Questions
     const questions = modDiv.querySelectorAll(".questionsContainer > .border.p-3.mb-2.rounded.bg-white");
     questions.forEach((qDiv, qIdx) => {
       const type = qDiv.querySelector(".questionType").value;
@@ -437,7 +445,6 @@ downloadBtn.addEventListener("click", () => {
     addNewLine(2);
   });
 
-  // Insert TOC at page 2
   pdf.insertPage(2);
   pdf.setPage(2);
   y = 50;
@@ -454,6 +461,6 @@ downloadBtn.addEventListener("click", () => {
     addNewLine(1.5);
   });
 
-  pdf.setPage(1); // go back to title
+  pdf.setPage(1);
   pdf.save(`${title}.pdf`);
 });
