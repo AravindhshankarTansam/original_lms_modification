@@ -872,6 +872,49 @@ button:hover {
   margin: 0 10px 5px;
 }
 
+.catalog-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 0 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.left-btn { left: 0; }
+.right-btn { right: 0; }
+.catalog-dots {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #888;
+}
+.enroll-btn {
+    display: block;
+    margin: 10px;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.enroll-btn:hover {
+    background-color: #0056b3;
+}
+
+.stars {
+    margin: 5px 10px;
+    font-size: 0.85em;
+}
+
 .stars {
   color: #f5b50a;
   font-size: 0.9em;
@@ -927,9 +970,22 @@ button:hover {
   margin-top: 10px;
 }
 .catalog-scroll {
-  overflow: hidden; /* disable manual scroll */
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* allow scroll */
   scroll-behavior: smooth;
+  padding-bottom: 10px;
 }
+
+.catalog-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.catalog-scroll::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 4px;
+}
+
 
 .catalog-dots .dot {
   cursor: pointer;

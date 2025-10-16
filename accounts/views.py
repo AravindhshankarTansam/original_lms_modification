@@ -203,8 +203,11 @@ def user_logout(request):
 
 
 # dashboard
+@login_required
 def dashboard(request):
-    return render(request, 'accounts/user/dashboard.html')
+    courses = Course.objects.all()  # fetch all courses
+    return render(request, 'accounts/user/dashboard.html', {'courses': courses})
+
 
 
 @login_required

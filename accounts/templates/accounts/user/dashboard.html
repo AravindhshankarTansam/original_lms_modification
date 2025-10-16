@@ -199,38 +199,33 @@
 
     <!-- Catalog Carousel -->
     <section class="catalog-carousel">
-      <h3>Catalog</h3>
-      <div class="catalog-container">
-        <button class="catalog-btn left-btn">&#10094;</button>
+  <h3>Catalog</h3>
+  <div class="catalog-container">
+    
 
-        <div class="catalog-scroll">
-          <div class="catalog-card">
-            <img src="{% static 'images/course1.png' %}" alt="AI Course">
-            <h4>Artificial Intelligence (AI): Natural Language...</h4>
-            <p>Online Course</p>
-            <div class="stars">⭐ ⭐ ⭐ ⭐ ☆ <span>(1)</span></div>
-            <button class="enroll-btn">Enroll ➕</button>
-          </div>
-          <div class="catalog-card">
-            <img src="{% static 'images/course2.png' %}" alt="Offer Course">
-            <h4>$100M Offers: How To Make Offers...</h4>
-            <p>Online Course</p>
-            <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(2)</span></div>
-            <button class="enroll-btn">Enroll ➕</button>
-          </div>
-          <div class="catalog-card">
-            <img src="{% static 'images/course3.png' %}" alt=".NET Course">
-            <h4>.NET 8 Backend Bootcamp: DDD, CQRS...</h4>
-            <p>Online Course</p>
-            <div class="stars">⭐ ⭐ ⭐ ☆ ☆ <span>(1)</span></div>
-            <button class="enroll-btn">Enroll ➕</button>
-          </div>
-        </div>
-
-        <button class="catalog-btn right-btn">&#10095;</button>
+    <div class="catalog-scroll">
+      {% for course in courses %}
+      <div class="catalog-card">
+        {% if course.image %}
+          <img src="{{ course.image.url }}" alt="{{ course.title }}">
+        {% else %}
+          <img src="{% static 'images/default_course.png' %}" alt="Default Course Image">
+        {% endif %}
+        <h4>{{ course.title }}</h4>  <!-- Dynamic title -->
+        <p>Online Course</p>
+        <!-- <div class="stars">⭐ ⭐ ⭐ ⭐ ☆ <span>(1)</span></div> -->
+        <button class="enroll-btn">Enroll ➕</button>
       </div>
-      <div class="catalog-dots">● ● ● ● ●</div>
-    </section>
+      {% empty %}
+      <p style="text-align:center;">No courses available.</p>
+      {% endfor %}
+    </div>
+
+   
+  </div>
+ 
+</section>
+
 
     <!-- Personalized Journey -->
     <section class="personalized-journey">
@@ -272,5 +267,34 @@
       overlay.classList.remove('active');
     });
   </script>
+ <script>
+const scrollContainer = document.querySelector('.catalog-scroll');
+const scrollSpeed = 1; // pixels per frame, adjust speed as needed
+
+function autoScroll() {
+  scrollContainer.scrollLeft += scrollSpeed;
+
+  // Loop back to start when reaching the end
+  if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+    scrollContainer.scrollLeft = 0;
+  }
+
+  requestAnimationFrame(autoScroll);
+}
+
+// Start auto-scrolling
+autoScroll();
+
+// Optional: pause on hover
+scrollContainer.addEventListener('mouseenter', () => {
+  scrollContainer.dataset.paused = "true";
+});
+scrollContainer.addEventListener('mouseleave', () => {
+  scrollContainer.dataset.paused = "false";
+});
+</script>
+
+
 </body>
+
 </html>

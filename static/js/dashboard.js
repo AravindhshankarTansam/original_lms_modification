@@ -105,3 +105,24 @@ rightBtn.addEventListener('click', () => {
 
 // slider banner
 
+// --- Catalog auto-scroll ---
+const autoScrollInterval = 2500; // ms between moves (customize as needed)
+const autoScrollAmount = 300; // px per move (match button scroll)
+
+// Pause auto-scroll while hovered - improves UX
+let catalogIsHovered = false;
+scrollContainer.addEventListener('mouseenter', () => { catalogIsHovered = true; });
+scrollContainer.addEventListener('mouseleave', () => { catalogIsHovered = false; });
+
+setInterval(() => {
+  if (!catalogIsHovered) {
+    const nearEnd = scrollContainer.scrollLeft + scrollContainer.offsetWidth >= scrollContainer.scrollWidth - 10;
+    if (nearEnd) {
+      // If at end, loop to start
+      scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      // Otherwise scroll right
+      scrollContainer.scrollBy({ left: autoScrollAmount, behavior: 'smooth' });
+    }
+  }
+}, autoScrollInterval);
