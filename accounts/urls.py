@@ -15,6 +15,7 @@ urlpatterns = [
     # path('courses/play/', views.course_play, name='course_play'), 
     path('courses/play/<int:course_id>/', views.course_play, name='course_play')
 
+
     
 
 

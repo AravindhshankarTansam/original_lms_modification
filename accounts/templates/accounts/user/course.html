@@ -137,17 +137,19 @@
                   <div class="course-sub">{{ course.description|truncatechars:50 }}</div>
                 </div>
 
-                <div class="rating-row">
+                <!-- <div class="rating-row">
                   <div class="stars">
                     <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
                   </div>
                   <div class="rating-count">(0)</div>
-                </div>
+                </div> -->
 
                 <div class="card-actions">
-                  <button class="btn-enroll" onclick="location.href='{% url 'course_play' course.id %}'">
-                    Enroll <div class="plus">+</div>
-                  </button>
+                  {% if course.id %}
+                    <a href="{% url 'course_play' course.id %}" class="btn-enroll">
+                      Enroll <div class="plus">+</div>
+                    </a>
+                  {% endif %}
                 </div>
               </div>
             </div>

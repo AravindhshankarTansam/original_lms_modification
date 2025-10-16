@@ -287,9 +287,9 @@ def profile(request):
 
 @login_required
 def courses_catalog(request):
-    # Optionally fetch courses to pass to template
-    courses = Course.objects.all()  # or filtered, paginated, etc.
+    courses = Course.objects.all()
     return render(request, 'accounts/user/course.html', {'courses': courses})
+
 
 # @login_required
 # def course_play(request, id):
@@ -302,8 +302,8 @@ def courses_catalog(request):
 
 def catalog(request):
     courses = Course.objects.all()  # Fetch all courses
-    return render(request, 'courses/course.html', {'courses': courses})
+    return render(request, 'accounts/user/course.html', {'courses': courses})
 
 def course_play(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    return render(request, 'courses_play.html', {'course': course})
+    return render(request, 'accounts/user/course_play.html', {'course': course})
