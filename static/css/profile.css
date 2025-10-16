@@ -1,105 +1,143 @@
-/* Container */
-.profile-container {
-    display: flex;
-    max-width: 1200px;
-    margin: 40px auto;
-    gap: 30px;
-    font-family: 'Poppins', sans-serif;
-}
 
-/* Sidebar */
-.profile-sidebar {
-    flex: 0 0 250px; /* fixed width for sidebar */
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    text-align: center;
-}
 
-.profile-img-wrapper {
-    margin-bottom: 15px;
+.profile-card {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
 }
 
 .profile-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ddd;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
 }
 
-.profile-name {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 5px;
+.stats-box {
+  padding: 10px;
+  background-color: #f0f4ff;
+  border-radius: 12px;
 }
 
-.profile-email {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
+.stats-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #2a5bd7;
 }
 
-.profile-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.stats-label {
+  font-size: 0.85rem;
+  color: #555;
 }
 
-.btn-black {
-    display: block;
-    text-decoration: none;
-    background: #000;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: 0.3s;
+.profile-info div {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
 }
 
-.btn-black:hover {
-    background: #333;
+.btn-edit {
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 8px 20px;
 }
 
-/* Main Content */
-.profile-main {
-    flex: 1; /* fill remaining space */
+.tab-content {
+  margin-top: 20px;
 }
 
-.learning-path-card {
-    position: relative;
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    text-align: center;
+.security-card {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.learning-path-card h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
+.change-password-alert {
+  background-color: #e7f1ff;
+  color: #084298;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
 }
 
-.learning-path-card p {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 20px;
+.table th, .table td {
+  vertical-align: middle;
 }
 
-.learning-path-card .badge-new {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: red;
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 3px 6px;
-    border-radius: 4px;
+.progress {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  height: 6px;
 }
 
-.learning-path-card .btn-black {
-    padding: 10px 20px;
-    font-weight: bold;
+.progress-bar {
+  border-radius: 8px;
+}
+
+.modal-content {
+  border-radius: 14px;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+input.form-control, select.form-select {
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.btn-outline-secondary {
+  border-radius: 10px;
+}
+
+
+/* breadcrumbs */
+
+/* Unique Breadcrumb Design */
+.breadcrumb-custom {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #6c757d;
+  background: #f8f9fc;
+  padding: 10px 14px 14px 14px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e2e6ea; /* 👈 Adds horizontal line */
+}
+
+
+.breadcrumb-custom svg {
+  stroke: #7f8c8d;
+}
+
+.breadcrumb-custom a {
+  text-decoration: none;
+  color: #2a5bd7;
+  transition: color 0.2s;
+}
+
+.breadcrumb-custom a:hover {
+  color: #1c3faa;
+  text-decoration: underline;
+}
+
+.breadcrumb-custom .breadcrumb-separator {
+  color: #adb5bd;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+.breadcrumb-custom span:last-child {
+  color: #212529;
+  font-weight: 600;
 }

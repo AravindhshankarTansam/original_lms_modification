@@ -17,17 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   autoSlide();
 
-  leftBtn.addEventListener('click', () => {
-    scrollAmount -= panelWidth;
-    if (scrollAmount < 0) scrollAmount = slider.scrollWidth - slider.clientWidth;
-    slider.scrollLeft = scrollAmount;
-  });
+leftBtn.addEventListener('click', () => {
+  scrollAmount = slider.scrollLeft;
+  scrollAmount -= panelWidth;
+  if (scrollAmount < 0) scrollAmount = slider.scrollWidth - slider.clientWidth;
+  slider.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+});
 
-  rightBtn.addEventListener('click', () => {
-    scrollAmount += panelWidth;
-    if (scrollAmount > slider.scrollWidth - slider.clientWidth) scrollAmount = 0;
-    slider.scrollLeft = scrollAmount;
-  });
+rightBtn.addEventListener('click', () => {
+  scrollAmount = slider.scrollLeft;
+  scrollAmount += panelWidth;
+  if (scrollAmount > slider.scrollWidth - slider.clientWidth) scrollAmount = 0;
+  slider.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+});
+
 
   /* ---------- CATALOG CAROUSEL ---------- */
   const catalogScroll = document.querySelector('.catalog-scroll');
@@ -102,28 +105,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // slider banner
 
-document.addEventListener('DOMContentLoaded', () => {
-  const slider = document.querySelector('.main-content-slider');
-  const leftBtn = document.querySelector('.left-btn');
-  const rightBtn = document.querySelector('.right-btn');
-
-  const slideWidth = slider.querySelector('.panel').offsetWidth; // width of one panel
-  let currentIndex = 0;
-
-  // Number of panels (you can adjust this if you add more slides)
-  const totalSlides = slider.querySelectorAll('.panel').length;
-
-  leftBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      slider.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
-    }
-  });
-
-  rightBtn.addEventListener('click', () => {
-    if (currentIndex < totalSlides - 1) {
-      currentIndex++;
-      slider.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
-    }
-  });
-});
