@@ -204,21 +204,26 @@
     
 
     <div class="catalog-scroll">
-      {% for course in courses %}
-      <div class="catalog-card">
-        {% if course.image %}
-          <img src="{{ course.image.url }}" alt="{{ course.title }}">
-        {% else %}
-          <img src="{% static 'images/default_course.png' %}" alt="Default Course Image">
-        {% endif %}
-        <h4>{{ course.title }}</h4>  <!-- Dynamic title -->
-        <p>Online Course</p>
-        <!-- <div class="stars">⭐ ⭐ ⭐ ⭐ ☆ <span>(1)</span></div> -->
-        <button class="enroll-btn">Enroll ➕</button>
-      </div>
-      {% empty %}
-      <p style="text-align:center;">No courses available.</p>
-      {% endfor %}
+    {% for course in courses %}
+<div class="catalog-card">
+    {% if course.image %}
+        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+    {% else %}
+        <img src="{% static 'images/default_course.png' %}" alt="Default Course Image">
+    {% endif %}
+    <h4>{{ course.title }}</h4>
+    <p>Online Course</p>
+
+    <form action="{% url 'enroll_course' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="course_id" value="{{ course.id }}">
+        <button type="submit" class="enroll-btn">Enroll ➕</button>
+    </form>
+</div>
+{% empty %}
+<p style="text-align:center;">No courses available.</p>
+{% endfor %}
+
     </div>
 
    
