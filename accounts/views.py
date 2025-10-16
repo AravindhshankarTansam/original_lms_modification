@@ -297,5 +297,13 @@ def courses_catalog(request):
 #     return render(request, 'accounts/user/course_play.html', {'course': course})
 
 
-def course_play(request):
-    return render(request, 'accounts/user/course_play.html')
+# def course_play(request):
+    # return render(request, 'accounts/user/course_play.html')
+
+def catalog(request):
+    courses = Course.objects.all()  # Fetch all courses
+    return render(request, 'courses/course.html', {'courses': courses})
+
+def course_play(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'courses_play.html', {'course': course})
