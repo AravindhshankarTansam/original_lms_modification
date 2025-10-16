@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -14,9 +15,6 @@ def course_table(request):
     return render(request, 'courses/course_table.html', {'courses': courses})
 
 
-from django.shortcuts import redirect, get_object_or_404
-from .models import Course
-
 def delete_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     course.delete()
@@ -26,7 +24,10 @@ def delete_course(request, course_id):
 @role_required('admin')
 @login_required
 def list_courses(request):
-    """List all courses and send JSON data to template"""
+    """List all courses and send JSON data to template
+
+    NOTE: includes chapter file_url so frontend can show/keep existing files.
+    """
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     data = []
 
@@ -47,6 +48,7 @@ def list_courses(request):
                             "title": ch.title,
                             "desc": ch.description,
                             "type": ch.material_type,
+                            "file_url": ch.material_file.url if getattr(ch, "material_file", None) and ch.material_file else ""
                         } for ch in m.chapters.all()
                     ],
                     "questions": [
@@ -72,6 +74,9 @@ def list_courses(request):
 @role_required('admin')
 @login_required
 def create_or_update_course(request, course_id=None):
+    """Create or update a course. Supports uploading chapter files in request.FILES with keys:
+       material_<module_index>_<chapter_index>
+    """
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -81,7 +86,7 @@ def create_or_update_course(request, course_id=None):
         modules_json = request.POST.get('modules_json')
         image = request.FILES.get('image')
 
-        # If course_id exists, edit; else create new
+        # If editing, fetch existing course else create new
         if course_id:
             course = get_object_or_404(Course, id=course_id)
         else:
@@ -96,37 +101,77 @@ def create_or_update_course(request, course_id=None):
             course.image = image
         course.save()
 
-        # Clear existing modules if editing
+        # We'll remove existing modules and recreate them.
+        # To preserve existing chapter files when the frontend didn't upload a new file,
+        # frontend should send file_url for existing ones (we included that in list_courses).
         if course_id:
+            # delete old module/chapter/question records (files on disk remain)
             course.modules.all().delete()
+
         try:
             modules_data = json.loads(modules_json or '[]')
-            for m in modules_data:
-                module = Module.objects.create(course=course, title=m.get('title', ''))
-                for ch in m.get('chapters', []):
-                    Chapter.objects.create(
-                        module=module,
-                        title=ch.get('title', ''),
-                        description=ch.get('desc', ''),
-                        material_type=ch.get('type', None)
-                    )
-                for q in m.get('questions', []):
-                    Question.objects.create(
-                        module=module,
-                        question_type=q.get('type', 'short'),
-                        question_text=q.get('qText', ''),
-                        correct_answer=q.get('cAns', ''),
-                        option1=q.get('option1', ''),
-                        option2=q.get('option2', ''),
-                        option3=q.get('option3', ''),
-                        option4=q.get('option4', ''),
-                    )
         except Exception as e:
             print("Error parsing modules JSON:", e)
+            modules_data = []
+
+        # Iterate with indexes so we can match request.FILES keys
+        for m_idx, m in enumerate(modules_data):
+            module = Module.objects.create(course=course, title=m.get('title', '') or '')
+            for c_idx, ch in enumerate(m.get('chapters', [])):
+                # file key in request.FILES if user uploaded a new file for this chapter
+                file_field_name = f'material_{m_idx}_{c_idx}'
+                uploaded_file = request.FILES.get(file_field_name)
+
+                # Create chapter without file first, then attach file or preserve existing URL if necessary
+                chapter = Chapter.objects.create(
+                    module=module,
+                    title=ch.get('title', '') or '',
+                    description=ch.get('desc', '') or '',
+                    material_type=ch.get('type') or None
+                )
+
+                if uploaded_file:
+                    # A brand new file uploaded for this chapter
+                    chapter.material_file = uploaded_file
+                    chapter.save()
+                else:
+                    # No new file uploaded; backend will preserve existing file if frontend provided file_url
+                    file_url = ch.get('file_url') or ""
+                    if file_url:
+                        # Try to convert absolute URL to relative path inside MEDIA_ROOT
+                        media_url = settings.MEDIA_URL
+                        # If MEDIA_URL is absolute (with domain) this still works for splitting; try safe methods
+                        if file_url.startswith(media_url):
+                            relative_path = file_url[len(media_url):]
+                        else:
+                            # Try to find MEDIA_URL inside the url
+                            idx = file_url.find(media_url)
+                            if idx != -1:
+                                relative_path = file_url[idx + len(media_url):]
+                            else:
+                                # fallback: if file_url is absolute, try to extract path after last '/'
+                                relative_path = file_url.split('/')[-1]
+                        # Assign the stored path to the FileField name so Django knows where the file is
+                        # Only assign if relative_path looks reasonable
+                        chapter.material_file.name = relative_path
+                        chapter.save()
+                    # else: no file_url and no upload -> leave material_file as null
+
+            for q in m.get('questions', []):
+                Question.objects.create(
+                    module=module,
+                    question_type=q.get('type', 'short'),
+                    question_text=q.get('qText', ''),
+                    correct_answer=q.get('cAns', ''),
+                    option1=q.get('option1', ''),
+                    option2=q.get('option2', ''),
+                    option3=q.get('option3', ''),
+                    option4=q.get('option4', ''),
+                )
 
         return redirect('list_courses')
 
-    # GET request: fetch courses to populate template
+    # GET request: fetch courses to populate template (same as list_courses)
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     data = []
     for c in courses_qs:
@@ -146,6 +191,7 @@ def create_or_update_course(request, course_id=None):
                             "title": ch.title,
                             "desc": ch.description,
                             "type": ch.material_type,
+                            "file_url": ch.material_file.url if getattr(ch, "material_file", None) and ch.material_file else ""
                         } for ch in m.chapters.all()
                     ],
                     "questions": [
@@ -162,7 +208,7 @@ def create_or_update_course(request, course_id=None):
                 } for m in c.modules.all()
             ]
         })
-        
+
     return render(request, 'courses/create_course.html', {
         'courses_json': json.dumps(data, ensure_ascii=False)
     })

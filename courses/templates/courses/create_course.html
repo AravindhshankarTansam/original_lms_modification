@@ -4,7 +4,6 @@
 {% block content %}
 <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
 
 <div class="container-fluid">
@@ -21,7 +20,7 @@
         <input type="hidden" id="courseId" name="course_id">
         <input type="hidden" id="modulesJson" name="modules_json">
 
-        <!-- 🔹 COURSE DETAILS (2x2 Layout) -->
+        <!-- 🔹 COURSE DETAILS -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white fw-semibold">Course Details</div>
             <div class="card-body">
@@ -38,7 +37,7 @@
                         <input type="file" class="form-control" id="courseImage" name="image" accept=".jpg,.jpeg,.png">
                         <small class="text-muted d-block mt-1">Only JPG, JPEG, PNG formats allowed.</small>
                         <div class="mt-2">
-                            <img id="imagePreview" src="" alt="Course Image Preview" class="img-thumbnail d-none" style="max-width: 300px;">
+                            <img id="imagePreview" src="" alt="Course Image Preview" class="img-thumbnail d-none">
                             <div id="existingImageLink" class="mt-2"></div>
                         </div>
                     </div>
@@ -64,14 +63,14 @@
             </div>
         </div>
 
-        <!-- 🔹 MODULES SECTION (Dynamic 2x2 Layout) -->
+        <!-- 🔹 MODULES SECTION -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-secondary text-white fw-semibold d-flex justify-content-between align-items-center">
                 Modules
                 <button type="button" id="addModuleBtn" class="btn btn-light btn-sm fw-semibold">+ Add Module</button>
             </div>
             <div class="card-body" id="modulesContainer">
-                <!-- Modules dynamically added here via JS -->
+                <!-- Modules dynamically injected via JS -->
             </div>
         </div>
 
@@ -92,124 +91,42 @@
     </form>
 </div>
 
-<!-- ✨ STYLES ✨ -->
+<!-- ✨ PROFESSIONAL STYLES -->
 <style>
-/* --- Layout & Card Design --- */
-.page-header {
-  background: #f8f9fa;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #e3e3e3;
-}
+.page-header { background: #f8f9fa; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid #e3e3e3; }
+.card { border: none; border-radius: 10px; overflow: hidden; }
+.card-header { font-size: 1.1rem; letter-spacing: 0.3px; }
+.card-body { padding: 2rem; background: #fff; }
+.course-grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2rem; }
+.course-grid-2x2 .form-group { display: flex; flex-direction: column; }
+.course-grid-2x2 .form-group.full-width { grid-column: 1 / 3; }
 
-.card {
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
-}
+#modulesContainer { background: #fafafa; padding: 1rem; border-radius: 8px; border: 1px dashed #ddd; }
+.module-card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+.module-card:hover { transform: translateY(-2px); }
 
-.card-header {
-  font-size: 1.1rem;
-  letter-spacing: 0.3px;
-}
+.chapter-card, .question-card { background: #ffffff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 15px; margin-bottom: 12px; }
 
-.card-body {
-  padding: 2rem;
-  background: #fff;
-}
+.module-grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2rem; }
+.module-grid-2x2 .form-group { display: flex; flex-direction: column; }
+.module-grid-2x2 .form-group.full-width { grid-column: 1 / 3; }
 
-/* Grid Layout (2x2 for Course Details) */
-.course-grid-2x2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem 2rem;
-}
+.form-control { border-radius: 6px; padding: 0.6rem 0.9rem; border: 1px solid #ccc; }
+.form-label { margin-bottom: 0.5rem; }
+.quill-editor { height: 150px; border: 1px solid #ced4da; border-radius: 6px; background: #fff; }
 
-.course-grid-2x2 .form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.course-grid-2x2 .form-group.full-width {
-  grid-column: 1 / 3;
-}
-
-/* --- MODULES --- */
-#modulesContainer {
-  background: #fafafa;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px dashed #ddd;
-}
-
-.module-block {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.module-grid-2x2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem 2rem;
-}
-
-.module-grid-2x2 .form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.module-grid-2x2 .form-group.full-width {
-  grid-column: 1 / 3;
-}
-
-/* Inputs */
-.form-control {
-  border-radius: 6px;
-  padding: 0.6rem 0.9rem;
-  border: 1px solid #ccc;
-}
-
-.form-label {
-  margin-bottom: 0.5rem;
-}
-
-/* Quill Editor */
-.quill-editor {
-  height: 150px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  background: #fff;
-}
-
-/* Buttons */
-.btn {
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
-}
-
+.btn { border-radius: 6px; padding: 0.5rem 1.2rem; }
 .btn-success { background-color: #28a745; border: none; }
 .btn-danger { background-color: #dc3545; border: none; }
 .btn-secondary { background-color: #6c757d; border: none; }
-.btn-outline-danger { border: 1px solid #dc3545; color: #dc3545; }
 
-/* Image Preview */
-.img-thumbnail {
-  border-radius: 6px;
-  margin-top: 0.5rem;
-}
+.img-thumbnail { border-radius: 6px; margin-top: 0.5rem; max-width: 250px; }
+.existingMaterial a { display: inline-flex; align-items: center; gap: 6px; color: #0d6efd; text-decoration: none; font-weight: 500; }
+.existingMaterial a:hover { text-decoration: underline; }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .course-grid-2x2,
-  .module-grid-2x2 {
-    grid-template-columns: 1fr;
-  }
-}
+.material-preview img, .material-preview video { max-width: 250px; max-height: 180px; border-radius: 5px; margin-top: 8px; }
 
-/* Extra styling from second template */
+@media (max-width: 768px) { .course-grid-2x2, .module-grid-2x2 { grid-template-columns: 1fr; } }
 .bg-light, .bg-white { border: 1px solid #dee2e6; }
 </style>
 
