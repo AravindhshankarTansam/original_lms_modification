@@ -105,3 +105,101 @@ rightBtn.addEventListener('click', () => {
 
 // slider banner
 
+document.addEventListener('DOMContentLoaded', () => {
+  const carousel = document.querySelector('.flex.space-x-4.overflow-x-auto');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  // Enable dragging to scroll horizontally
+  carousel.addEventListener('mousedown', (e) => {
+    isDown = true;
+    carousel.classList.add('active');
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+  });
+  carousel.addEventListener('mouseleave', () => {
+    isDown = false;
+    carousel.classList.remove('active');
+  });
+  carousel.addEventListener('mouseup', () => {
+    isDown = false;
+    carousel.classList.remove('active');
+  });
+  carousel.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2; //scroll-fast
+    carousel.scrollLeft = scrollLeft - walk;
+  });
+
+  // Optional: Keyboard navigation for accessibility
+  carousel.setAttribute('tabindex', '0');
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      carousel.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+    if (e.key === 'ArrowLeft') {
+      carousel.scrollBy({ left: -200, behavior: 'smooth' });
+    }
+  });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const carousel = document.getElementById('courseCarousel');
+  const btnPrev = document.getElementById('carouselPrev');
+  const btnNext = document.getElementById('carouselNext');
+  const scrollAmount = 300;
+
+  // Left/right button scrolling
+  btnPrev.addEventListener('click', () => {
+    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+
+  btnNext.addEventListener('click', () => {
+    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  // Drag to scroll
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  carousel.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+    carousel.classList.add('active');
+  });
+
+  carousel.addEventListener('mouseleave', () => {
+    isDown = false;
+    carousel.classList.remove('active');
+  });
+
+  carousel.addEventListener('mouseup', () => {
+    isDown = false;
+    carousel.classList.remove('active');
+  });
+
+  carousel.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust drag speed
+    carousel.scrollLeft = scrollLeft - walk;
+  });
+
+  // Optional: Keyboard navigation
+  carousel.setAttribute('tabindex', '0');
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    } else if (e.key === 'ArrowLeft') {
+      carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  });
+});
