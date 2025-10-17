@@ -1,0 +1,63 @@
+{% extends "accounts/admin/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient bg-primary text-white text-center py-3 rounded-top-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-folder-plus me-2"></i> Add Category & Subcategory
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'category' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Category Input -->
+                        <div class="mb-4">
+                            <label for="category_name" class="form-label fw-semibold">
+                                <i class="bi bi-folder me-2 text-primary"></i>Category
+                            </label>
+                            <input 
+                                type="text" 
+                                name="category_name" 
+                                id="category_name" 
+                                class="form-control form-control-lg border-primary-subtle shadow-sm" 
+                                placeholder="Enter category name" 
+                                required>
+                        </div>
+
+                        <!-- Subcategory Input -->
+                        <div class="mb-4">
+                            <label for="subcategory_name" class="form-label fw-semibold">
+                                <i class="bi bi-diagram-3 me-2 text-success"></i>Subcategory
+                            </label>
+                            <input 
+                                type="text" 
+                                name="subcategory_name" 
+                                id="subcategory_name" 
+                                class="form-control form-control-lg border-success-subtle shadow-sm" 
+                                placeholder="Enter subcategory name">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg fw-semibold shadow-sm">
+                                <i class="bi bi-plus-circle me-2"></i> Add
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-light py-3 rounded-bottom-4">
+                    <small class="text-muted">
+                        Add or manage your course categories easily.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

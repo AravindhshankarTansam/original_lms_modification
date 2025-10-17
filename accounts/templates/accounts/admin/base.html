@@ -41,6 +41,13 @@
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'create_course' %}active{% endif %}" href="{{ create_course_url }}">Create Course</a>
         </li>
+ <li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'category' %}active{% endif %}" 
+     href="{% url 'category' %}">Category</a>
+</li>
+
+
+
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'manage_assessments' %}active{% endif %}" href="{{ manage_assessments_url }}">Manage Assessments</a>
         </li>

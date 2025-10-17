@@ -63,3 +63,27 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_text
+
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)  # Category name
+    icon = models.CharField(max_length=100, blank=True, null=True)  # Optional icon class for frontend
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='subcategories'
+    )
+    name = models.CharField(max_length=255)  # SubCategory name
+
+    class Meta:
+        unique_together = ('category', 'name')  # Ensure no duplicates in a category
+
+    def __str__(self):
+        return f"{self.category.name} -> {self.name}"
