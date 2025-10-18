@@ -233,3 +233,139 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* 
+
+sidebar menu */
+/* Sidebar styles */
+/* Sidebar - RIGHT aligned */
+
+
+/* ========================= */
+/* Responsive Media Queries  */
+/* ========================= */
+
+/* Mobile-first: small phones (320px) */
+@media (max-width: 320px) {
+  .course-thumb { height: 100px; }
+  .hero { font-size: 18px; height: 100px; padding-left: 10px; }
+  .course-title { font-size: 12px; }
+  .course-sub { font-size: 10px; }
+}
+
+/* Small phones (375px) */
+@media (min-width: 321px) and (max-width: 375px) {
+  .course-thumb { height: 100px; }
+  .hero { font-size: 19px; height: 105px; padding-left: 12px; }
+  .course-title { font-size: 12px; }
+}
+
+/* Medium small phones (420px) */
+@media (min-width: 376px) and (max-width: 420px) {
+  .course-thumb { height: 110px; }
+  .hero { font-size: 20px; height: 110px; padding-left: 15px; }
+}
+
+/* Large small phones / phablets (475px) */
+@media (min-width: 421px) and (max-width: 475px) {
+  .course-thumb { height: 115px; }
+  .hero { font-size: 21px; height: 115px; }
+}
+
+/* Tablets (768px) */
+@media (min-width: 476px) and (max-width: 1023px) {
+  .course-thumb { height: 120px; }
+  .hero { font-size: 22px; height: 120px; }
+  .course-title { font-size: 13px; }
+  .course-sub { font-size: 11px; }
+}
+
+/* Desktop (1024px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .course-thumb { height: 130px; }
+  .hero { font-size: 24px; height: 130px; }
+}
+
+/* Large desktop (1440px) */
+@media (min-width: 1440px) and (max-width: 2369px) {
+  .course-thumb { height: 140px; }
+  .hero { font-size: 26px; height: 140px; }
+}
+
+/* Ultra wide screens (2370px and above) */
+@media (min-width: 2370px) {
+  .course-thumb { height: 160px; }
+  .hero { font-size: 28px; height: 160px; }
+}
+
+/* Responsive cards layout (flex grid) */
+.cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Mobile: full width */
+.cards-row > div {
+  flex: 0 0 100%;
+}
+
+/* Small phones 375px+ */
+@media (min-width: 375px) {
+  .cards-row > div { flex: 0 0 48%; }
+}
+
+/* Medium small phones 420px+ */
+@media (min-width: 420px) {
+  .cards-row > div { flex: 0 0 48%; }
+}
+
+/* Phablets 475px+ */
+@media (min-width: 475px) {
+  .cards-row > div { flex: 0 0 45%; }
+}
+
+/* Tablets / small desktops 768px+ */
+@media (min-width: 768px) {
+  .cards-row > div { flex: 0 0 32%; }
+}
+
+/* Desktop 1024px+ */
+@media (min-width: 1024px) {
+  .cards-row > div { flex: 0 0 24%; }
+}
+
+/* Large desktop 1440px+ */
+@media (min-width: 1440px) {
+  .cards-row > div { flex: 0 0 18%; }
+}
+
+/* Ultra wide screens 2370px+ */
+@media (min-width: 2370px) {
+  .cards-row > div { flex: 0 0 12%; }
+}
+
+
+/* ======================= */
+/* Course Card Hover Effect */
+/* ======================= */
+
+.course-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-6px) scale(1.03); /* Slight lift and zoom */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Bigger shadow */
+}
+
+/* Optional: subtle image zoom inside card */
+.course-card .course-thumb {
+  transition: transform 0.3s ease;
+}
+
+.course-card:hover .course-thumb {
+  transform: scale(1.05);
+}
+
+
