@@ -241,3 +241,18 @@
       showSlide(index);
     }, 5000);
   }
+
+document.querySelectorAll('.faq-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const targetSelector = button.getAttribute('data-bs-target');
+    const content = document.querySelector(targetSelector);
+
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      button.setAttribute('aria-expanded', 'false');
+    } else {
+      content.style.display = 'block';
+      button.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
