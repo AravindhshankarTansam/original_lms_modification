@@ -180,31 +180,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const enrollButtons = document.querySelectorAll(".btn-enroll");
+document.addEventListener('DOMContentLoaded', function () {
+  const enrollButtons = document.querySelectorAll('.btn-enroll');
+  const enrollToastEl = document.getElementById('enrollToast');
+  const toast = new bootstrap.Toast(enrollToastEl, { autohide: false }); // we'll control hide manually
 
   enrollButtons.forEach(button => {
-    button.addEventListener("click", function () {
+    button.addEventListener('click', function () {
       if (button.disabled) return;
 
+      const courseUrl = button.getAttribute('data-url');
+
+      // Show toast first
+      toast.show();
+
+      // Auto-hide toast after 2 seconds
+      setTimeout(() => {
+        toast.hide();
+      }, 2000);
+
+      // Continue enroll button logic
       button.disabled = true;
       button.innerHTML = "Enrolling...";
 
       setTimeout(() => {
         // Update button to "Start" and enable it
-        const courseUrl = button.getAttribute("data-url"); // ✅ get URL from HTML
         button.innerHTML = 'Start <div class="plus">▶</div>';
-        button.classList.remove("btn-enroll");
-        button.classList.add("btn-start");
+        button.classList.remove('btn-enroll');
+        button.classList.add('btn-start');
         button.disabled = false;
 
-        // Redirect to course play page when clicked
-        button.addEventListener("click", function () {
+        // Redirect to course play page on click
+        button.addEventListener('click', function () {
           if (courseUrl) {
             window.location.href = courseUrl;
           }
-        }, { once: true }); // only run once
+        }, { once: true });
+
       }, 550); // mimic enroll delay
     });
   });
 });
+
