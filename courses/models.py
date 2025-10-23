@@ -27,6 +27,7 @@ class Course(models.Model):
     requirements = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=[('Active','Active'),('Inactive','Inactive')], default='Active')
     image = models.ImageField(upload_to='course_images/', blank=True, null=True)
+    category_names = models.TextField(blank=True, null=True) 
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role':'admin'})
     students = models.ManyToManyField(User, related_name='enrolled_courses', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -38,6 +38,7 @@ def list_courses(request):
             "id": c.id,
             "title": c.title,
             "status": c.status or "Inactive",
+            "category_name": category_ids, 
             "description": c.description or "",
             "overview": c.overview or "",
             "requirements": c.requirements or "",
@@ -86,6 +87,7 @@ def create_or_update_course(request, course_id=None):
         overview = request.POST.get('overview')
         requirements = request.POST.get('requirements')
         status = 'Active' if request.POST.get('status') == 'true' else 'Inactive'
+        category_name = request.POST.get('category')  # Matches HTML field name
         modules_json = request.POST.get('modules_json')
         image = request.FILES.get('image')
 
@@ -100,8 +102,11 @@ def create_or_update_course(request, course_id=None):
         course.overview = overview
         course.requirements = requirements
         course.status = status
+        course.category_names = category_name 
         if image:
             course.image = image
+        category_ids = request.POST.getlist('category')  # get all selected IDs as list
+        course.category_names = json.dumps(category_ids)  # store as JSON string
         course.save()
 
         # We'll remove existing modules and recreate them.
