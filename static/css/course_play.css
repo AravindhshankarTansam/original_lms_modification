@@ -297,7 +297,6 @@ html, body {
 
 
 /* for video chapters  */
-
 .lesson-container {
   text-align: center;
 }
@@ -320,3 +319,6 @@ html, body {
   border-radius: 10px;
   border: 2px solid #e5e5e5;
 }
+
+/* Bootstrap's d-none is display:none !important, so no need to redefine */
+

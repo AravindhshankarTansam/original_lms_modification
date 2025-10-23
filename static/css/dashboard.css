@@ -380,20 +380,55 @@ button:hover {
   border-radius: 6px;
   animation: fadeIn 1s ease-out;
 }
+/* FAQ Buttons with arrow icons */
 .faq-btn {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin: 5px 0;
-  padding: 10px;
+  margin: 8px 0;
+  padding: 12px 16px;
   background: #6b7c97;
   color: white;
   border: none;
-  text-align: left;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
   transition: background 0.3s ease;
 }
+
 .faq-btn:hover {
-  background: #444;
+  background: #4a5870;
 }
+
+.faq-btn i.bi-chevron-down {
+  transition: transform 0.3s ease;
+  font-size: 1.25rem;
+}
+
+/* Rotate the arrow icon when expanded */
+.faq-btn[aria-expanded="true"] i.bi-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* Collapsible content container */
+.collapse .card-body {
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  border-top: none;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 0 0 6px 6px;
+  font-size: 0.95rem;
+  color: #333;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+}
+.collapse {
+  display: none; /* All collapse content is hidden by default */
+}
+
+
 .catalog-banner {
   flex: 1;
   background: black url("../images/Developer.png") center/cover no-repeat; /* ✅ Update path & style */
@@ -2111,3 +2146,7 @@ arrow for my learning courses */
     max-width: 33.3333%;
   }
 }
+
+
+
+
