@@ -30,6 +30,8 @@ def list_courses(request):
     """
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     data = []
+    categories = Category.objects.all()
+
 
     for c in courses_qs:
         data.append({
@@ -67,7 +69,8 @@ def list_courses(request):
         })
 
     return render(request, 'courses/create_course.html', {
-        'courses_json': json.dumps(data, ensure_ascii=False)
+        'courses_json': json.dumps(data, ensure_ascii=False),
+        'categories': categories
     })
 
 
@@ -173,6 +176,7 @@ def create_or_update_course(request, course_id=None):
 
     # GET request: fetch courses to populate template (same as list_courses)
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
+    categories = Category.objects.all()
     data = []
     for c in courses_qs:
         data.append({
@@ -210,7 +214,9 @@ def create_or_update_course(request, course_id=None):
         })
 
     return render(request, 'courses/create_course.html', {
-        'courses_json': json.dumps(data, ensure_ascii=False)
+        'courses_json': json.dumps(data, ensure_ascii=False),
+        'categories': categories
+        
     })
 
 def course_categories(request):
