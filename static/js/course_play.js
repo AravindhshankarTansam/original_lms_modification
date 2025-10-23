@@ -78,3 +78,72 @@ document.addEventListener("DOMContentLoaded", function () {
 // });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("lessonVideo");
+  const menuButton = document.getElementById("menuButton");
+  const menuDropdown = document.getElementById("menuDropdown");
+  const pipMode = document.getElementById("pipMode");
+  const speedSelect = document.getElementById("speedSelect");
+
+  // Toggle dropdown visibility
+  menuButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuDropdown.classList.toggle("d-none");
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
+      menuDropdown.classList.add("d-none");
+    }
+  });
+
+  // Picture-in-Picture toggle
+  pipMode.addEventListener("click", async () => {
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else {
+        await video.requestPictureInPicture();
+      }
+    } catch (err) {
+      console.error("PiP not supported:", err);
+    }
+    menuDropdown.classList.add("d-none");
+  });
+
+  // Playback speed control
+  speedSelect.addEventListener("change", () => {
+    video.playbackRate = parseFloat(speedSelect.value);
+  });
+
+
+  // --- Chapter logic (unlock next, change video) ---
+  const chapters = document.querySelectorAll('input[name="chapter"]');
+  const chapterVideos = {
+    1: "network_segmentation_intro.mp4",
+    2: "access_control.mp4",
+    4: "advanced_threats.mp4"
+  };
+
+  chapters.forEach((chapter, index) => {
+    chapter.addEventListener('change', () => {
+      const chapterNum = chapter.getAttribute('data-chapter');
+      const videoFile = chapterVideos[chapterNum];
+      if (videoFile) {
+        video.pause();
+        video.currentTime = 0;
+        video.querySelector("source").src = `/static/videos/${videoFile}`;
+        video.load();
+        video.play();
+      }
+
+      const nextChapter = chapters[index + 1];
+      if (nextChapter) {
+        const nextBlock = nextChapter.closest('.chapter-block');
+        nextChapter.disabled = false;
+        nextBlock.classList.remove('locked');
+      }
+    });
+  });
+});

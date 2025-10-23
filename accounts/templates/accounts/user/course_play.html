@@ -36,40 +36,40 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
 
 <div class="main-container">
   <!-- ===== VIDEO SECTION ===== -->
-  <div class="video-section">
-    <div class="main-card position-relative">
-      <div class="red-arrow"></div>
-      <div class="content-wrapper">
-<div class="logo">
-  <div class="box">M</div>
-  <div class="box">D</div>
-  <div class="logo-text ms-2">Learn</div>
-</div>
-<div class="course-code">CA-SMM201 - Operational Defense &amp; Incident Management</div>
-<div class="course-title">Network Segmentation &amp; Access Control</div>
 
-<!-- Video always visible, no start button -->
-<div class="video-wrapper mt-3">
-  <video id="lessonVideo" width="100%" controls preload="metadata">
+  <!-- ===== VIDEO SECTION ===== -->
+  <div class="video-section">
+<div class="video-container text-center position-relative">
+  <video 
+    id="lessonVideo"
+    controls
+    preload="metadata"
+    controlsList="nodownload" 
+    oncontextmenu="return false;"
+  >
     <source src="{% static 'videos/network_segmentation.mp4' %}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-</div>
 
-<div class="bottom-icons" title="Audio and Settings">
-  <!-- SVG Icons -->
-  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M11.536 14.01a.5.5 0 0 0 .708-.705l-3.182-3.182a.5.5 0 0 0-.708.707l3.182 3.18zm-5.52-4.21a.5.5 0 0 0 .708-.707l-3.18-3.182a.5.5 0 0 0-.706.706l3.178 3.182z"/>
-    <path fill-rule="evenodd" d="M10 2a.5.5 0 0 1 .5.5v9.793l3.146-3.147a.5.5 0 1 1 .708.708l-4 4a.498.498 0 0 1-.708 0l-4-4a.5.5 0 1 1 .708-.708L9.5 12.293V2.5A.5.5 0 0 1 10 2z"/>
-  </svg>
-  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M8 3a5 5 0 0 0-5 5v1a2 2 0 0 0-1 1.732V12h12v-1.268a2 2 0 0 0-1-1.732v-1a5 5 0 0 0-5-5z"/>
-    <path d="M5 12v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v1H4v-1h1z"/>
-  </svg>
-</div>
-
+  <!-- Custom 3-dot settings menu -->
+  <div class="video-menu position-absolute">
+    <button id="menuButton" class="menu-btn">⋮</button>
+    <div id="menuDropdown" class="menu-dropdown d-none">
+      <div class="menu-item" id="pipMode">📺 Picture-in-Picture</div>
+      <div class="menu-item">
+        <label for="speedSelect" class="menu-label">🎞 Playback Speed</label>
+        <select id="speedSelect" class="menu-select">
+          <option value="0.75">0.75x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.25">1.25x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- ===== TABS ===== -->
   <ul class="nav nav-tabs" id="courseTab" role="tablist">
