@@ -1,243 +1,60 @@
-/* Reset & basics */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body, html {
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f2f4f7;
-    color: #333;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 100vh;
-    background-color: #00569a;
-    box-shadow: 2px 0 6px rgba(0,0,0,0.1);
-    z-index: 100;
-  }
-  
-  /* Main content */
-  .main-content {
-    margin-left: 60px;
-    padding: 30px 40px;
-    min-height: 100vh;
-  }
-  .main-content h1 {
-    font-weight: 700;
-    font-size: 26px;
-    color: #00569a;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #00569a;
-    padding-bottom: 8px;
-  }
-  
-  /* Form styles */
-  form {
-    background: white;
-    padding: 30px 35px;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    max-width: 1225px;
-  }
-  fieldset {
-    border: 1px solid #d1d5db;
-    padding: 20px 25px;
-    margin-bottom: 25px;
-    border-radius: 6px;
-  }
-  legend {
-    font-weight: 600;
-    font-size: 15px;
-    color: #00569a;
-    padding: 0 10px;
-  }
-  
-  input[type="text"], input[type="file"], textarea, select {
-    width: 100%;
-    padding: 10px 14px;
-    margin-top: 10px;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background-color: #fafafa;
-    transition: border-color 0.3s ease;
-  }
-  input[type="text"]:focus, input[type="file"]:focus, textarea:focus, select:focus {
-    border-color: #00569a;
-    background-color: #fff;
-    outline: none;
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-  
-  .option {
-    display: flex;
-    align-items: center;
-    margin-top: 12px;
-  }
-  .option input[type="checkbox"] {
-    margin-right: 12px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-  }
-  .option input[type="text"] {
-    flex: 1;
-  }
-  
-  button {
-    background-color: #00569a;
-    border: none;
-    color: white;
-    font-weight: 700;
-    font-size: 18px;
-    padding: 14px 28px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-  }
-  button:hover {
-    background-color: #004a81;
-  }
-  
-  /* Quill editor */
-  .quill-editor {
-    height: 120px;
-    background: white;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-top: 10px;
-  }
-  
-  /* Dropdown styling */
-  #savedModulesDropdown, #savedTopicsDropdown, #savedDifficultyDropdown {
-    padding: 8px 12px;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background-color: #fafafa;
-    cursor: pointer;
-  }
-  #savedModulesDropdown:focus, #savedTopicsDropdown:focus, #savedDifficultyDropdown:focus {
-    outline: none;
-    border-color: #00569a;
-    background-color: #fff;
-  }
-  
-  /* Container tweaks */
-  #savedModulesContainer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
+.page-header { background: #f8f9fa; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid #e3e3e3; }
+.card { border: none; border-radius: 10px; overflow: hidden; }
+.card-header { font-size: 1.1rem; letter-spacing: 0.3px; }
+.card-body { padding: 2rem; background: #fff; }
+.course-grid-2x2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 equal columns */
+    grid-auto-rows: auto;
+    gap: 1.5rem 2rem;
+    align-items: start;
+}
 
-  #headerWithFilters {
+.course-grid-2x2 .form-group {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: nowrap; /* IMPORTANT: prevent wrapping */
-  }
-  
-  #savedModulesContainer {
-    display: flex;
-    gap: 15px;
-    flex-wrap: nowrap; /* IMPORTANT: prevent stacking */
-    align-items: center;
-  }
-  
-  #savedModulesDropdown,
-  #savedDifficultyDropdown,
-  #clearSavedBtn {
-    min-width: unset !important; /* remove any forced min-width */
-    width: auto !important;       /* prevent 100% width */
-    white-space: nowrap;          /* prevent internal wrapping */
-  }
-  
-  
-  /* -------------------------
-     Responsive Styles 
-  ------------------------- */
-  @media (max-width: 900px) {
-    .main-content {
-      margin-left: 60px;
-      padding: 25px 20px;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Remove full-width rule */
+.course-grid-2x2 .form-group.full-width {
+    grid-column: auto; /* now behaves like any other field */
+}
+
+
+#modulesContainer { background: #fafafa; padding: 1rem; border-radius: 8px; border: 1px dashed #ddd; }
+.module-card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+.module-card:hover { transform: translateY(-2px); }
+
+.chapter-card, .question-card { background: #ffffff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 15px; margin-bottom: 12px; }
+
+.module-grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2rem; }
+.module-grid-2x2 .form-group { display: flex; flex-direction: column; }
+.module-grid-2x2 .form-group.full-width { grid-column: 1 / 3; }
+
+.form-control { border-radius: 6px; padding: 0.6rem 0.9rem; border: 1px solid #ccc; }
+.form-label { margin-bottom: 0.5rem; }
+.quill-editor { height: 150px; border: 1px solid #ced4da; border-radius: 6px; background: #fff; }
+
+.btn { border-radius: 6px; padding: 0.5rem 1.2rem; }
+.btn-success { background-color: #28a745; border: none; }
+.btn-danger { background-color: #dc3545; border: none; }
+.btn-secondary { background-color: #6c757d; border: none; }
+
+.img-thumbnail { border-radius: 6px; margin-top: 0.5rem; max-width: 250px; }
+.existingMaterial a { display: inline-flex; align-items: center; gap: 6px; color: #0d6efd; text-decoration: none; font-weight: 500; }
+.existingMaterial a:hover { text-decoration: underline; }
+
+.material-preview img, .material-preview video { max-width: 250px; max-height: 180px; border-radius: 5px; margin-top: 8px; }
+
+.container-fluid {
+    padding-bottom: 3rem; /* You can adjust to 4rem or 5rem if needed */
+}
+
+
+@media (max-width: 768px)  {
+.course-grid-2x2 {
+        grid-template-columns: 1fr; /* stack vertically on mobile */
     }
-    form {
-      max-width: 100%;
-      padding: 25px 20px;
-    }
-  }
-  
-  @media (max-width: 700px) {
-    /* Sidebar: convert to top horizontal bar */
-    .sidebar {
-      width: 100%;
-      height: 50px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      z-index: 100;
-    }
-    .main-content {
-      margin: 60px 15px 30px 15px; /* margin top for sidebar height */
-      padding: 20px 15px;
-    }
-    form {
-      padding: 20px 15px;
-    }
-    .option {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .option input[type="checkbox"] {
-      margin-bottom: 8px;
-    }
-    button {
-      width: 100%;
-      font-size: 16px;
-      padding: 12px;
-    }
-    #savedModulesContainer {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    #savedModulesDropdown, #savedTopicsDropdown, #savedDifficultyDropdown, #clearSavedBtn {
-      width: 100%;
-      margin-top: 10px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .main-content h1 {
-      font-size: 22px;
-    }
-    legend {
-      font-size: 14px;
-    }
-    input[type="text"], input[type="file"], textarea, select {
-      font-size: 14px;
-      padding: 8px 12px;
-    }
-    button {
-      font-size: 15px;
-      padding: 12px;
-    }
-    .quill-editor {
-      height: 100px;
-    }
+.bg-light, .bg-white { border: 1px solid #dee2e6; }
   }
