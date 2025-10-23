@@ -78,45 +78,101 @@
       <h2>Welcome {{ request.user.username }}</h2>
     </div>
 
-    <!-- Slider Section -->
-    <section class="main-content-wrapper">
-      <button class="slider-btn left-btn">&#10094;</button>
+   <!-- Slider Section -->
+<section class="featured-slider-section">
 
-      <div class="main-content-slider">
-        <div class="panel panel-1"></div>
-        <div class="panel panel-2"></div>
-        <div class="panel panel-3"></div>
+  <div class="featured-slider-wrapper">
+    <button class="slider-btn left-btn">&#10094;</button>
 
-        <div class="panel center-panel">
-          <h3>Tansam</h3>
-          <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
-          <button onclick="window.location.href='{% url 'courses_catalog' %}'">VIEW COURSES</button>
-
-        </div>
-
-        <div class="panel right-panel">
-          <h3>CAPITAL</h3>
-          <p>Data Annotator</p>
-          <ul>
-            <li>Data Annotator (100)</li>
-            <li>Data Annotator (200)</li>
-            <li>Data Annotator (300)</li>
-          </ul>
-         <button onclick="window.location.href='{% url 'courses_catalog' %}'">VIEW COURSES</button>
+    <div class="featured-slider">
+      <!-- Featured Card 1 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course1.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Build a complete distributed app using .Net Aspire</h3>
+          <p>A complete guide to building an app using Aspire with .Net services and Next.js from scratch</p>
+          <span class="author">By Neil Cummings</span>
+          <span class="updated">Updated <strong>September 2025</strong></span>
+          <span class="hours">26.5 total hours • 191 lectures • Intermediate</span>
+          <div class="rating">
+            <span>4.9 ★★★★★ (24)</span>
+            <span class="badge">Highest Rated</span>
+          </div>
+          <div class="price">
+            ₹499 <span class="original-price">₹2,119</span>
+          </div>
         </div>
       </div>
 
-      <button class="slider-btn right-btn">&#10095;</button>
-    </section>
+      <!-- Featured Card 2 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+  <!-- Featured Card 3 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+       <!-- Featured Card 5 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards as needed -->
+    </div>
+
+    <button class="slider-btn right-btn">&#10095;</button>
+  </div>
+</section>
 
     <!-- Cards Section -->
     <section class="card-grid">
-      <div class="card card-my-courses">My Courses</div>
-      <div class="card card-mxd-content">MxD Content</div>
-      <div class="card card-partner-content">Partner Content</div>
-      <div class="card card-resources">Resources</div>
-      <div class="card card-cybersecurity">Cybersecurity</div>
-      <div class="card card-manufacturing">Manufacturing</div>
+      <div class="card card-my-courses">Python</div>
+      <div class="card card-mxd-content">Digital Information</div>
+      <div class="card card-partner-content">Machine learning</div>
+      <div class="card card-resources">Full stack</div>
+      <div class="card card-cybersecurity">Web development</div>
+      <div class="card card-manufacturing">IOT</div>
     </section>
 
     <!-- FAQ and Catalog -->

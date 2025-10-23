@@ -1359,3 +1359,699 @@ arrow for my learning courses */
     display: none;
   }
 }
+
+
+/* my learning courses */
+
+/* Container */
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.max-w-7xl {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Heading section */
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+.text-purple-700 {
+  color: #6b21a8;
+}
+.text-purple-700:hover {
+  text-decoration: underline;
+}
+
+/* Scroll area */
+.flex.space-x-4 {
+  gap: 1rem;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Course Card - RECTANGLE */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.w-80 {
+  width: 20rem; /* 320px */
+}
+.border {
+  border: 1px solid #e5e7eb;
+}
+.rounded-md {
+  border-radius: 0.5rem;
+}
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.bg-white {
+  background-color: white;
+}
+
+/* Thumbnail / Video Top Section */
+.relative {
+  position: relative;
+}
+.h-40 {
+  height: 10rem; /* 160px */
+}
+.object-cover {
+  object-fit: cover;
+}
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.rounded-t-md {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* Play Button */
+.absolute {
+  position: absolute;
+}
+.left-3 {
+  left: 0.75rem;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.transform {
+  transform: translateY(-50%);
+}
+.bg-white {
+  background-color: white;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+.text-gray-800 {
+  color: #1f2937;
+}
+
+/* Card Text Section */
+.p-4 {
+  padding: 1rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.text-gray-600 {
+  color: #4b5563;
+}
+/* Container adjustments (if needed) */
+.flex.space-x-4.overflow-x-auto {
+  gap: 1rem;
+  overflow-x: auto;
+  display: flex;
+}
+
+/* Course card container as rectangle with flex layout */
+
+/* Left thumbnail / video part */
+.course-card .card-thumb {
+  position: relative;
+  width: 10rem;  /* 160px — square */
+  height: 10rem; /* same as card height */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.course-card .card-thumb .thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Play button overlay in thumbnail */
+.course-card .play-btn {
+  position: absolute;
+  left: 0.75rem;  /* some left padding */
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border-radius: 9999px;
+  padding: 0.75rem;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Right info section */
+.course-card .card-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Text stylings */
+.course-card .card-info .text-xs {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+.course-card .card-info .font-bold {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+.course-card .card-info .text-gray-600 {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+/* 
+arrow for my learning courses */
+
+/* Arrow button container and style */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  z-index: 20;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.carousel-nav-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Positioning left and right arrows */
+.carousel-nav-btn.left {
+  left: 0.5rem;  /* slight overlay on left edge */
+}
+.carousel-nav-btn.right {
+  right: 0.5rem;
+}
+
+/* Hide arrows on small screens if needed */
+@media (max-width: 640px) {
+  .carousel-nav-btn {
+    display: none;
+  }
+}
+
+
+/* my learning courses */
+
+/* Container */
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.max-w-7xl {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Heading section */
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+.text-purple-700 {
+  color: #6b21a8;
+}
+.text-purple-700:hover {
+  text-decoration: underline;
+}
+
+/* Scroll area */
+.flex.space-x-4 {
+  gap: 1rem;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Course Card - RECTANGLE */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.w-80 {
+  width: 20rem; /* 320px */
+}
+.border {
+  border: 1px solid #e5e7eb;
+}
+.rounded-md {
+  border-radius: 0.5rem;
+}
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.bg-white {
+  background-color: white;
+}
+
+/* Thumbnail / Video Top Section */
+.relative {
+  position: relative;
+}
+.h-40 {
+  height: 10rem; /* 160px */
+}
+.object-cover {
+  object-fit: cover;
+}
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.rounded-t-md {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* Play Button */
+.absolute {
+  position: absolute;
+}
+.left-3 {
+  left: 0.75rem;
+}
+.top-1\/2 {
+  top: 50%;
+}
+.transform {
+  transform: translateY(-50%);
+}
+.bg-white {
+  background-color: white;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.p-3 {
+  padding: 0.75rem;
+}
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+.text-gray-800 {
+  color: #1f2937;
+}
+
+/* Card Text Section */
+.p-4 {
+  padding: 1rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.text-gray-600 {
+  color: #4b5563;
+}
+/* Container adjustments (if needed) */
+.flex.space-x-4.overflow-x-auto {
+  gap: 1rem;
+  overflow-x: auto;
+  display: flex;
+}
+
+/* Course card container as rectangle with flex layout */
+
+/* Left thumbnail / video part */
+.course-card .card-thumb {
+  position: relative;
+  width: 10rem;  /* 160px — square */
+  height: 10rem; /* same as card height */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.course-card .card-thumb .thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Play button overlay in thumbnail */
+.course-card .play-btn {
+  position: absolute;
+  left: 0.75rem;  /* some left padding */
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border-radius: 9999px;
+  padding: 0.75rem;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Right info section */
+.course-card .card-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Text stylings */
+.course-card .card-info .text-xs {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+.course-card .card-info .font-bold {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+.course-card .card-info .text-gray-600 {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+/* 
+arrow for my learning courses */
+
+/* Arrow button container and style */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  z-index: 20;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.carousel-nav-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Positioning left and right arrows */
+.carousel-nav-btn.left {
+  left: 0.5rem;  /* slight overlay on left edge */
+}
+.carousel-nav-btn.right {
+  right: 0.5rem;
+}
+
+/* Hide arrows on small screens if needed */
+@media (max-width: 640px) {
+  .carousel-nav-btn {
+    display: none;
+  }
+}
+
+
+  /* 
+  .course-slider-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+  .course-slider-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  .course-slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .course-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin: 0 10px;
+    flex: 0 0 100%;
+    max-width: 100%;
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+  }
+  .course-card img {
+    width: 200px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .course-info h3 {
+    margin: 0 0 5px;
+    font-size: 18px;
+  }
+  .course-info p {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  .course-info .author,
+  .course-info .updated,
+  .course-info .hours {
+    font-size: 12px;
+    color: #666;
+    display: block;
+  }
+  .rating {
+    margin: 5px 0;
+  }
+  .rating .badge {
+    background: #f0ad4e;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: 5px;
+  }
+  .price {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .original-price {
+    text-decoration: line-through;
+    font-weight: normal;
+    color: #999;
+    margin-left: 5px;
+  }
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .left-btn { left: 5px; }
+  .right-btn { right: 5px; } */
+
+
+  .featured-slider-section {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.featured-slider-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.featured-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  margin: 0 10px;
+  flex: 0 0 100%;
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+}
+
+.featured-card img {
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-info h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+.card-info p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.card-info .author,
+.card-info .updated,
+.card-info .hours {
+  font-size: 12px;
+  color: #666;
+  display: block;
+}
+.rating {
+  margin: 5px 0;
+}
+.rating .badge {
+  background: #f0ad4e;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+.price {
+  font-weight: bold;
+  font-size: 16px;
+}
+.original-price {
+  text-decoration: line-through;
+  font-weight: normal;
+  color: #999;
+  margin-left: 5px;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+.left-btn { left: 5px; }
+.right-btn { right: 5px; }
+
+/* Responsive cards */
+@media (min-width: 768px) {
+  .featured-card {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+@media (min-width: 1024px) {
+  .featured-card {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+}

@@ -45,7 +45,19 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
         </div>
         <div class="course-code">CA-SMM201 - Operational Defense &amp; Incident Management</div>
         <div class="course-title">Network Segmentation &amp; Access Control</div>
-        <button class="btn btn-start">Start Lesson</button>
+        <!-- START LESSON BUTTON + VIDEO CONTAINER -->
+<div id="lesson-container" class="lesson-container">
+  <button id="startLessonBtn" class="btn btn-start fw-semibold">Start Lesson</button>
+
+  <!-- Hidden Video (initially not visible) -->
+  <div id="lessonVideoContainer" class="video-wrapper d-none mt-3">
+    <video id="lessonVideo" width="100%" controls>
+      <source src="{% static 'videos/network_segmentation.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
 
         <div class="bottom-icons" title="Audio and Settings">
           <!-- SVG Icons -->
@@ -116,52 +128,72 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
   </div>
 
   <!-- ===== SIDEBAR ===== -->
-  <div class="course-sidebar">
-    <div class="section mb-3">
-      <h6>Network Segmentation &amp; Access</h6>
-      <div class="progress-wrapper mb-2">
-        <div class="progress-bar-custom" style="width: 0%;"></div>
-      </div>
-      <div>
-        <input type="radio" id="segment-access" name="segment" checked />
-        <label for="segment-access" class="mb-0">CA-SMM200 L1 Network Segmentation &amp; Access...</label>
-      </div>
+<div class="course-sidebar">
+
+  <!-- MODULE 1 -->
+  <div class="section mb-4">
+    <h6>Module 1: Network Segmentation & Access</h6>
+
+    <!-- Chapter 1 -->
+    <div class="chapter-block">
+      <input type="radio" id="chapter1" name="chapter" data-chapter="1">
+      <label for="chapter1" class="chapter-title fw-semibold">CA-SMM200 L1 - Network Segmentation & Access Control</label>
+      <ul class="chapter-content list-unstyled ms-3 mt-1">
+        <li>🎥 Video: <span class="text-muted">network_segmentation_intro.mp4</span></li>
+        <li>📊 PPT: <span class="text-muted">segmentation_basics.pptx</span></li>
+        <li>❓ Questions: <span class="text-muted">5</span></li>
+      </ul>
     </div>
 
-    <div class="section mb-3">
-      <h6>Threat Detection &amp; Monitoring <span class="badge bg-danger small">0</span></h6>
-      <div>
-        <input type="radio" id="threat-detection" name="segment" />
-        <label for="threat-detection" class="mb-0">CA-SMM200 L2 Threat...</label>
-      </div>
-    </div>
-
-    <div class="section mb-3">
-      <h6>Incident Response Planning &amp; Ex</h6>
-      <div>
-        <input type="radio" id="incident-response" name="segment" />
-        <label for="incident-response" class="mb-0">CA-SMM200 L3 Incident...</label>
-      </div>
-    </div>
-
-    <div class="section mb-3">
-      <h6>Vendor Risk Management &amp; Clou</h6>
-      <div>
-        <input type="radio" id="vendor-risk" name="segment" />
-        <label for="vendor-risk" class="mb-0">CA-SMM200 L4 Vendor Risk...</label>
-      </div>
-    </div>
-
-    <div class="section">
-      <h6>Course Tasks <span class="badge bg-danger small">0/1</span></h6>
-      <div class="locked">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 1a3 3 0 0 0-3 3v3h6V4a3 3 0 0 0-3-3zM5 7V4a3 3 0 0 1 6 0v3h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1z"/>
-        </svg>
-        Course Evaluation
-      </div>
+    <!-- Chapter 2 -->
+    <div class="chapter-block locked">
+      <input type="radio" id="chapter2" name="chapter" data-chapter="2" disabled>
+      <label for="chapter2" class="chapter-title fw-semibold">CA-SMM200 L2 - Network Access Policies</label>
+      <ul class="chapter-content list-unstyled ms-3 mt-1">
+        <li>🎥 Video: <span class="text-muted">access_control.mp4</span></li>
+        <li>❓ Questions: <span class="text-muted">4</span></li>
+      </ul>
     </div>
   </div>
+
+  <!-- MODULE 2 -->
+  <div class="section mb-4">
+    <h6>Module 2: Threat Detection & Monitoring</h6>
+
+    <!-- Chapter 3 -->
+    <div class="chapter-block locked">
+      <input type="radio" id="chapter3" name="chapter" data-chapter="3" disabled>
+      <label for="chapter3" class="chapter-title fw-semibold">CA-SMM200 L3 - Threat Detection Fundamentals</label>
+      <ul class="chapter-content list-unstyled ms-3 mt-1">
+        <li>📊 PPT: <span class="text-muted">threat_monitoring.pptx</span></li>
+        <li>❓ Questions: <span class="text-muted">7</span></li>
+      </ul>
+    </div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter-block locked">
+      <input type="radio" id="chapter4" name="chapter" data-chapter="4" disabled>
+      <label for="chapter4" class="chapter-title fw-semibold">CA-SMM200 L4 - Advanced Threat Analysis</label>
+      <ul class="chapter-content list-unstyled ms-3 mt-1">
+        <li>🎥 Video: <span class="text-muted">advanced_threats.mp4</span></li>
+        <li>❓ Questions: <span class="text-muted">6</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COURSE TASK -->
+  <div class="section">
+    <h6>Course Tasks <span class="badge bg-danger small">0/1</span></h6>
+    <div class="locked mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" width="16" height="16">
+        <path d="M8 1a3 3 0 0 0-3 3v3h6V4a3 3 0 0 0-3-3zM5 7V4a3 3 0 0 1 6 0v3h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1z"/>
+      </svg>
+      <span class="ms-1">Course Evaluation</span>
+    </div>
+  </div>
+
+</div>
+
 </div>
 
 {% endblock %}
