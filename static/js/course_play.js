@@ -117,13 +117,35 @@ document.addEventListener("DOMContentLoaded", function () {
     video.playbackRate = parseFloat(speedSelect.value);
   });
 
+  // === LESSON UNLOCK LOGIC ===
+  const lessons = document.querySelectorAll(".lesson-item");
 
+  lessons.forEach((lesson, index) => {
+    lesson.addEventListener("click", () => {
+      const videoSrc = lesson.getAttribute("data-video");
+      if (videoSrc) {
+        video.pause();
+        video.currentTime = 0;
+        video.querySelector("source").src = `/static/videos/${videoSrc}`;
+        video.load();
+        video.play();
+      }
+
+      // Mark lesson as completed after video ends
+      video.onended = function () {
+        const nextLesson = lessons[index + 1];
+        if (nextLesson && nextLesson.classList.contains("locked")) {
+          nextLesson.classList.remove("locked");
+        }
+      };
+    });
+  });
   // --- Chapter logic (unlock next, change video) ---
   const chapters = document.querySelectorAll('input[name="chapter"]');
   const chapterVideos = {
     1: "network_segmentation_intro.mp4",
     2: "access_control.mp4",
-    4: "  .mp4"
+    4: "advanced_threats.mp4"
   };
 
   chapters.forEach((chapter, index) => {

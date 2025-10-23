@@ -381,3 +381,33 @@ html, body {
 
 /* Bootstrap's d-none is display:none !important, so no need to redefine */
 
+.lesson-list {
+  margin-top: 6px;
+}
+
+.lesson-item {
+  background: #f3f3f3;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.88rem;
+}
+
+.lesson-item:hover {
+  background: #eaeaea;
+}
+
+.lesson-item.locked {
+  opacity: 0.5;
+  pointer-events: none;
+  position: relative;
+}
+
+.lesson-item.locked::after {
+  content: "🔒";
+  position: absolute;
+  right: 10px;
+  color: #888;
+}
