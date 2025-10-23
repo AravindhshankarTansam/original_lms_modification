@@ -7,5 +7,7 @@ urlpatterns = [
     path('update/<int:course_id>/', views.create_or_update_course, name='update_course'), 
     path('delete/<int:course_id>/', views.delete_course, name='delete_course'),  # ✅ Added delete # Edit course form
     path('list/', views.course_table, name='list_courses'),  
+ # urls.py
+path('category/', views.course_categories, name='category'),
 
 ]
