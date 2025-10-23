@@ -64,9 +64,15 @@
     }
 
     function updateArrowVisibility() {
-      catalogLeft.style.display = currentSection > 0 ? 'block' : 'none';
-      catalogRight.style.display = currentSection < totalSections - 1 ? 'block' : 'none';
-    }
+  if (totalSections <= 1) {
+    catalogLeft.style.display = 'block';
+    catalogRight.style.display = 'block';
+  } else {
+    catalogLeft.style.display = currentSection > 0 ? 'block' : 'none';
+    catalogRight.style.display = currentSection < totalSections - 1 ? 'block' : 'none';
+  }
+}
+
 
     catalogLeft.addEventListener('click', () => {
       currentSection = Math.max(currentSection - 1, 0);
@@ -145,77 +151,72 @@
       }
     });
   });
-
-
-
+  
   document.addEventListener('DOMContentLoaded', () => {
-    const carousel = document.getElementById('courseCarousel');
-    const btnPrev = document.getElementById('carouselPrev');
-    const btnNext = document.getElementById('carouselNext');
-    const scrollAmount = 300;
+  const catalogScroll = document.querySelector('.catalog-scroll');
+  const catalogLeft = document.querySelector('.catalog-btn.left-btn');
+  const catalogRight = document.querySelector('.catalog-btn.right-btn');
+  const catalogCards = document.querySelectorAll('.catalog-card');
 
-    // Left/right button scrolling
-    btnPrev.addEventListener('click', () => {
-      carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  let cardWidth = catalogCards[0].offsetWidth + 20; // card width + gap
+  let visibleCount = Math.floor(catalogScroll.offsetWidth / cardWidth);
+  let totalSections = Math.ceil(catalogCards.length / visibleCount);
+  let currentSection = 0;
+
+  function slideToSection(section) {
+    catalogScroll.scrollTo({
+      left: section * cardWidth * visibleCount,
+      behavior: 'smooth'
     });
+    currentSection = section;
+  }
 
-    btnNext.addEventListener('click', () => {
-      carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    });
-
-    // Drag to scroll
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    carousel.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.pageX - carousel.offsetLeft;
-      scrollLeft = carousel.scrollLeft;
-      carousel.classList.add('active');
-    });
-
-    carousel.addEventListener('mouseleave', () => {
-      isDown = false;
-      carousel.classList.remove('active');
-    });
-
-    carousel.addEventListener('mouseup', () => {
-      isDown = false;
-      carousel.classList.remove('active');
-    });
-
-    carousel.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - carousel.offsetLeft;
-      const walk = (x - startX) * 2; // Adjust drag speed
-      carousel.scrollLeft = scrollLeft - walk;
-    });
-
-    // Optional: Keyboard navigation
-    carousel.setAttribute('tabindex', '0');
-    carousel.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') {
-        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      } else if (e.key === 'ArrowLeft') {
-        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
-    });
+  catalogLeft.addEventListener('click', () => {
+    slideToSection(Math.max(currentSection - 1, 0));
   });
 
+  catalogRight.addEventListener('click', () => {
+    slideToSection(Math.min(currentSection + 1, totalSections - 1));
+  });
 
-  const featuredSlider = document.querySelector('.featured-slider');
-  const featuredCards = document.querySelectorAll('.featured-card');
-  const leftBtn = document.querySelector('.featured-slider-wrapper .left-btn');
-  const rightBtn = document.querySelector('.featured-slider-wrapper .right-btn');
+  // Drag to scroll (optional)
+  let isDown = false;
+  let startX;
+  let scrollLeft;
 
-  let index = 0;
-  const total = featuredCards.length;
+  catalogScroll.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - catalogScroll.offsetLeft;
+    scrollLeft = catalogScroll.scrollLeft;
+    catalogScroll.classList.add('active');
+  });
 
-  function showSlide(i) {
-    featuredSlider.style.transform = `translateX(-${i * (100 / total)}%)`;
-  }
+  catalogScroll.addEventListener('mouseleave', () => {
+    isDown = false;
+    catalogScroll.classList.remove('active');
+  });
+
+  catalogScroll.addEventListener('mouseup', () => {
+    isDown = false;
+    catalogScroll.classList.remove('active');
+  });
+
+  catalogScroll.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - catalogScroll.offsetLeft;
+    const walk = (x - startX) * 2; // scroll speed
+    catalogScroll.scrollLeft = scrollLeft - walk;
+  });
+
+  // Recalculate on window resize
+  window.addEventListener('resize', () => {
+    cardWidth = catalogCards[0].offsetWidth + 20;
+    visibleCount = Math.floor(catalogScroll.offsetWidth / cardWidth);
+    totalSections = Math.ceil(catalogCards.length / visibleCount);
+  });
+});
+
 
   // Auto-slide
   let autoSlide = setInterval(() => {
@@ -241,3 +242,5 @@
       showSlide(index);
     }, 5000);
   }
+
+  
