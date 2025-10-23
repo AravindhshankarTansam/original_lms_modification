@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const chapterVideos = {
     1: "network_segmentation_intro.mp4",
     2: "access_control.mp4",
-    4: "advanced_threats.mp4"
+    4: "  .mp4"
   };
 
   chapters.forEach((chapter, index) => {
