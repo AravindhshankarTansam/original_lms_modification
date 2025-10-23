@@ -449,20 +449,55 @@ button:hover {
   border-radius: 6px;
   animation: fadeIn 1s ease-out;
 }
+/* FAQ Buttons with arrow icons */
 .faq-btn {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin: 5px 0;
-  padding: 10px;
+  margin: 8px 0;
+  padding: 12px 16px;
   background: #6b7c97;
   color: white;
   border: none;
-  text-align: left;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
   transition: background 0.3s ease;
 }
+
 .faq-btn:hover {
-  background: #444;
+  background: #4a5870;
 }
+
+.faq-btn i.bi-chevron-down {
+  transition: transform 0.3s ease;
+  font-size: 1.25rem;
+}
+
+/* Rotate the arrow icon when expanded */
+.faq-btn[aria-expanded="true"] i.bi-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* Collapsible content container */
+.collapse .card-body {
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  border-top: none;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 0 0 6px 6px;
+  font-size: 0.95rem;
+  color: #333;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+}
+.collapse {
+  display: none; /* All collapse content is hidden by default */
+}
+
+
 .catalog-banner {
   flex: 1;
   background: black url("../images/Developer.png") center/cover no-repeat; /* ✅ Update path & style */
@@ -1074,6 +1109,49 @@ button:hover {
   margin: 0 10px 5px;
 }
 
+.catalog-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 0 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.left-btn { left: 0; }
+.right-btn { right: 0; }
+.catalog-dots {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #888;
+}
+.enroll-btn {
+    display: block;
+    margin: 10px;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.enroll-btn:hover {
+    background-color: #0056b3;
+}
+
+.stars {
+    margin: 5px 10px;
+    font-size: 0.85em;
+}
+
 .stars {
   color: #f5b50a;
   font-size: 0.9em;
@@ -1129,9 +1207,22 @@ button:hover {
   margin-top: 10px;
 }
 .catalog-scroll {
-  overflow: hidden; /* disable manual scroll */
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* allow scroll */
   scroll-behavior: smooth;
+  padding-bottom: 10px;
 }
+
+.catalog-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.catalog-scroll::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 4px;
+}
+
 
 .catalog-dots .dot {
   cursor: pointer;

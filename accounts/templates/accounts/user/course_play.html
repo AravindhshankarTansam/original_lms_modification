@@ -8,6 +8,8 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
 {% block extra_css %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="{% static 'css/course_play.css' %}" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -34,100 +36,82 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
 
 <div class="main-container">
   <!-- ===== VIDEO SECTION ===== -->
-  <div class="video-section">
-    <div class="main-card position-relative">
-      <div class="red-arrow"></div>
-      <div class="content-wrapper">
-        <div class="logo">
-          <div class="box">M</div>
-          <div class="box">D</div>
-          <div class="logo-text ms-2">Learn</div>
-        </div>
-        <div class="course-code">CA-SMM201 - Operational Defense &amp; Incident Management</div>
-        <div class="course-title">Network Segmentation &amp; Access Control</div>
-        <!-- START LESSON BUTTON + VIDEO CONTAINER -->
-<div id="lesson-container" class="lesson-container">
-  <button id="startLessonBtn" class="btn btn-start fw-semibold">Start Lesson</button>
 
-  <!-- Hidden Video (initially not visible) -->
-  <div id="lessonVideoContainer" class="video-wrapper d-none mt-3">
-    <video id="lessonVideo" width="100%" controls>
-      <source src="{% static 'videos/network_segmentation.mp4' %}" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+  <!-- ===== VIDEO SECTION ===== -->
+  <div class="video-section">
+<div class="video-container text-center position-relative">
+  <video 
+    id="lessonVideo"
+    controls
+    preload="metadata"
+    controlsList="nodownload" 
+    oncontextmenu="return false;"
+  >
+    <source src="{% static 'videos/network_segmentation.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Custom 3-dot settings menu -->
+  <div class="video-menu position-absolute">
+    <button id="menuButton" class="menu-btn">⋮</button>
+    <div id="menuDropdown" class="menu-dropdown d-none">
+      <div class="menu-item" id="pipMode">📺 Picture-in-Picture</div>
+      <div class="menu-item">
+        <label for="speedSelect" class="menu-label">🎞 Playback Speed</label>
+        <select id="speedSelect" class="menu-select">
+          <option value="0.75">0.75x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.25">1.25x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>
 
 
-        <div class="bottom-icons" title="Audio and Settings">
-          <!-- SVG Icons -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M11.536 14.01a.5.5 0 0 0 .708-.705l-3.182-3.182a.5.5 0 0 0-.708.707l3.182 3.18zm-5.52-4.21a.5.5 0 0 0 .708-.707l-3.18-3.182a.5.5 0 0 0-.706.706l3.178 3.182z"/>
-            <path fill-rule="evenodd" d="M10 2a.5.5 0 0 1 .5.5v9.793l3.146-3.147a.5.5 0 1 1 .708.708l-4 4a.498.498 0 0 1-.708 0l-4-4a.5.5 0 1 1 .708-.708L9.5 12.293V2.5A.5.5 0 0 1 10 2z"/>
-          </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 3a5 5 0 0 0-5 5v1a2 2 0 0 0-1 1.732V12h12v-1.268a2 2 0 0 0-1-1.732v-1a5 5 0 0 0-5-5z"/>
-            <path d="M5 12v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v-1.5a.5.5 0 0 1 1 0V12h1v1H4v-1h1z"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
     <!-- ===== TABS ===== -->
-    <ul class="nav nav-tabs mt-3" id="courseTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="lesson-details-tab" data-bs-toggle="tab" data-bs-target="#lesson-details" type="button" role="tab">Lesson Details</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
-      </li>
-    </ul>
+  <ul class="nav nav-tabs" id="courseTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="lesson-details-tab" data-bs-toggle="tab" data-bs-target="#lesson-details" type="button" role="tab">Lesson Details</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Instructions</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+  </li>
+  <!-- <li class="nav-item" role="presentation">
+    <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
+  </li> -->
+</ul>
 
-    <div class="tab-content" id="courseTabContent">
-      <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-        <p class="course-description">
-          This 200-level course will equip cybersecurity analysts in manufacturing environments with advanced skills necessary to address complex security challenges. The training covers endpoint protection, system architectures, specialized environments like SCADA, network security components, intrusion detection, social engineering countermeasures, IoT security, and the importance of cyber defense partnerships.
-        </p>
-        <div class="tags">
-          <div class="tag">200-Level Course</div>
-          <div class="tag">advanced manufacturing</div>
-          <div class="tag">Course</div>
-          <div class="tag">Cyber Defense</div>
-          <div class="tag">Digital Manufacturing</div>
-          <div class="tag">Importance</div>
-          <div class="tag">Intrusion Detection</div>
-          <div class="tag">IoT Security</div>
-        </div>
-      </div>
+<div class="tab-content" id="courseTabContent">
+  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <p>Overview content here...</p>
+  </div>
+  <div class="tab-pane fade" id="lesson-details" role="tabpanel" aria-labelledby="lesson-details-tab">
+    <p>Lesson details content here...</p>
+  </div>
+  <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+    <p>Resources content here...</p>
+  </div>
+  <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+    <p>Reviews content here...</p>
+  </div>
+  <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
+    <p>Recommendations content here...</p>
+  </div>
+</div>
 
-      <div class="tab-pane fade" id="lesson-details" role="tabpanel" aria-labelledby="lesson-details-tab">
-        <p>Lesson details content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
-        <p>Resources content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-        <p>Reviews content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
-        <p>Recommendations content goes here...</p>
-      </div>
-    </div>
   </div>
 
   <!-- ===== SIDEBAR ===== -->
+<!-- ===== SIDEBAR ===== -->
 <div class="course-sidebar">
 
   <!-- MODULE 1 -->
@@ -138,10 +122,11 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
     <div class="chapter-block">
       <input type="radio" id="chapter1" name="chapter" data-chapter="1">
       <label for="chapter1" class="chapter-title fw-semibold">CA-SMM200 L1 - Network Segmentation & Access Control</label>
-      <ul class="chapter-content list-unstyled ms-3 mt-1">
-        <li>🎥 Video: <span class="text-muted">network_segmentation_intro.mp4</span></li>
-        <li>📊 PPT: <span class="text-muted">segmentation_basics.pptx</span></li>
-        <li>❓ Questions: <span class="text-muted">5</span></li>
+
+      <ul class="lesson-list list-unstyled ms-3 mt-1">
+        <li class="lesson-item" data-video="network_segmentation_intro.mp4">🎥 Introduction to Segmentation</li>
+        <li class="lesson-item locked" data-video="segmentation_methods.mp4">🎥 Segmentation Methods</li>
+        <li class="lesson-item locked" data-video="access_principles.mp4">🎥 Access Control Principles</li>
       </ul>
     </div>
 
@@ -149,40 +134,34 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
     <div class="chapter-block locked">
       <input type="radio" id="chapter2" name="chapter" data-chapter="2" disabled>
       <label for="chapter2" class="chapter-title fw-semibold">CA-SMM200 L2 - Network Access Policies</label>
-      <ul class="chapter-content list-unstyled ms-3 mt-1">
-        <li>🎥 Video: <span class="text-muted">access_control.mp4</span></li>
-        <li>❓ Questions: <span class="text-muted">4</span></li>
+
+      <ul class="lesson-list list-unstyled ms-3 mt-1">
+        <li class="lesson-item locked" data-video="policy_basics.mp4">🎥 Policy Basics</li>
+        <li class="lesson-item locked" data-video="role_based_access.mp4">🎥 Role-Based Access</li>
       </ul>
     </div>
   </div>
 
   <!-- MODULE 2 -->
-  <div class="section mb-4">
+  <div class="section mb-4 locked">
     <h6>Module 2: Threat Detection & Monitoring</h6>
 
-    <!-- Chapter 3 -->
     <div class="chapter-block locked">
       <input type="radio" id="chapter3" name="chapter" data-chapter="3" disabled>
       <label for="chapter3" class="chapter-title fw-semibold">CA-SMM200 L3 - Threat Detection Fundamentals</label>
-      <ul class="chapter-content list-unstyled ms-3 mt-1">
-        <li>📊 PPT: <span class="text-muted">threat_monitoring.pptx</span></li>
-        <li>❓ Questions: <span class="text-muted">7</span></li>
-      </ul>
-    </div>
 
-    <!-- Chapter 4 -->
-    <div class="chapter-block locked">
-      <input type="radio" id="chapter4" name="chapter" data-chapter="4" disabled>
-      <label for="chapter4" class="chapter-title fw-semibold">CA-SMM200 L4 - Advanced Threat Analysis</label>
-      <ul class="chapter-content list-unstyled ms-3 mt-1">
-        <li>🎥 Video: <span class="text-muted">advanced_threats.mp4</span></li>
-        <li>❓ Questions: <span class="text-muted">6</span></li>
+      <ul class="lesson-list list-unstyled ms-3 mt-1">
+        <li class="lesson-item locked" data-video="threat_basics.mp4">🎥 Threat Basics</li>
+        <li class="lesson-item locked" data-video="threat_analysis.mp4">🎥 Threat Analysis</li>
       </ul>
     </div>
   </div>
 
+</div>
+
+
   <!-- COURSE TASK -->
-  <div class="section">
+  <!-- <div class="section">
     <h6>Course Tasks <span class="badge bg-danger small">0/1</span></h6>
     <div class="locked mt-2">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" width="16" height="16">
@@ -190,7 +169,7 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
       </svg>
       <span class="ms-1">Course Evaluation</span>
     </div>
-  </div>
+  </div> -->
 
 </div>
 

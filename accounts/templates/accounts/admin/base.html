@@ -41,6 +41,13 @@
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'create_course' %}active{% endif %}" href="{{ create_course_url }}">Create Course</a>
         </li>
+ <li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'category' %}active{% endif %}" 
+     href="{% url 'category' %}">Category</a>
+</li>
+
+
+
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'manage_assessments' %}active{% endif %}" href="{{ manage_assessments_url }}">Manage Assessments</a>
         </li>
@@ -104,22 +111,22 @@
         </div>
 
         <!-- Create Course Card -->
-        <div class="col-md-3 d-flex">
+        {% comment %} <div class="col-md-3 d-flex">
             <a href="{% url 'create_course' %}" class="w-100" style="text-decoration: none; color: inherit;">
                 <div class="card shadow text-center p-3 h-100 w-100" style="cursor: pointer;">
                     <i class="bi bi-journal-plus fs-1 text-primary mb-2"></i>
                     <h5>Create Course</h5>
                 </div>
             </a>
-        </div>
+        </div> {% endcomment %}
 
     <!-- Manage Assessments Card -->
-    <div class="col-md-3 d-flex">
+    {% comment %} <div class="col-md-3 d-flex">
         <div class="card shadow hover-shadow text-center p-3 h-100 w-100">
             <i class="bi bi-card-checklist fs-1 text-success mb-2"></i>
             <h5>Manage Assessments</h5>
         </div>
-    </div>
+    </div> {% endcomment %}
 
 </div>
 
