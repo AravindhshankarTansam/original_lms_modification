@@ -8,6 +8,8 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
 {% block extra_css %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="{% static 'css/course_play.css' %}" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -49,14 +51,15 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
 <div id="lesson-container" class="lesson-container">
   <button id="startLessonBtn" class="btn btn-start fw-semibold">Start Lesson</button>
 
-  <!-- Hidden Video (initially not visible) -->
+  <!-- Hidden Video Container (initially hidden with Bootstrap d-none class) -->
   <div id="lessonVideoContainer" class="video-wrapper d-none mt-3">
-    <video id="lessonVideo" width="100%" controls>
+    <video id="lessonVideo" width="100%" controls preload="metadata">
       <source src="{% static 'videos/network_segmentation.mp4' %}" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
 </div>
+
 
 
         <div class="bottom-icons" title="Audio and Settings">
@@ -74,57 +77,42 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
     </div>
 
     <!-- ===== TABS ===== -->
-    <ul class="nav nav-tabs mt-3" id="courseTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="lesson-details-tab" data-bs-toggle="tab" data-bs-target="#lesson-details" type="button" role="tab">Lesson Details</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
-      </li>
-    </ul>
+  <ul class="nav nav-tabs" id="courseTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="lesson-details-tab" data-bs-toggle="tab" data-bs-target="#lesson-details" type="button" role="tab">Lesson Details</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">Resources</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button" role="tab">Recommendations</button>
+  </li>
+</ul>
 
-    <div class="tab-content" id="courseTabContent">
-      <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-        <p class="course-description">
-          This 200-level course will equip cybersecurity analysts in manufacturing environments with advanced skills necessary to address complex security challenges. The training covers endpoint protection, system architectures, specialized environments like SCADA, network security components, intrusion detection, social engineering countermeasures, IoT security, and the importance of cyber defense partnerships.
-        </p>
-        <div class="tags">
-          <div class="tag">200-Level Course</div>
-          <div class="tag">advanced manufacturing</div>
-          <div class="tag">Course</div>
-          <div class="tag">Cyber Defense</div>
-          <div class="tag">Digital Manufacturing</div>
-          <div class="tag">Importance</div>
-          <div class="tag">Intrusion Detection</div>
-          <div class="tag">IoT Security</div>
-        </div>
-      </div>
+<div class="tab-content" id="courseTabContent">
+  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <p>Overview content here...</p>
+  </div>
+  <div class="tab-pane fade" id="lesson-details" role="tabpanel" aria-labelledby="lesson-details-tab">
+    <p>Lesson details content here...</p>
+  </div>
+  <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+    <p>Resources content here...</p>
+  </div>
+  <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+    <p>Reviews content here...</p>
+  </div>
+  <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
+    <p>Recommendations content here...</p>
+  </div>
+</div>
 
-      <div class="tab-pane fade" id="lesson-details" role="tabpanel" aria-labelledby="lesson-details-tab">
-        <p>Lesson details content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
-        <p>Resources content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-        <p>Reviews content goes here...</p>
-      </div>
-
-      <div class="tab-pane fade" id="recommendations" role="tabpanel" aria-labelledby="recommendations-tab">
-        <p>Recommendations content goes here...</p>
-      </div>
-    </div>
   </div>
 
   <!-- ===== SIDEBAR ===== -->

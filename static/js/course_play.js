@@ -45,16 +45,18 @@ document.addEventListener("DOMContentLoaded", function() {
   const video = document.getElementById("lessonVideo");
 
   startBtn.addEventListener("click", function() {
-    // Show the video section
+    // Show the video container
     videoContainer.classList.remove("d-none");
 
-    // Hide the button
+    // Hide the start button
     startBtn.classList.add("d-none");
 
-    // Ensure browser allows playback
-    video.muted = true;      // ✅ helps with autoplay restriction
-    video.play().catch(err => {
-      console.warn("Video play was prevented:", err);
+    // Mute the video to allow autoplay on some browsers
+    video.muted = true;
+
+    // Attempt to play the video
+    video.play().catch((error) => {
+      console.warn("Autoplay prevented:", error);
     });
   });
 });
