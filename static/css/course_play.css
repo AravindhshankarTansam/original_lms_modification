@@ -267,3 +267,56 @@ html, body {
     margin-top: 1rem;
   }
 }
+
+
+
+.chapter-block {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid #e5e5e5;
+  transition: background 0.3s;
+}
+
+.chapter-block.locked {
+  opacity: 0.5;
+  pointer-events: none;
+  position: relative;
+}
+
+.chapter-block.locked::after {
+  content: "🔒 Locked";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 0.85rem;
+}
+
+
+/* for video chapters  */
+
+.lesson-container {
+  text-align: center;
+}
+
+.btn-start {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-start:hover {
+  background-color: #218838;
+}
+
+.video-wrapper video {
+  border-radius: 10px;
+  border: 2px solid #e5e5e5;
+}

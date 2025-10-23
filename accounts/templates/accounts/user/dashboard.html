@@ -11,6 +11,9 @@
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 
 </head>
 <body>
@@ -75,45 +78,101 @@
       <h2>Welcome {{ request.user.username }}</h2>
     </div>
 
-    <!-- Slider Section -->
-    <section class="main-content-wrapper">
-      <button class="slider-btn left-btn">&#10094;</button>
+   <!-- Slider Section -->
+<section class="featured-slider-section">
 
-      <div class="main-content-slider">
-        <div class="panel panel-1"></div>
-        <div class="panel panel-2"></div>
-        <div class="panel panel-3"></div>
+  <div class="featured-slider-wrapper">
+    <button class="slider-btn left-btn">&#10094;</button>
 
-        <div class="panel center-panel">
-          <h3>Tansam</h3>
-          <p><strong><span class="highlight-red">CAPITAL</span></strong> program is building the manufacturing workforce of the future!</p>
-          <button onclick="window.location.href='{% url 'courses_catalog' %}'">VIEW COURSES</button>
-
-        </div>
-
-        <div class="panel right-panel">
-          <h3>CAPITAL</h3>
-          <p>Data Annotator</p>
-          <ul>
-            <li>Data Annotator (100)</li>
-            <li>Data Annotator (200)</li>
-            <li>Data Annotator (300)</li>
-          </ul>
-         <button onclick="window.location.href='{% url 'courses_catalog' %}'">VIEW COURSES</button>
+    <div class="featured-slider">
+      <!-- Featured Card 1 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course1.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Build a complete distributed app using .Net Aspire</h3>
+          <p>A complete guide to building an app using Aspire with .Net services and Next.js from scratch</p>
+          <span class="author">By Neil Cummings</span>
+          <span class="updated">Updated <strong>September 2025</strong></span>
+          <span class="hours">26.5 total hours • 191 lectures • Intermediate</span>
+          <div class="rating">
+            <span>4.9 ★★★★★ (24)</span>
+            <span class="badge">Highest Rated</span>
+          </div>
+          <div class="price">
+            ₹499 <span class="original-price">₹2,119</span>
+          </div>
         </div>
       </div>
 
-      <button class="slider-btn right-btn">&#10095;</button>
-    </section>
+      <!-- Featured Card 2 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+  <!-- Featured Card 3 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+       <!-- Featured Card 5 -->
+      <div class="featured-card">
+        <img src="{% static 'images/course2.png' %}" alt="Course Image">
+        <div class="card-info">
+          <h3>Another Course Title</h3>
+          <p>Short description about the course goes here.</p>
+          <span class="author">By John Doe</span>
+          <span class="updated">Updated <strong>August 2025</strong></span>
+          <span class="hours">20 total hours • 150 lectures • Beginner</span>
+          <div class="rating">
+            <span>4.8 ★★★★☆ (30)</span>
+            <span class="badge">Popular</span>
+          </div>
+          <div class="price">
+            ₹399 <span class="original-price">₹1,999</span>
+          </div>
+        </div>
+      </div>
+      <!-- Add more cards as needed -->
+    </div>
+
+    <button class="slider-btn right-btn">&#10095;</button>
+  </div>
+</section>
 
     <!-- Cards Section -->
     <section class="card-grid">
-      <div class="card card-my-courses">My Courses</div>
-      <div class="card card-mxd-content">MxD Content</div>
-      <div class="card card-partner-content">Partner Content</div>
-      <div class="card card-resources">Resources</div>
-      <div class="card card-cybersecurity">Cybersecurity</div>
-      <div class="card card-manufacturing">Manufacturing</div>
+      <div class="card card-my-courses">Python</div>
+      <div class="card card-mxd-content">Digital Information</div>
+      <div class="card card-partner-content">Machine learning</div>
+      <div class="card card-resources">Full stack</div>
+      <div class="card card-cybersecurity">Web development</div>
+      <div class="card card-manufacturing">IOT</div>
     </section>
 
     <!-- FAQ and Catalog -->
@@ -161,6 +220,78 @@
         </div>
       </div>
     </section> -->
+    <!-- START: Enrolled Courses Carousel Section -->
+
+  <div class=" my-8 px-6 max-w-7xl mx-auto relative">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-semibold text-gray-900">Let's start learning</h2>
+      <a href="#" class="text-purple-700 font-semibold underline">My learning</a>
+    </div>
+
+    <!-- Arrow buttons -->
+    <button id="carouselPrev" class="carousel-nav-btn left" aria-label="Scroll left">&#9664;</button>
+    <button id="carouselNext" class="carousel-nav-btn right" aria-label="Scroll right">&#9654;</button>
+
+    <!-- Carousel container -->
+    <div id="courseCarousel" class="flex space-x-4 overflow-x-auto scrollbar-hide flex-nowrap">
+      <!-- Course Card 1 -->
+      <div class="course-card">
+        <div class="card-thumb relative">
+          <img src="{% static 'images/learn-icon.jpg' %}" alt="Course Thumbnail" class="thumb-img" />
+          <button
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg"
+            aria-label="Play course video"
+          >
+            <i class="bi bi-play-fill text-xl text-gray-800"></i>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="text-xs font-semibold text-gray-500 mb-1">Java Spring Framework, Spring Boot, …</div>
+          <h3 class="font-bold text-sm mb-2">135. Failed attempt to save data</h3>
+          <p class="text-xs text-gray-600">Lecture • 8m</p>
+        </div>
+      </div>
+
+      <!-- Course Card 2 -->
+      <div class="course-card">
+        <div class="card-thumb relative">
+          <img src="{% static 'images/learn-icon.jpg' %}" alt="Course Thumbnail" class="thumb-img" />
+          <button
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg"
+            aria-label="Play course video"
+          >
+            <i class="bi bi-play-fill text-xl text-gray-800"></i>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="text-xs font-semibold text-gray-500 mb-1">Java Complete Course Using Visual Studio</div>
+          <h3 class="font-bold text-sm mb-2">1. Java Arrays Vs code</h3>
+          <p class="text-xs text-gray-600">Lecture • 4m</p>
+        </div>
+      </div>
+
+      <!-- Course Card 3 -->
+      <div class="course-card">
+        <div class="card-thumb relative">
+          <img src="{% static 'images/learn-icon.jpg' %}" alt="Course Thumbnail" class="thumb-img" />
+          <button
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg"
+            aria-label="Play course video"
+          >
+            <i class="bi bi-play-fill text-xl text-gray-800"></i>
+          </button>
+        </div>
+        <div class="card-info">
+          <div class="text-xs font-semibold text-gray-500 mb-1">Gen AI Fundamentals</div>
+          <h3 class="font-bold text-sm mb-2">1. Generative AI Models Terms</h3>
+          <p class="text-xs text-gray-600">Lecture • 10m</p>
+        </div>
+      </div>
+
+      <!-- Add more cards as needed -->
+    </div>
+  </div>
+
 
     <!-- Featured + News -->
     <section class="featured-latest-wrapper">
