@@ -16,6 +16,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import Enrollment
 
+
 def landing_page(request):
     # Paths to JSON files
     slides_path = os.path.join(settings.BASE_DIR, 'static', 'json', 'slides.json')
@@ -203,8 +204,11 @@ def user_logout(request):
 
 
 # dashboard
+@login_required
 def dashboard(request):
-    return render(request, 'accounts/user/dashboard.html')
+    courses = Course.objects.all()  # fetch all courses
+    return render(request, 'accounts/user/dashboard.html', {'courses': courses})
+
 
 
 @login_required
@@ -299,3 +303,21 @@ def courses_catalog(request):
 
 def course_play(request):
     return render(request, 'accounts/user/course_play.html')
+
+
+@login_required
+def enroll_course(request):
+    course = None
+    message = None
+
+    if request.method == "POST":
+        course_id = request.POST.get("course_id")
+        if course_id:
+            course = get_object_or_404(Course, id=course_id)
+            Enrollment.objects.get_or_create(user=request.user, course=course)
+            message = "You are enrolled successfully!"
+
+    return render(request, "courses/enroll.html", {
+        "course": course,
+        "message": message
+    })

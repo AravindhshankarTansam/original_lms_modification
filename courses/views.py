@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .models import Course, Module, Chapter, Question
 from accounts.views import role_required
-
+from .models import Category, SubCategory
 
 @role_required('admin')
 @login_required
@@ -30,6 +30,8 @@ def list_courses(request):
     """
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     data = []
+    categories = Category.objects.all()
+
 
     for c in courses_qs:
         data.append({
@@ -67,7 +69,8 @@ def list_courses(request):
         })
 
     return render(request, 'courses/create_course.html', {
-        'courses_json': json.dumps(data, ensure_ascii=False)
+        'courses_json': json.dumps(data, ensure_ascii=False),
+        'categories': categories
     })
 
 
@@ -173,6 +176,7 @@ def create_or_update_course(request, course_id=None):
 
     # GET request: fetch courses to populate template (same as list_courses)
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
+    categories = Category.objects.all()
     data = []
     for c in courses_qs:
         data.append({
@@ -210,5 +214,24 @@ def create_or_update_course(request, course_id=None):
         })
 
     return render(request, 'courses/create_course.html', {
-        'courses_json': json.dumps(data, ensure_ascii=False)
+        'courses_json': json.dumps(data, ensure_ascii=False),
+        'categories': categories
+        
     })
+
+def course_categories(request):
+    categories = Category.objects.prefetch_related('subcategories').all()
+
+    if request.method == 'POST':
+        category_name = request.POST.get('category_name')
+        subcategory_name = request.POST.get('subcategory_name')
+
+        if category_name:
+            category, created = Category.objects.get_or_create(name=category_name)
+
+            if subcategory_name:
+                SubCategory.objects.get_or_create(category=category, name=subcategory_name)
+
+        return redirect('category')  # redirect to same page name defined in urls
+
+    return render(request, 'category.html', {'categories': categories})

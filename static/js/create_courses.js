@@ -22,6 +22,17 @@ try {
   console.error("Invalid courses-data JSON", e);
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.jQuery && $.fn.select2) {
+        $('#category').select2({
+            placeholder: "Select Category",
+            allowClear: true,
+            width: '100%'
+        });
+    }
+});
+
+
 // ---------------- IMAGE PREVIEW ----------------
 courseImageInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
