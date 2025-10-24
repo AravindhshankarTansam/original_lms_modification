@@ -321,3 +321,10 @@ def enroll_course(request):
         "course": course,
         "message": message
     })
+def catalog(request):
+    courses = Course.objects.all()  # Fetch all courses
+    return render(request, 'accounts/user/course.html', {'courses': courses})
+
+def course_play(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'accounts/user/course_play.html', {'course': course})

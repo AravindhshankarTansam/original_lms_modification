@@ -15,8 +15,8 @@ urlpatterns = [
     path('courses/play/', views.course_play, name='course_play'), 
     # urls.py
 # urls.py
-path('accounts/courses/enroll/', views.enroll_course, name='enroll_course')
-
+path('accounts/courses/enroll/', views.enroll_course, name='enroll_course'),
+path('courses/play/<int:course_id>/', views.course_play, name='course_play')
 
 
 
