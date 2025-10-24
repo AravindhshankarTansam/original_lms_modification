@@ -12,11 +12,13 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path('user-profile/', views.profile, name='user_profile'),
     path('courses/', views.courses_catalog, name='courses_catalog'),
+    path('my-courses/', views.my_courses, name='my_courses'),
     path('courses/play/', views.course_play, name='course_play'), 
     # urls.py
 # urls.py
 path('accounts/courses/enroll/', views.enroll_course, name='enroll_course'),
 path('courses/play/<int:course_id>/', views.course_play, name='course_play')
+
 
 
 

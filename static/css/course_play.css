@@ -593,3 +593,9 @@ html, body {
   opacity: 0.5;
   pointer-events: none;
 }
+/* Remove hover effect on tabs */
+.nav-tabs .nav-link:hover {
+  background-color: transparent !important;
+  color: #555 !important;
+  border-color: transparent !important;
+}

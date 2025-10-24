@@ -1,0 +1,62 @@
+{% extends "accounts/user/base.html" %}
+{% load static %}
+
+{% block title %}My Courses | {{ request.user.username }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/my_course.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="my-courses-container">
+  <h2 class="page-title">My Learning</h2>
+  <p class="subtitle">Continue where you left off and manage your enrolled courses.</p>
+
+  {% if courses %}
+  <div class="courses-grid">
+    {% for course in courses %}
+    <div class="course-card">
+      <div class="thumb-wrapper">
+        {% if course.image %}
+          <img src="{{ course.image.url }}" alt="{{ course.title }}" class="course-thumb">
+        {% else %}
+          <img src="{% static 'images/default_course.png' %}" alt="Default Course" class="course-thumb">
+        {% endif %}
+        <div class="progress-bar">
+         <div class="progress" style="--width: {{ course.progress|default:0 }}%">
+  <div class="progress-inner"></div>
+</div>
+
+        </div>
+      </div>
+
+      <div class="course-info">
+        <h3 class="course-title">{{ course.title }}</h3>
+        <p class="course-desc">{{ course.short_description|truncatewords:20 }}</p>
+        <div class="course-meta">
+          <span class="instructor">By {{ course.instructor|default:"Unknown" }}</span>
+          <span class="updated">Updated {{ course.updated_at|date:"M Y" }}</span>
+        </div>
+
+        <div class="actions">
+          <a href="{% url 'course_play' course.id %}" class="btn btn-primary"><i class="bi bi-play-circle"></i> Continue</a>
+          <a href="#" class="btn btn-outline"><i class="bi bi-info-circle"></i> Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="no-courses">
+    <img src="{% static 'images/empty_courses.png' %}" alt="No courses">
+    <h3>No courses enrolled yet</h3>
+    <p>Explore our catalog and start learning new skills today.</p>
+    <a href="{% url 'courses_catalog' %}" class="btn btn-primary">Explore Courses</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/my_course.js' %}"></script>
+{% endblock %}
