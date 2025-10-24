@@ -570,3 +570,12 @@ downloadBtn.addEventListener("click", () => {
   pdf.setPage(1); // return to title page
   pdf.save(`${title}.pdf`);
 });
+// Pre-select categories
+const categorySelect = document.querySelector("#courseCategory");
+if (categorySelect && course.category_name?.length) {
+  Array.from(categorySelect.options).forEach(opt => {
+    if (course.category_name.includes(opt.text)) { // opt.text or opt.value depending on select
+      opt.selected = true;
+    }
+  });
+}

@@ -18,7 +18,15 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<script>
+$(document).ready(function() {
+    $('#courseCategory').select2({
+        placeholder: "Select Category",
+        allowClear: true,
+        width: '100%'
+    });
+});
+</script>
 
 <div class="container-fluid">
     <script id="courses-data" type="application/json">{{ courses_json|safe }}</script>
@@ -42,12 +50,14 @@ $(document).ready(function() {
                     <!-- Course Title -->
       <div class="form-group">
     <label class="form-label fw-semibold" for="category">Course Category</label>
-    <select class="form-control" id="category" name="category" multiple required>
-        <option value="">Select Category</option>
-        {% for cat in categories %}
-            <option value="{{ cat.id }}">{{ cat.name }}</option>
-        {% endfor %}
-    </select>
+   <select name="category" id="courseCategory" class="form-select" multiple>
+  {% for category in categories %}
+      <option value="{{ category.id }}" {% if category.id in selected_category_ids %}selected{% endif %}>
+        {{ category.name }}
+      </option>
+  {% endfor %}
+</select>
+
 </div>
 
 
