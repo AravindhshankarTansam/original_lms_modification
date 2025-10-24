@@ -76,89 +76,72 @@ def list_courses(request):
 
 @role_required('admin')
 @login_required
+@role_required('admin')
+@login_required
 def create_or_update_course(request, course_id=None):
-    """Create or update a course. Supports uploading chapter files in request.FILES with keys:
-       material_<module_index>_<chapter_index>
-    """
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
         overview = request.POST.get('overview')
         requirements = request.POST.get('requirements')
         status = 'Active' if request.POST.get('status') == 'true' else 'Inactive'
+        level = request.POST.get('level', 'Beginner')  # new field
         modules_json = request.POST.get('modules_json')
         image = request.FILES.get('image')
 
-        # If editing, fetch existing course else create new
         if course_id:
             course = get_object_or_404(Course, id=course_id)
         else:
             course = Course(created_by=request.user)
 
+        # Save course basic info
         course.title = title
         course.description = description
         course.overview = overview
         course.requirements = requirements
         course.status = status
+        course.level = level
         if image:
             course.image = image
         course.save()
 
-        # We'll remove existing modules and recreate them.
-        # To preserve existing chapter files when the frontend didn't upload a new file,
-        # frontend should send file_url for existing ones (we included that in list_courses).
+        # Remove old modules if editing
         if course_id:
-            # delete old module/chapter/question records (files on disk remain)
             course.modules.all().delete()
 
+        # Parse modules JSON
         try:
             modules_data = json.loads(modules_json or '[]')
         except Exception as e:
             print("Error parsing modules JSON:", e)
             modules_data = []
 
-        # Iterate with indexes so we can match request.FILES keys
         for m_idx, m in enumerate(modules_data):
             module = Module.objects.create(course=course, title=m.get('title', '') or '')
             for c_idx, ch in enumerate(m.get('chapters', [])):
-                # file key in request.FILES if user uploaded a new file for this chapter
                 file_field_name = f'material_{m_idx}_{c_idx}'
                 uploaded_file = request.FILES.get(file_field_name)
-
-                # Create chapter without file first, then attach file or preserve existing URL if necessary
                 chapter = Chapter.objects.create(
                     module=module,
                     title=ch.get('title', '') or '',
                     description=ch.get('desc', '') or '',
-                    material_type=ch.get('type') or None
+                    material_type=ch.get('type') or None,
+                    duration=ch.get('duration', 0.0)  # save duration from frontend
                 )
-
                 if uploaded_file:
-                    # A brand new file uploaded for this chapter
                     chapter.material_file = uploaded_file
                     chapter.save()
                 else:
-                    # No new file uploaded; backend will preserve existing file if frontend provided file_url
                     file_url = ch.get('file_url') or ""
                     if file_url:
-                        # Try to convert absolute URL to relative path inside MEDIA_ROOT
                         media_url = settings.MEDIA_URL
-                        # If MEDIA_URL is absolute (with domain) this still works for splitting; try safe methods
                         if file_url.startswith(media_url):
                             relative_path = file_url[len(media_url):]
                         else:
-                            # Try to find MEDIA_URL inside the url
                             idx = file_url.find(media_url)
-                            if idx != -1:
-                                relative_path = file_url[idx + len(media_url):]
-                            else:
-                                # fallback: if file_url is absolute, try to extract path after last '/'
-                                relative_path = file_url.split('/')[-1]
-                        # Assign the stored path to the FileField name so Django knows where the file is
-                        # Only assign if relative_path looks reasonable
+                            relative_path = file_url[idx + len(media_url):] if idx != -1 else file_url.split('/')[-1]
                         chapter.material_file.name = relative_path
                         chapter.save()
-                    # else: no file_url and no upload -> leave material_file as null
 
             for q in m.get('questions', []):
                 Question.objects.create(
@@ -169,12 +152,12 @@ def create_or_update_course(request, course_id=None):
                     option1=q.get('option1', ''),
                     option2=q.get('option2', ''),
                     option3=q.get('option3', ''),
-                    option4=q.get('option4', ''),
+                    option4=q.get('option4', '')
                 )
 
         return redirect('list_courses')
 
-    # GET request: fetch courses to populate template (same as list_courses)
+    # GET: fetch courses for admin page
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     categories = Category.objects.all()
     data = []
@@ -187,6 +170,13 @@ def create_or_update_course(request, course_id=None):
             "overview": c.overview or "",
             "requirements": c.requirements or "",
             "image_url": c.image.url if c.image else "",
+            "level": c.level,
+            "total_hours": c.total_hours(),
+            "lectures_count": c.lectures_count(),
+            "last_updated": c.updated_at.strftime('%Y-%m-%d'),
+            "rating": c.rating,
+            "reviews_count": c.review_count,
+            "badge": c.badge or "",
             "modules": [
                 {
                     "title": m.title,
@@ -195,6 +185,7 @@ def create_or_update_course(request, course_id=None):
                             "title": ch.title,
                             "desc": ch.description,
                             "type": ch.material_type,
+                            "duration": ch.duration,
                             "file_url": ch.material_file.url if getattr(ch, "material_file", None) and ch.material_file else ""
                         } for ch in m.chapters.all()
                     ],
@@ -216,7 +207,6 @@ def create_or_update_course(request, course_id=None):
     return render(request, 'courses/create_course.html', {
         'courses_json': json.dumps(data, ensure_ascii=False),
         'categories': categories
-        
     })
 
 def course_categories(request):

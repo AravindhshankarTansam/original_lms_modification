@@ -21,15 +21,32 @@ def course_directory_path(instance, filename):
     return f'courses/{course_slug}/{filename}'
 
 class Course(models.Model):
+    LEVEL_CHOICES = [
+        ('Beginner', 'Beginner'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced')
+    ]
+    
     title = models.CharField(max_length=255)
     description = models.TextField()
     overview = models.TextField(blank=True, null=True)
     requirements = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=[('Active','Active'),('Inactive','Inactive')], default='Active')
     image = models.ImageField(upload_to='course_images/', blank=True, null=True)
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='Beginner')
+    rating = models.FloatField(default=0.0)
+    review_count = models.PositiveIntegerField(default=0)
+    badge = models.CharField(max_length=50, blank=True, null=True) 
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role':'admin'})
     students = models.ManyToManyField(User, related_name='enrolled_courses', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def total_hours(self):
+        return sum(ch.duration for m in self.modules.all() for ch in m.chapters.all())
+
+    def lectures_count(self):
+        return sum(m.chapters.count() for m in self.modules.all())
 
     def __str__(self):
         return self.title
@@ -47,7 +64,7 @@ class Chapter(models.Model):
     description = models.TextField()
     material_type = models.CharField(max_length=20, choices=MATERIAL_TYPE_CHOICES, blank=True, null=True)
     material_file = models.FileField(upload_to=course_directory_path, blank=True, null=True)
-
+    duration = models.FloatField(default=0.0, help_text="Duration in hours")
     def __str__(self):
         return self.title
 
