@@ -105,26 +105,26 @@
             </div>
         </div>
 
-        <!-- 🔹 STATUS + ACTIONS -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="courseStatus" checked>
-                <label class="form-check-label fw-semibold ms-2" for="courseStatus">Active</label>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Left: Back Button -->
+                <a href="{% url 'course_table' %}" class="btn btn-secondary fw-semibold">← Back to Courses</a>
+
+                <!-- Right: Status + Save + Download -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Status Switch -->
+                    <div class="form-check form-switch me-2">
+                        <input class="form-check-input" type="checkbox" id="courseStatus" checked>
+                        <label class="form-check-label fw-semibold ms-2" for="courseStatus">Active</label>
+                    </div>
+
+                    <!-- Save Course -->
+                    <button type="button" id="saveCourseBtn" class="btn btn-success fw-semibold">Save Course</button>
+
+                    <!-- Download PDF -->
+                    <button type="button" id="downloadCourseBtn" class="btn btn-danger fw-semibold">Download Course PDF</button>
+                </div>
             </div>
-            <button type="button" id="saveCourseBtn" class="btn btn-success fw-semibold">Save Course</button>
-        </div>
 
-        <!-- Back Button (Left) -->
-        <div class="text-start mt-4">
-            <a href="{% url 'course_table' %}" class="btn btn-secondary fw-semibold">← Back to Courses</a>
-        </div>
-
-        <!-- Download PDF Button (Right) -->
-        <div class="text-end mt-3">
-            <button type="button" id="downloadCourseBtn" class="btn btn-danger fw-semibold">
-                Download Course PDF
-            </button>
-        </div>
     </form>
 </div>
 

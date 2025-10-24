@@ -279,16 +279,25 @@ function addChapter(container, existing = null) {
 
     // Update preview on new file selection
     fileInput.addEventListener("change", () => {
-        const file = fileInput.files[0];
-        if (!file) return;
+      const file = fileInput.files[0];
+      if (!file) return;
 
-        const fileType = file.type.startsWith("video/") ? "video"
-                        : file.type === "application/pdf" ? "pdf"
-                        : file.type.includes("presentation") ? "ppt"
-                        : file.type.startsWith("image/") ? "image"
-                        : "other";
+      const fileType = file.type.startsWith("video/") ? "video"
+                      : file.type === "application/pdf" ? "pdf"
+                      : file.type.includes("presentation") ? "ppt"
+                      : file.type.startsWith("image/") ? "image"
+                      : "other";
 
-        showExistingFile(previewDiv, URL.createObjectURL(file), fileType);
+      showExistingFile(previewDiv, URL.createObjectURL(file), fileType);
+
+      // Disable manual hours entry for video
+      const hoursInput = chDiv.querySelector(".chapterHours");
+      if (fileType === "video") {
+        hoursInput.value = "Auto (based on video)";
+        hoursInput.disabled = true;
+      } else {
+        hoursInput.disabled = false;
+      }
     });
 
     // ------------------- Remove chapter -------------------

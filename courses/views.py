@@ -76,8 +76,6 @@ def list_courses(request):
 
 @role_required('admin')
 @login_required
-@role_required('admin')
-@login_required
 def create_or_update_course(request, course_id=None):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -126,7 +124,7 @@ def create_or_update_course(request, course_id=None):
                     title=ch.get('title', '') or '',
                     description=ch.get('desc', '') or '',
                     material_type=ch.get('type') or None,
-                    duration=ch.get('duration', 0.0)  # save duration from frontend
+                    duration=ch.get('duration', 0.0)
                 )
                 if uploaded_file:
                     chapter.material_file = uploaded_file
@@ -161,6 +159,7 @@ def create_or_update_course(request, course_id=None):
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     categories = Category.objects.all()
     data = []
+
     for c in courses_qs:
         data.append({
             "id": c.id,
@@ -171,11 +170,12 @@ def create_or_update_course(request, course_id=None):
             "requirements": c.requirements or "",
             "image_url": c.image.url if c.image else "",
             "level": c.level,
-            "total_hours": c.total_hours(),
-            "lectures_count": c.lectures_count(),
-            "last_updated": c.updated_at.strftime('%Y-%m-%d'),
-            "rating": c.rating,
-            "reviews_count": c.review_count,
+            # ✅ FIX — ensure methods are *called*, not referenced
+            "total_hours": c.total_hours() if callable(c.total_hours) else c.total_hours,
+            "lectures_count": c.lectures_count() if callable(c.lectures_count) else c.lectures_count,
+            "last_updated": c.updated_at.strftime('%Y-%m-%d') if c.updated_at else "",
+            "rating": c.rating() if callable(c.rating) else c.rating,
+            "reviews_count": c.review_count() if callable(c.review_count) else c.review_count,
             "badge": c.badge or "",
             "modules": [
                 {
