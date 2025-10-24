@@ -185,88 +185,119 @@ function addModule(existing = null) {
 }
 
 function addChapter(container, existing = null) {
-  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
-  const chDiv = document.createElement("div");
-  chDiv.className = "border p-3 mb-2 rounded bg-white";
-  chDiv.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="fw-bold">Chapter 0</h6>
-        <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Chapter Title</label>
-        <input type="text" class="form-control chapterTitle" value="${existing?.title || ""}" required>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Duration (hrs)</label>
-        <input type="number" step="0.1" min="0" class="form-control chapterHours" value="${existing?.hours || 1}">
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Description</label>
-        <div class="chapterEditor quill-editor"></div>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Study Material</label>
-        <select class="form-select materialType">
-            <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
-            <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
-            <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
-            <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
-        </select>
-        <input type="file" class="form-control mt-2 materialFile" name="chapter_file_${uniqueId}" accept=".mp4,.pdf,.ppt,.pptx,.jpg,.png,.jpeg">
-        <div class="existingMaterial mt-1"></div>
-    </div>
-  `;
-  container.appendChild(chDiv);
+    const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
 
-  chDiv._quillInstance = new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
-  if (existing?.desc) chDiv._quillInstance.root.innerHTML = existing.desc;
+    const chDiv = document.createElement("div");
+    chDiv.className = "border p-3 mb-2 rounded bg-white";
+    chDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold">Chapter 0</h6>
+            <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Chapter Title</label>
+            <input type="text" class="form-control chapterTitle" value="${existing?.title || ""}" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Duration (hrs)</label>
+            <input type="number" step="0.1" min="0" class="form-control chapterHours" value="${existing?.hours || 1}">
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Description</label>
+            <div class="chapterEditor quill-editor"></div>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Study Material</label>
+            <select class="form-select materialType">
+                <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+                <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
+                <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
+                <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
+            </select>
+            <input type="file" class="form-control mt-2 materialFile" name="chapter_file_${uniqueId}" accept=".mp4,.pdf,.ppt,.pptx,.jpg,.png,.jpeg">
+            <div class="existingMaterial mt-1"></div>
+        </div>
+    `;
+    container.appendChild(chDiv);
 
-  // Update metadata when hours input changes
-  const hoursInput = chDiv.querySelector(".chapterHours");
-  hoursInput.addEventListener("input", updateCourseMetadata);
+    // ------------------- Quill editor -------------------
+    chDiv._quillInstance = new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
+    if (existing?.desc) chDiv._quillInstance.root.innerHTML = existing.desc;
 
-  // FILE preview & existing material (kept as is)
-  const previewDiv = chDiv.querySelector(".existingMaterial");
-  const fileInput = chDiv.querySelector(".materialFile");
+    // ------------------- Update metadata on hours change -------------------
+    const hoursInput = chDiv.querySelector(".chapterHours");
+    hoursInput.addEventListener("input", updateCourseMetadata);
 
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    previewDiv.innerHTML = "";
-    const type = file.type;
-    if (type.startsWith("image/")) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.style.maxWidth = "300px";
-      img.classList.add("img-thumbnail");
-      previewDiv.appendChild(img);
-    } else if (type.startsWith("video/")) {
-      const video = document.createElement("video");
-      video.src = URL.createObjectURL(file);
-      video.controls = true;
-      video.style.maxWidth = "300px";
-      previewDiv.appendChild(video);
-    } else if (type === "application/pdf") {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(file);
-      link.target = "_blank";
-      link.innerHTML = `<i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i> ${file.name}`;
-      link.classList.add("d-flex", "align-items-center", "gap-2");
-      previewDiv.appendChild(link);
-    } else {
-      const div = document.createElement("div");
-      div.textContent = file.name;
-      previewDiv.appendChild(div);
+    // ------------------- File preview logic -------------------
+    const previewDiv = chDiv.querySelector(".existingMaterial");
+    const fileInput = chDiv.querySelector(".materialFile");
+
+    // Helper to show file preview
+    function showExistingFile(previewDiv, fileUrl, type) {
+        previewDiv.innerHTML = "";
+        if (!fileUrl) return;
+
+        if (type === "video") {
+            const video = document.createElement("video");
+            video.src = fileUrl;
+            video.controls = true;
+            video.style.maxWidth = "300px";
+            previewDiv.appendChild(video);
+        } else if (type === "pdf") {
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.target = "_blank";
+            link.innerHTML = `<i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i> ${fileUrl.split("/").pop()}`;
+            link.classList.add("d-flex", "align-items-center", "gap-2");
+            previewDiv.appendChild(link);
+        } else if (type === "ppt" || type === "pptx") {
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.target = "_blank";
+            link.innerHTML = `<i class="bi bi-file-earmark-ppt-fill text-warning fs-2"></i> ${fileUrl.split("/").pop()}`;
+            link.classList.add("d-flex", "align-items-center", "gap-2");
+            previewDiv.appendChild(link);
+        } else if (type === "image") {
+            const img = document.createElement("img");
+            img.src = fileUrl;
+            img.style.maxWidth = "300px";
+            img.classList.add("img-thumbnail");
+            previewDiv.appendChild(img);
+        } else {
+            const div = document.createElement("div");
+            div.textContent = fileUrl.split("/").pop();
+            previewDiv.appendChild(div);
+        }
     }
-  });
 
-  chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => {
-    chDiv.remove();
+    // Show existing file if present
+    const existingLink = existing?.file_url || "";
+    const type = existing?.type || "";
+    if (existingLink && type) {
+        showExistingFile(previewDiv, existingLink, type);
+    }
+
+    // Update preview on new file selection
+    fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const fileType = file.type.startsWith("video/") ? "video"
+                        : file.type === "application/pdf" ? "pdf"
+                        : file.type.includes("presentation") ? "ppt"
+                        : file.type.startsWith("image/") ? "image"
+                        : "other";
+
+        showExistingFile(previewDiv, URL.createObjectURL(file), fileType);
+    });
+
+    // ------------------- Remove chapter -------------------
+    chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => {
+        chDiv.remove();
+        renumberModules();
+    });
+
     renumberModules();
-  });
-
-  renumberModules();
 }
 
 // ---------------- QUESTION LOGIC ----------------
