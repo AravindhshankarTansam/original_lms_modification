@@ -411,3 +411,43 @@ html, body {
   right: 10px;
   color: #888;
 }
+
+
+
+
+/* === Progress Bar === */
+.progress-section label {
+  font-size: 0.95rem;
+}
+.progress-wrapper {
+  background-color: #eee;
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+}
+.progress-bar-custom {
+  height: 6px;
+  width: 0%;
+  background-color: #d4362d;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+#progressText {
+  font-size: 0.8rem;
+}
+
+/* === Lesson Checkboxes === */
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lesson-check {
+  accent-color: #d4362d;
+  cursor: pointer;
+}
+.lesson-item.completed {
+  text-decoration: line-through;
+  color: #888;
+}

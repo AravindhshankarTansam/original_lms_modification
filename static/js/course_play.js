@@ -169,3 +169,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("lessonVideo");
+  const lessons = document.querySelectorAll(".lesson-item");
+  const progressBar = document.getElementById("progressBar");
+  const progressText = document.getElementById("progressText");
+
+  let completedCount = 0;
+  const totalLessons = lessons.length;
+
+  // Unlock the first lesson
+  lessons[0].classList.remove("locked");
+  lessons[0].querySelector(".lesson-check").disabled = false;
+
+  // Update progress bar
+  function updateProgress() {
+    const percent = Math.round((completedCount / totalLessons) * 100);
+    progressBar.style.width = percent + "%";
+    progressText.textContent = `${percent}% Completed`;
+  }
+
+  // Handle lesson clicks
+  lessons.forEach((lesson, index) => {
+    lesson.addEventListener("click", () => {
+      if (lesson.classList.contains("locked")) return;
+
+      const videoSrc = lesson.getAttribute("data-video");
+      if (videoSrc) {
+        video.pause();
+        video.currentTime = 0;
+        video.querySelector("source").src = `/static/videos/${videoSrc}`;
+        video.load();
+        video.play();
+      }
+
+      // When video ends
+      video.onended = function () {
+        if (!lesson.classList.contains("completed")) {
+          lesson.classList.add("completed");
+          const check = lesson.querySelector(".lesson-check");
+          check.checked = true;
+          completedCount++;
+          updateProgress();
+        }
+
+        // Unlock next lesson
+        const nextLesson = lessons[index + 1];
+        if (nextLesson && nextLesson.classList.contains("locked")) {
+          nextLesson.classList.remove("locked");
+          nextLesson.querySelector(".lesson-check").disabled = false;
+        }
+      };
+    });
+  });
+
+  updateProgress();
+});
