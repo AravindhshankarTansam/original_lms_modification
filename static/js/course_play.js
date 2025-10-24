@@ -170,25 +170,19 @@
 //   });
 // });
 
-
 document.addEventListener("DOMContentLoaded", function () {
   const video = document.getElementById("lessonVideo");
   const lessons = document.querySelectorAll(".lesson-item");
   const progressBar = document.getElementById("progressBar");
   const progressText = document.getElementById("progressText");
-  const moduleProgress = document.getElementById("moduleProgress");
-  const STORAGE_KEY = "courseProgress_v1"; // unique key for this course
-
+  const STORAGE_KEY = "courseProgress_v1";
   let savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   const totalLessons = lessons.length;
+  let currentLessonIndex = 0;
 
-  // === Initialize Lessons ===
+  // Initialize lessons
   lessons.forEach((lesson, index) => {
     const checkbox = lesson.querySelector(".lesson-check");
-
-    // Lock all lessons by default
-    lesson.classList.add("locked");
-    checkbox.disabled = true;
 
     // Restore completed lessons
     if (savedProgress.includes(index)) {
@@ -196,71 +190,80 @@ document.addEventListener("DOMContentLoaded", function () {
       checkbox.checked = true;
       lesson.classList.remove("locked");
       checkbox.disabled = false;
+
+      const parentChapter = lesson.closest(".chapter-block");
+      if (parentChapter) parentChapter.classList.remove("locked");
+    } else {
+      // Disable locked lessons
+      if (lesson.classList.contains("locked")) {
+        checkbox.disabled = true;
+      }
     }
+
+    // Lesson click
+    lesson.addEventListener("click", () => {
+      if (lesson.classList.contains("locked")) return;
+
+      currentLessonIndex = index;
+      const videoSrc = lesson.getAttribute("data-video");
+      if (!videoSrc) return;
+
+      const source = video.querySelector("source");
+      if (!source.src.endsWith(videoSrc)) {
+        source.src = `/static/videos/${videoSrc}`;
+        video.load();
+      }
+      video.play();
+    });
   });
 
-  // === Unlock first incomplete lesson by default ===
-  const firstIncomplete = lessons[savedProgress.length] || lessons[0];
+  // Unlock first incomplete lesson
+  const firstIncomplete = lessons.find((_, i) => !savedProgress.includes(i)) || lessons[0];
   firstIncomplete.classList.remove("locked");
   firstIncomplete.querySelector(".lesson-check").disabled = false;
+  const parentChapter = firstIncomplete.closest(".chapter-block");
+  if (parentChapter) parentChapter.classList.remove("locked");
 
-  // === Update Progress Function ===
+  // Update progress
   function updateProgress() {
     const completed = savedProgress.length;
     const percent = Math.round((completed / totalLessons) * 100);
     progressBar.style.width = percent + "%";
     progressText.textContent = `${percent}% Completed`;
-
-    // Update module summary
-    if (moduleProgress) {
-      moduleProgress.textContent = `${completed}/${totalLessons} Chapters Completed — Total Duration: 2 hrs`;
-    }
   }
 
   updateProgress();
 
-  // === Handle Lesson Clicks ===
-  lessons.forEach((lesson, index) => {
-    lesson.addEventListener("click", () => {
-      if (lesson.classList.contains("locked")) return;
+  // Video ended handler
+  video.addEventListener("ended", () => {
+    const lesson = lessons[currentLessonIndex];
+    const checkbox = lesson.querySelector(".lesson-check");
 
-      const videoSrc = lesson.getAttribute("data-video");
-      if (!videoSrc) return;
+    if (!lesson.classList.contains("completed")) {
+      lesson.classList.add("completed");
+      checkbox.checked = true;
+      checkbox.disabled = false;
 
-      // Load and play selected video
-      const source = video.querySelector("source");
-      source.src = `/static/videos/${videoSrc}`;
-      video.load();
-      video.play();
+      if (!savedProgress.includes(currentLessonIndex)) {
+        savedProgress.push(currentLessonIndex);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
+      }
 
-      // When video ends — mark completed, update progress, unlock next
-      video.onended = function () {
-        if (!lesson.classList.contains("completed")) {
-          // Mark as completed
-          lesson.classList.add("completed");
-          lesson.querySelector(".lesson-check").checked = true;
+      updateProgress();
 
-          // Save progress
-          if (!savedProgress.includes(index)) {
-            savedProgress.push(index);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
-          }
+      // Unlock next lesson
+      const nextLesson = lessons[currentLessonIndex + 1];
+      if (nextLesson) {
+        nextLesson.classList.remove("locked");
+        nextLesson.querySelector(".lesson-check").disabled = false;
 
-          // Update progress UI
-          updateProgress();
-
-          // Unlock next lesson
-          const nextLesson = lessons[index + 1];
-          if (nextLesson) {
-            nextLesson.classList.remove("locked");
-            nextLesson.querySelector(".lesson-check").disabled = false;
-          }
-        }
-      };
-    });
+        const nextParent = nextLesson.closest(".chapter-block");
+        if (nextParent) nextParent.classList.remove("locked");
+      }
+    }
   });
 
-  // === Restore last watched lesson video ===
+  // Restore last video
   if (savedProgress.length > 0) {
     const lastIndex = Math.max(...savedProgress);
     const nextLesson = lessons[lastIndex + 1] || lessons[lastIndex];
@@ -272,3 +275,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
