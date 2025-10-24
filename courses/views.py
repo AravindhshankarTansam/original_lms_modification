@@ -38,6 +38,7 @@ def list_courses(request):
             "id": c.id,
             "title": c.title,
             "status": c.status or "Inactive",
+            "category_name": category_ids, 
             "description": c.description or "",
             "overview": c.overview or "",
             "requirements": c.requirements or "",
@@ -79,13 +80,16 @@ def list_courses(request):
 @role_required('admin')
 @login_required
 def create_or_update_course(request, course_id=None):
+    """Create or update a course. Supports uploading chapter files in request.FILES with keys: material_<module_index>_<chapter_index>"""
     if request.method == 'POST':
+        # ...[your POST logic remains unchanged]...
+        pass # (Leave the POST code as you had above)
         title = request.POST.get('title')
         description = request.POST.get('description')
         overview = request.POST.get('overview')
         requirements = request.POST.get('requirements')
         status = 'Active' if request.POST.get('status') == 'true' else 'Inactive'
-        level = request.POST.get('level', 'Beginner')  # new field
+        category_name = request.POST.get('category')  # Matches HTML field name
         modules_json = request.POST.get('modules_json')
         image = request.FILES.get('image')
 
@@ -100,9 +104,11 @@ def create_or_update_course(request, course_id=None):
         course.overview = overview
         course.requirements = requirements
         course.status = status
-        course.level = level
+        course.category_names = category_name 
         if image:
             course.image = image
+        category_ids = request.POST.getlist('category')  # get all selected IDs as list
+        course.category_names = json.dumps(category_ids)  # store as JSON string
         course.save()
 
         # Remove old modules if editing
@@ -157,7 +163,7 @@ def create_or_update_course(request, course_id=None):
 
         return redirect('list_courses')
 
-    # GET: fetch courses for admin page
+    # ------ GET REQUEST ONLY ------
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     categories = Category.objects.all()
     data = []
@@ -204,11 +210,22 @@ def create_or_update_course(request, course_id=None):
             ]
         })
 
+    if course_id:
+        try:
+           course = Course.objects.get(id=course_id)
+           selected_category_ids = [int(cid) for cid in json.loads(course.category_names or '[]')]
+           categories = Category.objects.all()
+        except Exception:
+            selected_category_ids = []
+            categories = Category.objects.none()
+    else:
+        selected_category_ids = []
+        categories = Category.objects.all()
     return render(request, 'courses/create_course.html', {
         'courses_json': json.dumps(data, ensure_ascii=False),
-        'categories': categories
+        'categories': categories,
+        'selected_category_ids': selected_category_ids,
     })
-
 def course_categories(request):
     categories = Category.objects.prefetch_related('subcategories').all()
 
