@@ -113,51 +113,57 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
   <!-- ===== SIDEBAR ===== -->
 <!-- ===== SIDEBAR ===== -->
 <div class="course-sidebar">
+  <!-- Progress -->
+   
+  <div class="progress-section mb-4">
+    <label class="fw-semibold mb-1">Course Progress</label>
+    <div class="progress-wrapper">
+      <div class="progress-bar-custom" id="progressBar"></div>
+    </div>
+    <div class="small text-muted" id="progressText">0% Completed</div>
+  </div>
 
   <!-- MODULE 1 -->
-  <div class="section mb-4">
-    <h6>Module 1: Network Segmentation & Access</h6>
+<div class="section mb-4">
+  <h6>Module 1: Network Segmentation & Access</h6>
 
-    <!-- Chapter 1 -->
-    <div class="chapter-block">
-      <input type="radio" id="chapter1" name="chapter" data-chapter="1">
-      <label for="chapter1" class="chapter-title fw-semibold">CA-SMM200 L1 - Network Segmentation & Access Control</label>
+  <!-- Chapter 1 -->
+  <div class="chapter-block">
+    <label class="chapter-title fw-semibold">CHAPTER I - Network Segmentation & Access Control</label>
+<ul class="lesson-list list-unstyled ms-2 mt-1">
+  <li class="lesson-item" data-video="network_segmentation_intro.mp4">
+    <input type="checkbox" class="lesson-check">
+    🎥 Introduction to Segmentation
+  </li>
+  <li class="lesson-item locked" data-video="segmentation_methods.mp4">
+    <input type="checkbox" class="lesson-check">
+    🎥 Segmentation Methods
+  </li>
+  <li class="lesson-item locked" data-video="access_principles.mp4">
+    <input type="checkbox" class="lesson-check">
+    🎥 Access Control Principles
+  </li>
+</ul>
 
-      <ul class="lesson-list list-unstyled ms-3 mt-1">
-        <li class="lesson-item" data-video="network_segmentation_intro.mp4">🎥 Introduction to Segmentation</li>
-        <li class="lesson-item locked" data-video="segmentation_methods.mp4">🎥 Segmentation Methods</li>
-        <li class="lesson-item locked" data-video="access_principles.mp4">🎥 Access Control Principles</li>
-      </ul>
-    </div>
-
-    <!-- Chapter 2 -->
-    <div class="chapter-block locked">
-      <input type="radio" id="chapter2" name="chapter" data-chapter="2" disabled>
-      <label for="chapter2" class="chapter-title fw-semibold">CA-SMM200 L2 - Network Access Policies</label>
-
-      <ul class="lesson-list list-unstyled ms-3 mt-1">
-        <li class="lesson-item locked" data-video="policy_basics.mp4">🎥 Policy Basics</li>
-        <li class="lesson-item locked" data-video="role_based_access.mp4">🎥 Role-Based Access</li>
-      </ul>
-    </div>
   </div>
 
-  <!-- MODULE 2 -->
-  <div class="section mb-4 locked">
-    <h6>Module 2: Threat Detection & Monitoring</h6>
+  <!-- Chapter 2 -->
+  <div class="chapter-block locked">
+    <label class="chapter-title fw-semibold">CA-SMM200 L2 - Network Access Policies</label>
 
-    <div class="chapter-block locked">
-      <input type="radio" id="chapter3" name="chapter" data-chapter="3" disabled>
-      <label for="chapter3" class="chapter-title fw-semibold">CA-SMM200 L3 - Threat Detection Fundamentals</label>
-
-      <ul class="lesson-list list-unstyled ms-3 mt-1">
-        <li class="lesson-item locked" data-video="threat_basics.mp4">🎥 Threat Basics</li>
-        <li class="lesson-item locked" data-video="threat_analysis.mp4">🎥 Threat Analysis</li>
-      </ul>
-    </div>
+    <ul class="lesson-list list-unstyled ms-2 mt-1">
+      <li class="lesson-item locked" data-video="policy_basics.mp4">
+        <input type="checkbox" class="lesson-check" disabled>
+        🎥 Policy Basics
+      </li>
+      <li class="lesson-item locked" data-video="role_based_access.mp4">
+        <input type="checkbox" class="lesson-check" disabled>
+        🎥 Role-Based Access
+      </li>
+    </ul>
   </div>
-
 </div>
+
 
 
   <!-- COURSE TASK -->
