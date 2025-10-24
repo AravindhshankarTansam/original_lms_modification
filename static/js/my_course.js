@@ -1,14 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const courseCards = document.querySelectorAll(".course-card");
+  const resetBtn = document.getElementById("resetFilters");
 
-  courseCards.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      card.classList.add("hovered");
+  resetBtn.addEventListener("click", () => {
+    // Reset all select dropdowns to their first (default) option
+    const selects = document.querySelectorAll(".filter-group select");
+    selects.forEach(select => {
+      select.selectedIndex = 0; // sets it back to the first option
     });
-    card.addEventListener("mouseleave", () => {
-      card.classList.remove("hovered");
-    });
+
+    // Clear search input
+    const searchInput = document.querySelector(".search-input");
+    if (searchInput) searchInput.value = "";
+
+    console.log("Filters reset!");
   });
-
-  console.log("✅ My Courses page loaded successfully");
 });
