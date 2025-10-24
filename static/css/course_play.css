@@ -270,8 +270,8 @@ html, body {
 }
 
 .nav-tabs .nav-link.active {
-  border-color: transparent transparent #d4362d transparent !important;
-  color: #d4362d !important;
+  border-color: transparent transparent #0f3d3e transparent !important;
+  color: #0f3d3e !important;
   font-weight: 600;
 }
 
@@ -450,4 +450,17 @@ html, body {
 .lesson-item.completed {
   text-decoration: line-through;
   color: #888;
+}
+
+/* === Module Summary Section === */
+.module-summary {
+  background: #fff;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.module-summary strong {
+  color: #0f3d3e;
 }

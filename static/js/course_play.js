@@ -1,63 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("Course Play Page Loaded");
+// document.addEventListener("DOMContentLoaded", function () {
+//   console.log("Course Play Page Loaded");
 
-  // Tab logging
-  const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
-  tabEls.forEach(tab => {
-    tab.addEventListener("shown.bs.tab", function (e) {
-      console.log("Active Tab:", e.target.textContent);
-    });
-  });
+//   // Tab logging
+//   const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
+//   tabEls.forEach(tab => {
+//     tab.addEventListener("shown.bs.tab", function (e) {
+//       console.log("Active Tab:", e.target.textContent);
+//     });
+//   });
 
-  // Start button handler
-  const startBtn = document.querySelector(".btn-start");
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      alert("Lesson started!");
-    });
-  }
+//   // Start button handler
+//   const startBtn = document.querySelector(".btn-start");
+//   if (startBtn) {
+//     startBtn.addEventListener("click", () => {
+//       alert("Lesson started!");
+//     });
+//   }
 
-  // Chapter selection logic
-  const chapters = document.querySelectorAll('input[name="chapter"]');
-  const videoElement = document.getElementById("lessonVideo");
+//   // Chapter selection logic
+//   const chapters = document.querySelectorAll('input[name="chapter"]');
+//   const videoElement = document.getElementById("lessonVideo");
 
-  // Map chapter number to video file names matching your static files
-  const chapterVideos = {
-    1: "network_segmentation_intro.mp4",
-    2: "access_control.mp4",
-    3: "", // No video for chapter 3, so skip video update
-    4: "advanced_threats.mp4"
-  };
+//   // Map chapter number to video file names matching your static files
+//   const chapterVideos = {
+//     1: "network_segmentation_intro.mp4",
+//     2: "access_control.mp4",
+//     3: "", // No video for chapter 3, so skip video update
+//     4: "advanced_threats.mp4"
+//   };
 
-  chapters.forEach((chapter, index) => {
-    chapter.addEventListener('change', () => {
-      if (chapter.checked) {
-        const chapterNum = chapter.getAttribute('data-chapter');
-        console.log(`Chapter ${chapterNum} selected`);
+//   chapters.forEach((chapter, index) => {
+//     chapter.addEventListener('change', () => {
+//       if (chapter.checked) {
+//         const chapterNum = chapter.getAttribute('data-chapter');
+//         console.log(`Chapter ${chapterNum} selected`);
 
-        // Change video source only if there is a video for the chapter
-        const videoFile = chapterVideos[chapterNum];
-        if (videoFile) {
-          videoElement.pause();
-          videoElement.currentTime = 0;
-          videoElement.querySelector("source").src = `/static/videos/${videoFile}`;
-          videoElement.load();
-          videoElement.play();
-        } else {
-          console.log(`No video for chapter ${chapterNum}`);
-        }
+//         // Change video source only if there is a video for the chapter
+//         const videoFile = chapterVideos[chapterNum];
+//         if (videoFile) {
+//           videoElement.pause();
+//           videoElement.currentTime = 0;
+//           videoElement.querySelector("source").src = `/static/videos/${videoFile}`;
+//           videoElement.load();
+//           videoElement.play();
+//         } else {
+//           console.log(`No video for chapter ${chapterNum}`);
+//         }
 
-        // Unlock next chapter if exists
-        const nextChapter = chapters[index + 1];
-        if (nextChapter) {
-          const nextBlock = nextChapter.closest('.chapter-block');
-          nextChapter.disabled = false;
-          nextBlock.classList.remove('locked');
-        }
-      }
-    });
-  });
-});
+//         // Unlock next chapter if exists
+//         const nextChapter = chapters[index + 1];
+//         if (nextChapter) {
+//           const nextBlock = nextChapter.closest('.chapter-block');
+//           nextChapter.disabled = false;
+//           nextBlock.classList.remove('locked');
+//         }
+//       }
+//     });
+//   });
+// });
 
 
 
@@ -78,99 +78,97 @@ document.addEventListener("DOMContentLoaded", function () {
 // });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const video = document.getElementById("lessonVideo");
-  const menuButton = document.getElementById("menuButton");
-  const menuDropdown = document.getElementById("menuDropdown");
-  const pipMode = document.getElementById("pipMode");
-  const speedSelect = document.getElementById("speedSelect");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const video = document.getElementById("lessonVideo");
+//   const menuButton = document.getElementById("menuButton");
+//   const menuDropdown = document.getElementById("menuDropdown");
+//   const pipMode = document.getElementById("pipMode");
+//   const speedSelect = document.getElementById("speedSelect");
 
-  // Toggle dropdown visibility
-  menuButton.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menuDropdown.classList.toggle("d-none");
-  });
+//   // Toggle dropdown visibility
+//   menuButton.addEventListener("click", (e) => {
+//     e.stopPropagation();
+//     menuDropdown.classList.toggle("d-none");
+//   });
 
-  // Close menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
-      menuDropdown.classList.add("d-none");
-    }
-  });
+//   // Close menu when clicking outside
+//   document.addEventListener("click", (e) => {
+//     if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
+//       menuDropdown.classList.add("d-none");
+//     }
+//   });
 
-  // Picture-in-Picture toggle
-  pipMode.addEventListener("click", async () => {
-    try {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      } else {
-        await video.requestPictureInPicture();
-      }
-    } catch (err) {
-      console.error("PiP not supported:", err);
-    }
-    menuDropdown.classList.add("d-none");
-  });
+//   // Picture-in-Picture toggle
+//   pipMode.addEventListener("click", async () => {
+//     try {
+//       if (document.pictureInPictureElement) {
+//         await document.exitPictureInPicture();
+//       } else {
+//         await video.requestPictureInPicture();
+//       }
+//     } catch (err) {
+//       console.error("PiP not supported:", err);
+//     }
+//     menuDropdown.classList.add("d-none");
+//   });
 
-  // Playback speed control
-  speedSelect.addEventListener("change", () => {
-    video.playbackRate = parseFloat(speedSelect.value);
-  });
+//   // Playback speed control
+//   speedSelect.addEventListener("change", () => {
+//     video.playbackRate = parseFloat(speedSelect.value);
+//   });
 
-  // === LESSON UNLOCK LOGIC ===
-  const lessons = document.querySelectorAll(".lesson-item");
+//   // === LESSON UNLOCK LOGIC ===
+//   const lessons = document.querySelectorAll(".lesson-item");
 
-  lessons.forEach((lesson, index) => {
-    lesson.addEventListener("click", () => {
-      const videoSrc = lesson.getAttribute("data-video");
-      if (videoSrc) {
-        video.pause();
-        video.currentTime = 0;
-        video.querySelector("source").src = `/static/videos/${videoSrc}`;
-        video.load();
-        video.play();
-      }
+//   lessons.forEach((lesson, index) => {
+//     lesson.addEventListener("click", () => {
+//       const videoSrc = lesson.getAttribute("data-video");
+//       if (videoSrc) {
+//         video.pause();
+//         video.currentTime = 0;
+//         video.querySelector("source").src = `/static/videos/${videoSrc}`;
+//         video.load();
+//         video.play();
+//       }
 
-      // Mark lesson as completed after video ends
-      video.onended = function () {
-        const nextLesson = lessons[index + 1];
-        if (nextLesson && nextLesson.classList.contains("locked")) {
-          nextLesson.classList.remove("locked");
-        }
-      };
-    });
-  });
-  // --- Chapter logic (unlock next, change video) ---
-  const chapters = document.querySelectorAll('input[name="chapter"]');
-  const chapterVideos = {
-    1: "network_segmentation_intro.mp4",
-    2: "access_control.mp4",
-    4: "advanced_threats.mp4"
-  };
+//       // Mark lesson as completed after video ends
+//       video.onended = function () {
+//         const nextLesson = lessons[index + 1];
+//         if (nextLesson && nextLesson.classList.contains("locked")) {
+//           nextLesson.classList.remove("locked");
+//         }
+//       };
+//     });
+//   });
+//   // --- Chapter logic (unlock next, change video) ---
+//   const chapters = document.querySelectorAll('input[name="chapter"]');
+//   const chapterVideos = {
+//     1: "network_segmentation_intro.mp4",
+//     2: "access_control.mp4",
+//     4: "advanced_threats.mp4"
+//   };
 
-  chapters.forEach((chapter, index) => {
-    chapter.addEventListener('change', () => {
-      const chapterNum = chapter.getAttribute('data-chapter');
-      const videoFile = chapterVideos[chapterNum];
-      if (videoFile) {
-        video.pause();
-        video.currentTime = 0;
-        video.querySelector("source").src = `/static/videos/${videoFile}`;
-        video.load();
-        video.play();
-      }
+//   chapters.forEach((chapter, index) => {
+//     chapter.addEventListener('change', () => {
+//       const chapterNum = chapter.getAttribute('data-chapter');
+//       const videoFile = chapterVideos[chapterNum];
+//       if (videoFile) {
+//         video.pause();
+//         video.currentTime = 0;
+//         video.querySelector("source").src = `/static/videos/${videoFile}`;
+//         video.load();
+//         video.play();
+//       }
 
-      const nextChapter = chapters[index + 1];
-      if (nextChapter) {
-        const nextBlock = nextChapter.closest('.chapter-block');
-        nextChapter.disabled = false;
-        nextBlock.classList.remove('locked');
-      }
-    });
-  });
-});
-
-
+//       const nextChapter = chapters[index + 1];
+//       if (nextChapter) {
+//         const nextBlock = nextChapter.closest('.chapter-block');
+//         nextChapter.disabled = false;
+//         nextBlock.classList.remove('locked');
+//       }
+//     });
+//   });
+// });
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -178,54 +176,99 @@ document.addEventListener("DOMContentLoaded", function () {
   const lessons = document.querySelectorAll(".lesson-item");
   const progressBar = document.getElementById("progressBar");
   const progressText = document.getElementById("progressText");
+  const moduleProgress = document.getElementById("moduleProgress");
+  const STORAGE_KEY = "courseProgress_v1"; // unique key for this course
 
-  let completedCount = 0;
+  let savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   const totalLessons = lessons.length;
 
-  // Unlock the first lesson
-  lessons[0].classList.remove("locked");
-  lessons[0].querySelector(".lesson-check").disabled = false;
+  // === Initialize Lessons ===
+  lessons.forEach((lesson, index) => {
+    const checkbox = lesson.querySelector(".lesson-check");
 
-  // Update progress bar
+    // Lock all lessons by default
+    lesson.classList.add("locked");
+    checkbox.disabled = true;
+
+    // Restore completed lessons
+    if (savedProgress.includes(index)) {
+      lesson.classList.add("completed");
+      checkbox.checked = true;
+      lesson.classList.remove("locked");
+      checkbox.disabled = false;
+    }
+  });
+
+  // === Unlock first incomplete lesson by default ===
+  const firstIncomplete = lessons[savedProgress.length] || lessons[0];
+  firstIncomplete.classList.remove("locked");
+  firstIncomplete.querySelector(".lesson-check").disabled = false;
+
+  // === Update Progress Function ===
   function updateProgress() {
-    const percent = Math.round((completedCount / totalLessons) * 100);
+    const completed = savedProgress.length;
+    const percent = Math.round((completed / totalLessons) * 100);
     progressBar.style.width = percent + "%";
     progressText.textContent = `${percent}% Completed`;
+
+    // Update module summary
+    if (moduleProgress) {
+      moduleProgress.textContent = `${completed}/${totalLessons} Chapters Completed — Total Duration: 2 hrs`;
+    }
   }
 
-  // Handle lesson clicks
+  updateProgress();
+
+  // === Handle Lesson Clicks ===
   lessons.forEach((lesson, index) => {
     lesson.addEventListener("click", () => {
       if (lesson.classList.contains("locked")) return;
 
       const videoSrc = lesson.getAttribute("data-video");
-      if (videoSrc) {
-        video.pause();
-        video.currentTime = 0;
-        video.querySelector("source").src = `/static/videos/${videoSrc}`;
-        video.load();
-        video.play();
-      }
+      if (!videoSrc) return;
 
-      // When video ends
+      // Load and play selected video
+      const source = video.querySelector("source");
+      source.src = `/static/videos/${videoSrc}`;
+      video.load();
+      video.play();
+
+      // When video ends — mark completed, update progress, unlock next
       video.onended = function () {
         if (!lesson.classList.contains("completed")) {
+          // Mark as completed
           lesson.classList.add("completed");
-          const check = lesson.querySelector(".lesson-check");
-          check.checked = true;
-          completedCount++;
-          updateProgress();
-        }
+          lesson.querySelector(".lesson-check").checked = true;
 
-        // Unlock next lesson
-        const nextLesson = lessons[index + 1];
-        if (nextLesson && nextLesson.classList.contains("locked")) {
-          nextLesson.classList.remove("locked");
-          nextLesson.querySelector(".lesson-check").disabled = false;
+          // Save progress
+          if (!savedProgress.includes(index)) {
+            savedProgress.push(index);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
+          }
+
+          // Update progress UI
+          updateProgress();
+
+          // Unlock next lesson
+          const nextLesson = lessons[index + 1];
+          if (nextLesson) {
+            nextLesson.classList.remove("locked");
+            nextLesson.querySelector(".lesson-check").disabled = false;
+          }
         }
       };
     });
   });
 
-  updateProgress();
+  // === Restore last watched lesson video ===
+  if (savedProgress.length > 0) {
+    const lastIndex = Math.max(...savedProgress);
+    const nextLesson = lessons[lastIndex + 1] || lessons[lastIndex];
+    const videoSrc = nextLesson.getAttribute("data-video");
+    if (videoSrc) {
+      const source = video.querySelector("source");
+      source.src = `/static/videos/${videoSrc}`;
+      video.load();
+    }
+  }
 });
