@@ -270,8 +270,8 @@ html, body {
 }
 
 .nav-tabs .nav-link.active {
-  border-color: transparent transparent #d4362d transparent !important;
-  color: #d4362d !important;
+  border-color: transparent transparent #0f3d3e transparent !important;
+  color: #0f3d3e !important;
   font-weight: 600;
 }
 
@@ -380,7 +380,7 @@ html, body {
 }
 
 /* Bootstrap's d-none is display:none !important, so no need to redefine */
-
+/* 
 .lesson-list {
   margin-top: 6px;
 }
@@ -410,4 +410,186 @@ html, body {
   position: absolute;
   right: 10px;
   color: #888;
+} */
+
+
+
+
+/* === Progress Bar === */
+.progress-section label {
+  font-size: 0.95rem;
+}
+.progress-wrapper {
+  background-color: #eee;
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+}
+.progress-bar-custom {
+  height: 6px;
+  width: 0%;
+  background-color: #d4362d;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+#progressText {
+  font-size: 0.8rem;
+}
+/* ---------- LESSON LIST ---------- */
+.lesson-list {
+  margin-top: 6px;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f3f3;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.88rem;
+  pointer-events: auto; /* always clickable unless locked */
+}
+
+.lesson-item:hover {
+  background: #eaeaea;
+}
+
+.lesson-item.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* ---------- LOCKED LESSONS ---------- */
+.lesson-item.locked {
+  opacity: 0.5;
+  pointer-events: none; /* block clicks only if locked */
+  position: relative;
+}
+
+.lesson-item.locked::after {
+  content: "🔒";
+  position: absolute;
+  right: 10px;
+  color: #888;
+  pointer-events: none; /* allow clicks to pass through pseudo-element */
+}
+
+/* ---------- CHAPTER BLOCKS ---------- */
+.chapter-block {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid #e5e5e5;
+  transition: background 0.3s;
+}
+/* ---------- LOCKED CHAPTERS ---------- */
+.chapter-block.locked {
+  opacity: 0.5;
+  pointer-events: none; /* block clicks for locked chapters */
+  position: relative;
+}
+
+.chapter-block.locked::after {
+  content: "🔒 Locked";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* ---------- LESSONS ---------- */
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f3f3;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.88rem;
+  pointer-events: auto; /* ensure clickable by default */
+  opacity: 1; /* ensure visible */
+}
+
+.lesson-item:hover {
+  background: #eaeaea;
+}
+
+.lesson-item.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Locked lessons only */
+.lesson-item.locked {
+  opacity: 0.5; /* dimmed */
+  pointer-events: none; /* disable clicks */
+}
+
+/* Ensure unlocked lessons inside locked chapter remain clickable */
+.chapter-block.locked .lesson-item:not(.locked) {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+
+/* ---------- LESSON CHECKBOX ---------- */
+.lesson-check {
+  accent-color: #d4362d;
+  cursor: pointer;
+}
+
+/* ---------- VIDEO WRAPPER ---------- */
+.video-wrapper video {
+  border-radius: 10px;
+  border: 2px solid #e5e5e5;
+}
+
+/* ---------- START BUTTON ---------- */
+.btn-start {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-start:hover {
+  background-color: #218838;
+}
+/* === Module Summary Section === */
+.module-summary {
+  background: #fff;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.module-summary strong {
+  color: #0f3d3e;
+}
+/* Allow unlocked lessons inside locked chapters to be clickable */
+.chapter-block.locked .lesson-item:not(.locked) {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* Keep your existing styles for locked lessons */
+.lesson-item.locked {
+  opacity: 0.5;
+  pointer-events: none;
 }
