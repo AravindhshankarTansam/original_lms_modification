@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .models import Course, Module, Chapter, Question
+import subprocess
 from accounts.views import role_required
 from .models import Category, SubCategory
 
@@ -87,12 +88,13 @@ def create_or_update_course(request, course_id=None):
         modules_json = request.POST.get('modules_json')
         image = request.FILES.get('image')
 
+        # Get or create course
         if course_id:
             course = get_object_or_404(Course, id=course_id)
         else:
             course = Course(created_by=request.user)
 
-        # Save course basic info
+        # Save basic course info
         course.title = title
         course.description = description
         course.overview = overview
@@ -103,7 +105,7 @@ def create_or_update_course(request, course_id=None):
             course.image = image
         course.save()
 
-        # Remove old modules if editing
+        # Delete old modules if editing
         if course_id:
             course.modules.all().delete()
 
@@ -114,11 +116,15 @@ def create_or_update_course(request, course_id=None):
             print("Error parsing modules JSON:", e)
             modules_data = []
 
+        # Loop over modules
         for m_idx, m in enumerate(modules_data):
             module = Module.objects.create(course=course, title=m.get('title', '') or '')
+
+            # Loop over chapters
             for c_idx, ch in enumerate(m.get('chapters', [])):
                 file_field_name = f'material_{m_idx}_{c_idx}'
                 uploaded_file = request.FILES.get(file_field_name)
+
                 chapter = Chapter.objects.create(
                     module=module,
                     title=ch.get('title', '') or '',
@@ -126,10 +132,31 @@ def create_or_update_course(request, course_id=None):
                     material_type=ch.get('type') or None,
                     duration=ch.get('duration', 0.0)
                 )
+
                 if uploaded_file:
                     chapter.material_file = uploaded_file
                     chapter.save()
+
+                    # ----------- AUTO VIDEO DURATION -----------
+                    if ch.get('type') == 'video':
+                        try:
+                            result = subprocess.run(
+                                [
+                                    'ffprobe', '-v', 'error',
+                                    '-show_entries', 'format=duration',
+                                    '-of', 'default=noprint_wrappers=1:nokey=1',
+                                    chapter.material_file.path
+                                ],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE
+                            )
+                            duration_seconds = float(result.stdout.strip() or 0)
+                            chapter.duration = round(duration_seconds / 3600, 2)  # convert to hours
+                            chapter.save()
+                        except Exception as e:
+                            print("FFprobe error:", e)
                 else:
+                    # Existing file from URL
                     file_url = ch.get('file_url') or ""
                     if file_url:
                         media_url = settings.MEDIA_URL
@@ -141,6 +168,7 @@ def create_or_update_course(request, course_id=None):
                         chapter.material_file.name = relative_path
                         chapter.save()
 
+            # Loop over questions
             for q in m.get('questions', []):
                 Question.objects.create(
                     module=module,
@@ -155,7 +183,7 @@ def create_or_update_course(request, course_id=None):
 
         return redirect('list_courses')
 
-    # GET: fetch courses for admin page
+    # GET request: fetch courses and categories
     courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
     categories = Category.objects.all()
     data = []
@@ -170,7 +198,6 @@ def create_or_update_course(request, course_id=None):
             "requirements": c.requirements or "",
             "image_url": c.image.url if c.image else "",
             "level": c.level,
-            # ✅ FIX — ensure methods are *called*, not referenced
             "total_hours": c.total_hours() if callable(c.total_hours) else c.total_hours,
             "lectures_count": c.lectures_count() if callable(c.lectures_count) else c.lectures_count,
             "last_updated": c.updated_at.strftime('%Y-%m-%d') if c.updated_at else "",

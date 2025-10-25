@@ -292,12 +292,14 @@ function addChapter(container, existing = null) {
 
       // Disable manual hours entry for video
       const hoursInput = chDiv.querySelector(".chapterHours");
-      if (fileType === "video") {
-        hoursInput.value = "Auto (based on video)";
-        hoursInput.disabled = true;
-      } else {
-        hoursInput.disabled = false;
-      }
+     if (fileType === "video") {
+          hoursInput.value = "0";
+          hoursInput.disabled = true;
+          hoursInput.dataset.autoDuration = "true"; // mark for backend
+        } else {
+          hoursInput.disabled = false;
+          hoursInput.dataset.autoDuration = "false";
+        }
     });
 
     // ------------------- Remove chapter -------------------
@@ -425,7 +427,9 @@ saveBtn.addEventListener("click", () => {
       const chTitle = chDiv.querySelector(".chapterTitle").value;
       const desc = chDiv._quillInstance ? chDiv._quillInstance.root.innerHTML : "";
       const type = chDiv.querySelector(".materialType").value || "";
-      const hours = parseFloat(chDiv.querySelector(".chapterHours")?.value || 0);
+      const hoursInputEl = chDiv.querySelector(".chapterHours");
+      const autoDuration = hoursInputEl.dataset.autoDuration === "true";
+      const hours = autoDuration ? 0 : parseFloat(hoursInputEl.value || 0);
       const existingLink = chDiv.querySelector(".existingMaterial a")?.href || "";
 
       const fileInput = chDiv.querySelector(".materialFile");
