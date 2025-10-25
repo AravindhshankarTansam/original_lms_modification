@@ -2,6 +2,27 @@ from django.db import models
 from accounts.models import User
 import os
 from django.utils.text import slugify
+import subprocess
+import json
+
+def get_video_duration(file_path):
+    try:
+        result = subprocess.run(
+            [
+                "ffprobe", "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "json", file_path
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        info = json.loads(result.stdout)
+        duration = float(info["format"]["duration"])
+        return round(duration / 60, 2)  # convert seconds → minutes
+    except Exception as e:
+        print("Error getting video duration:", e)
+        return 0.0
 
 QUESTION_TYPE_CHOICES = [
     ('mcq', 'Multiple Choice'),
@@ -21,15 +42,32 @@ def course_directory_path(instance, filename):
     return f'courses/{course_slug}/{filename}'
 
 class Course(models.Model):
+    LEVEL_CHOICES = [
+        ('Beginner', 'Beginner'),
+        ('Intermediate', 'Intermediate'),
+        ('Advanced', 'Advanced')
+    ]
+    
     title = models.CharField(max_length=255)
     description = models.TextField()
     overview = models.TextField(blank=True, null=True)
     requirements = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=[('Active','Active'),('Inactive','Inactive')], default='Active')
     image = models.ImageField(upload_to='course_images/', blank=True, null=True)
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='Beginner')
+    rating = models.FloatField(default=0.0)
+    review_count = models.PositiveIntegerField(default=0)
+    badge = models.CharField(max_length=50, blank=True, null=True) 
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role':'admin'})
     students = models.ManyToManyField(User, related_name='enrolled_courses', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def total_hours(self):
+        return sum(ch.duration for m in self.modules.all() for ch in m.chapters.all())
+
+    def lectures_count(self):
+        return sum(m.chapters.count() for m in self.modules.all())
 
     def __str__(self):
         return self.title
@@ -44,12 +82,21 @@ class Module(models.Model):
 class Chapter(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='chapters')
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    material_type = models.CharField(max_length=20, choices=MATERIAL_TYPE_CHOICES, blank=True, null=True)
-    material_file = models.FileField(upload_to=course_directory_path, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    material_file = models.FileField(upload_to='chapter_materials/', blank=True, null=True)
+    material_type = models.CharField(max_length=50, blank=True, null=True)
+    duration = models.FloatField(default=0.0)  # duration in minutes
 
-    def __str__(self):
-        return self.title
+    def save(self, *args, **kwargs):
+        # ✅ Only calculate duration if this is a video file
+        if self.material_file and self.material_file.name.lower().endswith(('.mp4', '.mov', '.mkv', '.avi')):
+            try:
+                duration = get_video_duration(self.material_file.path)
+                self.duration = duration
+            except Exception as e:
+                print(f"Error extracting duration for {self.material_file.name}: {e}")
+        super().save(*args, **kwargs)
+
 
 class Question(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='questions')
