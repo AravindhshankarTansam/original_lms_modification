@@ -1,6 +1,3 @@
-// ============================
-// COURSE FORM LOGIC (Full Updated for Previews)
-// ============================
 const modulesContainer = document.querySelector("#modulesContainer");
 const addModuleBtn = document.querySelector("#addModuleBtn");
 const saveBtn = document.querySelector("#saveCourseBtn");
@@ -8,6 +5,15 @@ const courseImageInput = document.querySelector("#courseImage");
 const imagePreview = document.querySelector("#imagePreview");
 const existingImageLink = document.querySelector("#existingImageLink");
 const form = document.querySelector("#courseForm");
+
+// Metadata elements
+const totalHoursEl = document.querySelector("#totalHours");
+const lecturesCountEl = document.querySelector("#lecturesCount");
+const courseLevelEl = document.querySelector("#courseLevel");
+const courseBadgeEl = document.querySelector("#courseBadge");
+const lastUpdatedEl = document.querySelector("#lastUpdated");
+const courseRatingEl = document.querySelector("#courseRating");
+const reviewCountEl = document.querySelector("#reviewCount");
 
 // Initialize Quill editors
 const courseDescriptionEditor = new Quill("#courseDescriptionEditor", { theme: "snow" });
@@ -22,6 +28,7 @@ try {
   console.error("Invalid courses-data JSON", e);
 }
 
+// ---------------- SELECT2 ----------------
 document.addEventListener("DOMContentLoaded", () => {
     if (window.jQuery && $.fn.select2) {
         $('#category').select2({
@@ -31,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
 
 // ---------------- IMAGE PREVIEW ----------------
 courseImageInput.addEventListener("change", (e) => {
@@ -47,7 +53,6 @@ courseImageInput.addEventListener("change", (e) => {
   }
 });
 
-// Show existing course image as preview
 function showExistingCourseImage(url) {
     if (!url) return;
     imagePreview.src = url;
@@ -55,15 +60,59 @@ function showExistingCourseImage(url) {
     existingImageLink.innerHTML = "";
 }
 
-// ---------------- RENUMBERING ----------------
+// ---------------- METADATA UPDATES ----------------
+function updateCourseMetadata() {
+  let totalHours = 0;
+  let totalLectures = 0;
+
+  modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach(modDiv => {
+    const chapters = modDiv.querySelectorAll(".chaptersContainer > .border.p-3.mb-2.rounded.bg-white");
+    totalLectures += chapters.length;
+
+    chapters.forEach(chDiv => {
+      const hoursInput = chDiv.querySelector(".chapterHours");
+      if (hoursInput) totalHours += parseFloat(hoursInput.value || 0);
+    });
+  });
+
+  totalHoursEl.textContent = totalHours.toFixed(1);
+  lecturesCountEl.textContent = totalLectures;
+
+  updateBadge();
+  updateLastUpdated();
+}
+
+function updateBadge() {
+  const hours = parseFloat(totalHoursEl.textContent);
+  const level = courseLevelEl.value;
+
+  if (hours > 10 && level === "Advanced") courseBadgeEl.textContent = "Pro";
+  else if (hours > 5) courseBadgeEl.textContent = "Intermediate";
+  else courseBadgeEl.textContent = "Beginner";
+}
+
+function updateLastUpdated(dateStr = null) {
+  if (dateStr) lastUpdatedEl.textContent = dateStr;
+  else lastUpdatedEl.textContent = new Date().toLocaleDateString("en-IN", {
+    day: "2-digit", month: "short", year: "numeric"
+  });
+}
+
+function updateRating(reviews = []) {
+  if (!reviews.length) return;
+  const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+  courseRatingEl.textContent = avgRating.toFixed(1);
+  reviewCountEl.textContent = reviews.length;
+}
+
+// ---------------- RENUMBER MODULES / CHAPTERS / QUESTIONS ----------------
 function renumberModules() {
   modulesContainer.querySelectorAll(".border.rounded.p-3.mb-3.bg-light").forEach((modDiv, idx) => {
     modDiv.querySelector("h5.fw-bold").textContent = `Module ${idx + 1}`;
-    const chaptersContainer = modDiv.querySelector(".chaptersContainer");
-    renumberChapters(chaptersContainer);
-    const questionsContainer = modDiv.querySelector(".questionsContainer");
-    renumberQuestions(questionsContainer);
+    renumberChapters(modDiv.querySelector(".chaptersContainer"));
+    renumberQuestions(modDiv.querySelector(".questionsContainer"));
   });
+  updateCourseMetadata();
 }
 
 function renumberChapters(chaptersContainer) {
@@ -78,7 +127,7 @@ function renumberQuestions(questionsContainer) {
   });
 }
 
-// ---------------- MODULE / CHAPTER / QUESTION ----------------
+// ---------------- MODULE / CHAPTER / QUESTION FUNCTIONS ----------------
 function addModule(existing = null) {
   const moduleDiv = document.createElement("div");
   moduleDiv.className = "border rounded p-3 mb-3 bg-light";
@@ -126,143 +175,145 @@ function addModule(existing = null) {
     renumberModules();
   });
 
-  if (existing?.chapters?.length) existing.chapters.forEach((ch) => addChapter(chaptersContainer, ch));
+  if (existing?.chapters?.length) existing.chapters.forEach(ch => addChapter(chaptersContainer, ch));
   else addChapter(chaptersContainer);
 
-  if (existing?.questions?.length) existing.questions.forEach((q) => addQuestion(questionsContainer, q));
+  if (existing?.questions?.length) existing.questions.forEach(q => addQuestion(questionsContainer, q));
   else addQuestion(questionsContainer);
 
   renumberModules();
 }
 
 function addChapter(container, existing = null) {
-  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
-  const chDiv = document.createElement("div");
-  chDiv.className = "border p-3 mb-2 rounded bg-white";
-  chDiv.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="fw-bold">Chapter 0</h6>
-        <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Chapter Title</label>
-        <input type="text" class="form-control chapterTitle" value="${existing?.title || ""}" required>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Description</label>
-        <div class="chapterEditor quill-editor"></div>
-    </div>
-    <div class="mb-2">
-        <label class="form-label">Study Material</label>
-        <select class="form-select materialType">
-            <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
-            <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
-            <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
-            <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
-        </select>
-        <input type="file" class="form-control mt-2 materialFile" name="chapter_file_${uniqueId}" accept=".mp4,.pdf,.ppt,.pptx,.jpg,.png,.jpeg">
-        <div class="existingMaterial mt-1"></div>
-    </div>
-  `;
-  container.appendChild(chDiv);
+    const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
 
-  chDiv._quillInstance = new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
-  if (existing?.desc) chDiv._quillInstance.root.innerHTML = existing.desc;
+    const chDiv = document.createElement("div");
+    chDiv.className = "border p-3 mb-2 rounded bg-white";
+    chDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold">Chapter 0</h6>
+            <button type="button" class="btn btn-sm btn-danger removeChapterBtn">Remove</button>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Chapter Title</label>
+            <input type="text" class="form-control chapterTitle" value="${existing?.title || ""}" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Duration (hrs)</label>
+            <input type="number" step="0.1" min="0" class="form-control chapterHours" value="${existing?.hours || 1}">
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Description</label>
+            <div class="chapterEditor quill-editor"></div>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Study Material</label>
+            <select class="form-select materialType">
+                <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+                <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
+                <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
+                <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
+            </select>
+            <input type="file" class="form-control mt-2 materialFile" name="chapter_file_${uniqueId}" accept=".mp4,.pdf,.ppt,.pptx,.jpg,.png,.jpeg">
+            <div class="existingMaterial mt-1"></div>
+        </div>
+    `;
+    container.appendChild(chDiv);
 
-  const previewDiv = chDiv.querySelector(".existingMaterial");
-  const fileInput = chDiv.querySelector(".materialFile");
+    // ------------------- Quill editor -------------------
+    chDiv._quillInstance = new Quill(chDiv.querySelector(".chapterEditor"), { theme: "snow" });
+    if (existing?.desc) chDiv._quillInstance.root.innerHTML = existing.desc;
 
-  // ---------------- INSTANT FILE PREVIEW ----------------
-fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    previewDiv.innerHTML = "";
+    // ------------------- Update metadata on hours change -------------------
+    const hoursInput = chDiv.querySelector(".chapterHours");
+    hoursInput.addEventListener("input", updateCourseMetadata);
 
-    const type = file.type;
+    // ------------------- File preview logic -------------------
+    const previewDiv = chDiv.querySelector(".existingMaterial");
+    const fileInput = chDiv.querySelector(".materialFile");
 
-    if (type.startsWith("image/")) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.style.maxWidth = "300px";
-      img.classList.add("img-thumbnail");
-      previewDiv.appendChild(img);
-    } else if (type.startsWith("video/")) {
-      const video = document.createElement("video");
-      video.src = URL.createObjectURL(file);
-      video.controls = true;
-      video.style.maxWidth = "300px";
-      previewDiv.appendChild(video);
-    } else if (type === "application/pdf") {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(file);
-      link.target = "_blank";
-      link.innerHTML = `<i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i> ${file.name}`;
-      link.classList.add("d-flex", "align-items-center", "gap-2");
-      previewDiv.appendChild(link);
-    } else if (
-      type === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
-      type === "application/vnd.ms-powerpoint"
-    ) {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(file);
-      link.target = "_blank";
-      link.innerHTML = `<i class="bi bi-file-earmark-ppt-fill text-warning fs-2"></i> ${file.name}`;
-      link.classList.add("d-flex", "align-items-center", "gap-2");
-      previewDiv.appendChild(link);
-    } else {
-      const div = document.createElement("div");
-      div.textContent = file.name;
-      previewDiv.appendChild(div);
+    // Helper to show file preview
+    function showExistingFile(previewDiv, fileUrl, type) {
+        previewDiv.innerHTML = "";
+        if (!fileUrl) return;
+
+        if (type === "video") {
+            const video = document.createElement("video");
+            video.src = fileUrl;
+            video.controls = true;
+            video.style.maxWidth = "300px";
+            previewDiv.appendChild(video);
+        } else if (type === "pdf") {
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.target = "_blank";
+            link.innerHTML = `<i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i> ${fileUrl.split("/").pop()}`;
+            link.classList.add("d-flex", "align-items-center", "gap-2");
+            previewDiv.appendChild(link);
+        } else if (type === "ppt" || type === "pptx") {
+            const link = document.createElement("a");
+            link.href = fileUrl;
+            link.target = "_blank";
+            link.innerHTML = `<i class="bi bi-file-earmark-ppt-fill text-warning fs-2"></i> ${fileUrl.split("/").pop()}`;
+            link.classList.add("d-flex", "align-items-center", "gap-2");
+            previewDiv.appendChild(link);
+        } else if (type === "image") {
+            const img = document.createElement("img");
+            img.src = fileUrl;
+            img.style.maxWidth = "300px";
+            img.classList.add("img-thumbnail");
+            previewDiv.appendChild(img);
+        } else {
+            const div = document.createElement("div");
+            div.textContent = fileUrl.split("/").pop();
+            previewDiv.appendChild(div);
+        }
     }
-});
-// ---------------- SHOW EXISTING MATERIAL ----------------
-const existingFileURL = existing?.file_url || existing?.material_url || null;
-if (existingFileURL) {
-  previewDiv.innerHTML = ""; // clear previous
-  let link;
-  const fileName = existingFileURL.split("/").pop(); // get filename from URL
 
-  if (existing.type === "video") {
-    const vid = document.createElement("video");
-    vid.src = existingFileURL;
-    vid.controls = true;
-    vid.width = 300;
-    vid.classList.add("img-thumbnail");
-    previewDiv.appendChild(vid);
-  } else if (existing.type === "pdf") {
-    link = document.createElement("a");
-    link.href = existingFileURL;
-    link.target = "_blank";
-    link.innerHTML = `<i class="bi bi-file-earmark-pdf-fill text-danger fs-2"></i> ${fileName}`;
-    link.classList.add("d-flex", "align-items-center", "gap-2");
-    previewDiv.appendChild(link);
-  } else if (existing.type === "ppt") {
-    link = document.createElement("a");
-    link.href = existingFileURL;
-    link.target = "_blank";
-    link.innerHTML = `<i class="bi bi-file-earmark-ppt-fill text-warning fs-2"></i> ${fileName}`;
-    link.classList.add("d-flex", "align-items-center", "gap-2");
-    previewDiv.appendChild(link);
-  } else {
-    link = document.createElement("a");
-    link.href = existingFileURL;
-    link.target = "_blank";
-    link.textContent = fileName;
-    previewDiv.appendChild(link);
-  }
-}
+    // Show existing file if present
+    const existingLink = existing?.file_url || "";
+    const type = existing?.type || "";
+    if (existingLink && type) {
+        showExistingFile(previewDiv, existingLink, type);
+    }
 
+    // Update preview on new file selection
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
 
-  chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => {
-    chDiv.remove();
+      const fileType = file.type.startsWith("video/") ? "video"
+                      : file.type === "application/pdf" ? "pdf"
+                      : file.type.includes("presentation") ? "ppt"
+                      : file.type.startsWith("image/") ? "image"
+                      : "other";
+
+      showExistingFile(previewDiv, URL.createObjectURL(file), fileType);
+
+      // Disable manual hours entry for video
+      const hoursInput = chDiv.querySelector(".chapterHours");
+     if (fileType === "video") {
+          hoursInput.value = "0";
+          hoursInput.disabled = true;
+          hoursInput.dataset.autoDuration = "true"; // mark for backend
+        } else {
+          hoursInput.disabled = false;
+          hoursInput.dataset.autoDuration = "false";
+        }
+    });
+
+    // ------------------- Remove chapter -------------------
+    chDiv.querySelector(".removeChapterBtn").addEventListener("click", () => {
+        chDiv.remove();
+        renumberModules();
+    });
+
     renumberModules();
-  });
-
-  renumberModules();
 }
 
 // ---------------- QUESTION LOGIC ----------------
 function addQuestion(container, existing = null) {
+  // same as your current logic
   const qDiv = document.createElement("div");
   qDiv.className = "border p-3 mb-2 rounded bg-white";
   qDiv.innerHTML = `
@@ -331,12 +382,12 @@ function addQuestion(container, existing = null) {
 // ---------------- INITIALIZE ----------------
 addModuleBtn.addEventListener("click", () => addModule());
 
-// ---------------- AUTO LOAD COURSE ----------------
+// AUTO LOAD COURSE
 const urlParts = window.location.pathname.split("/");
 const courseIdFromUrl = urlParts.includes("update") ? urlParts[urlParts.indexOf("update") + 1] : null;
 
 if (courseIdFromUrl && courses.length > 0) {
-  const course = courses.find((c) => c.id == courseIdFromUrl);
+  const course = courses.find(c => c.id == courseIdFromUrl);
   if (course) {
     document.querySelector("#courseTitle").value = course.title;
     courseDescriptionEditor.root.innerHTML = course.description || "";
@@ -344,24 +395,27 @@ if (courseIdFromUrl && courses.length > 0) {
     requirementsEditor.root.innerHTML = course.requirements || "";
     document.querySelector("#courseStatus").checked = course.status === "Active";
     document.querySelector("#courseId").value = course.id;
-
-    if (course.image_url) {
-      showExistingCourseImage(course.image_url);
-    }
-
+    if (course.image_url) showExistingCourseImage(course.image_url);
     modulesContainer.innerHTML = "";
-    if (course.modules?.length) course.modules.forEach((m) => addModule(m));
+    if (course.modules?.length) course.modules.forEach(m => addModule(m));
     else addModule();
     saveBtn.textContent = "Update Course";
-
     form.action = `/courses/update/${course.id}/`;
+
+    // Update metadata
+    if (course.total_hours) totalHoursEl.textContent = course.total_hours;
+    if (course.lectures_count) lecturesCountEl.textContent = course.lectures_count;
+    if (course.level) courseLevelEl.value = course.level;
+    if (course.badge) courseBadgeEl.textContent = course.badge;
+    if (course.last_updated) lastUpdatedEl.textContent = course.last_updated;
+    if (course.reviews) updateRating(course.reviews);
   }
 } else {
   addModule();
   form.action = "/courses/create/";
 }
 
-// ---------------- SAVE / UPDATE ----------------
+// SAVE / UPDATE COURSE FORM
 saveBtn.addEventListener("click", () => {
   const modulesData = [];
   const fd = new FormData(form);
@@ -373,14 +427,17 @@ saveBtn.addEventListener("click", () => {
       const chTitle = chDiv.querySelector(".chapterTitle").value;
       const desc = chDiv._quillInstance ? chDiv._quillInstance.root.innerHTML : "";
       const type = chDiv.querySelector(".materialType").value || "";
+      const hoursInputEl = chDiv.querySelector(".chapterHours");
+      const autoDuration = hoursInputEl.dataset.autoDuration === "true";
+      const hours = autoDuration ? 0 : parseFloat(hoursInputEl.value || 0);
       const existingLink = chDiv.querySelector(".existingMaterial a")?.href || "";
 
       const fileInput = chDiv.querySelector(".materialFile");
       if (fileInput && fileInput.files && fileInput.files[0]) {
         fd.append(`material_${mIdx}_${cIdx}`, fileInput.files[0]);
-        chapters.push({ title: chTitle, desc, type, file_url: existingLink });
+        chapters.push({ title: chTitle, desc, type, hours, file_url: existingLink });
       } else {
-        chapters.push({ title: chTitle, desc, type, file_url: existingLink });
+        chapters.push({ title: chTitle, desc, type, hours, file_url: existingLink });
       }
     });
 
@@ -405,19 +462,23 @@ saveBtn.addEventListener("click", () => {
   fd.set("requirements", requirementsEditor.root.innerHTML);
   fd.set("status", document.querySelector("#courseStatus").checked ? "true" : "false");
 
+  // Update metadata in FormData
+  fd.set("total_hours", totalHoursEl.textContent);
+  fd.set("lectures_count", lecturesCountEl.textContent);
+  fd.set("level", courseLevelEl.value);
+  fd.set("badge", courseBadgeEl.textContent);
+  fd.set("last_updated", lastUpdatedEl.textContent);
+
   fetch(form.action, {
     method: form.method,
     body: fd,
     headers: { "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value },
   })
-    .then((res) => {
-      if (res.redirected) window.location.href = res.url;
-      else return res.text();
-    })
-    .catch((err) => console.error(err));
+    .then(res => { if (res.redirected) window.location.href = res.url; else return res.text(); })
+    .catch(err => console.error(err));
 });
 
-// ---------------- DOWNLOAD PDF ----------------
+// ---------------- DOWNLOAD COURSE AS PDF ----------------
 // (kept unchanged — omitted here for brevity if you prefer, but in your file leave as-is)
 const downloadBtn = document.querySelector("#downloadCourseBtn");
 downloadBtn.addEventListener("click", () => {

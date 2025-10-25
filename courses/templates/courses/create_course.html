@@ -74,6 +74,23 @@
                         <div id="requirementsEditor" class="quill-editor"></div>
                     </div>
                 </div>
+
+                <!-- 🔹 COURSE METADATA -->
+                <div class="course-metadata mt-3 border-top pt-3 d-flex flex-wrap gap-3">
+                    <span><strong>Total Hours:</strong> <span id="totalHours">0</span> hrs</span>
+                    <span><strong>Lectures:</strong> <span id="lecturesCount">0</span></span>
+                    <span>
+                        <strong>Level:</strong>
+                        <select id="courseLevel" name="level" class="form-select form-select-sm d-inline-block" style="width:auto;">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </span>
+                    <span><strong>Rating:</strong> <span id="courseRating">0</span> ⭐ (<span id="reviewCount">0</span>)</span>
+                    <span><strong>Badge:</strong> <span id="courseBadge">-</span></span>
+                    <span><strong>Last Updated:</strong> <span id="lastUpdated">-</span></span>
+                </div>
             </div>
         </div>
 
@@ -88,26 +105,26 @@
             </div>
         </div>
 
-        <!-- 🔹 STATUS + ACTIONS -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="courseStatus" checked>
-                <label class="form-check-label fw-semibold ms-2" for="courseStatus">Active</label>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Left: Back Button -->
+                <a href="{% url 'course_table' %}" class="btn btn-secondary fw-semibold">← Back to Courses</a>
+
+                <!-- Right: Status + Save + Download -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Status Switch -->
+                    <div class="form-check form-switch me-2">
+                        <input class="form-check-input" type="checkbox" id="courseStatus" checked>
+                        <label class="form-check-label fw-semibold ms-2" for="courseStatus">Active</label>
+                    </div>
+
+                    <!-- Save Course -->
+                    <button type="button" id="saveCourseBtn" class="btn btn-success fw-semibold">Save Course</button>
+
+                    <!-- Download PDF -->
+                    <button type="button" id="downloadCourseBtn" class="btn btn-danger fw-semibold">Download Course PDF</button>
+                </div>
             </div>
-            <button type="button" id="saveCourseBtn" class="btn btn-success fw-semibold">Save Course</button>
-        </div>
 
-        <!-- Back Button at Bottom (Left) -->
-        <div class="text-start mt-4">
-            <a href="{% url 'course_table' %}" class="btn btn-secondary fw-semibold">← Back to Courses</a>
-        </div>
-
-        <!-- Download PDF Button (Right) -->
-        <div class="text-end mt-3">
-            <button type="button" id="downloadCourseBtn" class="btn btn-danger fw-semibold">
-                Download Course PDF
-            </button>
-        </div>
     </form>
 </div>
 
@@ -115,5 +132,7 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="{% static 'js/create_courses.js' %}"></script>
+
+
 
 {% endblock %}
