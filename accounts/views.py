@@ -301,8 +301,8 @@ def courses_catalog(request):
 #     return render(request, 'accounts/user/course_play.html', {'course': course})
 
 
-def course_play(request):
-    return render(request, 'accounts/user/course_play.html')
+# def course_play(request):
+#     return render(request, 'accounts/user/course_play.html')
 
 
 @login_required
@@ -321,8 +321,26 @@ def enroll_course(request):
         "course": course,
         "message": message
     })
+def catalog(request):
+    courses = Course.objects.all()  # Fetch all courses
+    return render(request, 'accounts/user/course.html', {'courses': courses})
 
+# def course_play(request, course_id):
+#     course = get_object_or_404(Course, id=course_id)
+#     return render(request, 'accounts/user/course_play.html', {'course': course})
 
+@login_required
+def course_play(request, course_id):
+    # Get the course object or 404 if not found
+    course = get_object_or_404(Course, id=course_id)
+    
+    # Get all modules related to this course, prefetch chapters to reduce queries
+    modules = course.modules.prefetch_related('chapters').all()
+
+    return render(request, 'accounts/user/course_play.html', {
+        'course': course,
+        'modules': modules,
+    })
 @login_required
 def my_courses(request):
     """

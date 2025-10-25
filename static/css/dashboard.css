@@ -6,7 +6,7 @@ body {
   background-color: #f5f5f5;
   overflow-x: hidden;
 }
-
+/* ===== HEADER ===== */
 /* ===== HEADER ===== */
 .top-bar {
   background: #B1C9D7;
@@ -38,6 +38,57 @@ body {
 .icon:hover {
   transform: scale(1.2);
 }
+
+/* ===== TABLET / MOBILE LAYOUT (≤900px) ===== */
+@media (max-width: 900px) {
+  .top-bar {
+    justify-content: space-between; /* logo left, hamburger right */
+    padding: 10px 20px;
+  }
+
+  /* Hide all header text */
+  .header-text {
+    display: none !important;
+  }
+
+  /* Adjust logo size */
+  .logo img {
+    height: 50px;
+  }
+
+  /* Hamburger/menu icon visible */
+  #menu-icon {
+    display: block;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  /* Hide all other icons */
+  .icons span:not(#menu-icon) {
+    display: none;
+  }
+}
+
+/* ===== DESKTOP LAYOUT (>900px) ===== */
+@media (min-width: 901px) {
+  /* Hamburger/menu icon now stays visible on desktop */
+  #menu-icon {
+    display: block; /* always visible */
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  /* Show all other icons */
+  .icons span:not(#menu-icon) {
+    display: inline-block;
+  }
+
+  /* Show header text */
+  .header-text {
+    display: block;
+  }
+}
+
 
 /* ===== SIDEBAR ===== */
 /* === Sidebar Base (keep your existing one) === */
@@ -180,9 +231,9 @@ body {
   color: white;
   border: none;
   border-radius: 8px;
-  min-width: 100px;
-  padding: 12px 0;
-  font-size: 1rem;
+  width: 800px;      /* increased width */
+  padding: 20px 0;   /* increased height */
+  font-size: 1.2rem; /* slightly bigger text */
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 3px 6px rgba(255, 107, 107, 0.2);
@@ -193,6 +244,8 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 5px 12px rgba(229, 90, 90, 0.25);
 }
+
+
 
 /* === Sidebar Footer === */
 .sidebar-footer {
@@ -223,19 +276,23 @@ body {
 @media (max-width: 500px) {
   .sidebar {
     width: 100%;
-    right: -100%;
+    left: -100%;       /* change from right to left */
+    position: fixed;   /* ensure it stays above content */
+    top: 0;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
   }
 
   .sidebar.active {
-    right: 0;
+    left: 0;           /* slide in from left */
   }
 }
 
-
-/* Animation for sidebar */
+/* Animation for sidebar from left */
 @keyframes slideIn {
-  0% { right: -400px; opacity: 0; }
-  100% { right: 0; opacity: 1; }
+  0% { left: -400px; opacity: 0; }
+  100% { left: 0; opacity: 1; }
 }
 
 
@@ -262,13 +319,13 @@ body {
 }
 
 .text-part.right {
-  color: #0d6efd;
+  color: black;
   font-weight: bold;
 }
 
 .sidebar-content .btn-outline-primary:hover {
   background-color: #f5f5f5 !important;
-  color: #333 !important;
+  color:#0d6efd !important;
   border-color: #ccc !important;
 }
 
@@ -335,7 +392,7 @@ button {
 button:hover {
   background-color: #3e597b;
 }
-/* Card Grid */
+/* ===== Card Grid ===== */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);  /* ✅ 3 columns */
@@ -347,8 +404,6 @@ button:hover {
   background-color: white;
   animation: slideUp 1s ease-out;
 }
-
-
 
 .card {
   margin-top: 20px;
@@ -363,6 +418,20 @@ button:hover {
 .card:hover {
   transform: translateY(-10px);
 }
+
+/* ===== Medium and small screens (up to 900px) ===== */
+@media screen and (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    gap: 15px;
+    padding: 0 20px 30px;
+  }
+  .card {
+    font-size: 14px; /* optional: smaller text for smaller screens */
+    padding: 15px;
+  }
+}
+
 /* FAQ and Catalog */
 .faq-catalog-section {
   display: flex;
@@ -524,8 +593,9 @@ button:hover {
   background: #888;
   border-radius: 4px;
 }
+/* ===== Course Card Styling (Shared) ===== */
+/* ===== Course Card Styling (Shared) ===== */
 .course-card {
-  flex: -5 0 350px;
   background: #f9f9f9;
   border-radius: 6px;
   display: flex;
@@ -541,7 +611,6 @@ button:hover {
 .course-card:hover {
   border-left: 4px solid red;  /* red line on hover */
 }
-
 
 .course-card img {
   width: 80px;
@@ -584,6 +653,133 @@ button:hover {
   color: #5e7ca3;
   cursor: pointer;
   user-select: none;
+}
+
+/* ===== Carousel Container ===== */
+#courseCarousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 10px;
+  scrollbar-width: none; /* hide scrollbar for Firefox */
+}
+
+#courseCarousel::-webkit-scrollbar {
+  display: none; /* hide scrollbar for Chrome/Safari */
+}
+
+/* ===== Carousel Cards (Default: 3 cards) ===== */
+#courseCarousel .course-card {
+  flex: 0 0 calc((100% - 40px) / 3); /* 3 cards visible for width >900px */
+  box-sizing: border-box;
+}
+
+/* ===== Media Query: 2 cards for screens ≤ 900px ===== */
+@media (max-width: 900px) {
+  #courseCarousel .course-card {
+    flex: 0 0 calc((100% - 20px) / 2); /* 2 cards visible */
+  }
+}
+
+/* Optional: adjust image and text inside cards for smaller screens */
+@media (max-width: 768px) {
+  #courseCarousel .course-card img {
+    width: 70px;
+    height: 50px;
+  }
+
+  .course-card h4 {
+    font-size: 14px;
+  }
+
+  .course-card p {
+    font-size: 12px;
+  }
+}
+/* ===== Small screens ≤ 600px: 1 card + bigger image & text ===== */
+@media (max-width: 600px) {
+  #courseCarousel .course-card {
+    flex: 0 0 100%;   /* Make 1 card fill entire carousel width */
+    max-width: 100%;  /* Ensure it doesn’t shrink */
+  }
+
+  #courseCarousel .course-card img {
+    width: 100px;   /* Increase image */
+    height: 80px;
+  }
+
+  .course-card h4 {
+    font-size: 18px; /* Increase heading */
+  }
+
+  .course-card p {
+    font-size: 14px; /* Increase paragraph */
+  }
+
+  .start {
+    font-size: 15px; /* Increase button text */
+  }
+}
+
+/* ===== Optional: Arrow Button Styling ===== */
+.carousel-btn {
+  background-color: #007bff; /* Blue */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s; 
+}
+
+.carousel-btn:hover {
+  background-color: #0056b3;
+}
+
+
+/* ===== Featured Courses (Unaffected Layout) ===== */
+.featured-courses-scroll {
+  margin-top: 40px;
+}
+
+.featured-courses-scroll h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.featured-courses-scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ===== Responsive (Optional) ===== */
+@media (max-width: 768px) {
+  #courseCarousel .course-card {
+    flex: 0 0 280px;
+  }
+
+  .course-card img {
+    width: 70px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  #courseCarousel .course-card {
+    flex: 0 0 240px;
+  }
+
+  .course-card h4 {
+    font-size: 14px;
+  }
+
+  .course-card p {
+    font-size: 12px;
+  }
 }
 
 
@@ -865,7 +1061,7 @@ button:hover {
 .catalog-scroll {
   display: flex;
   gap: 20px;
-  overflow-x: auto; /* ENABLE horizontal scroll */
+  overflow-x: auto; /* keep horizontal scroll for JS sliding */
   scroll-behavior: smooth;
   padding-bottom: 10px;
 }
@@ -878,6 +1074,7 @@ button:hover {
   background: #aaa;
   border-radius: 4px;
 }
+
 
 .catalog-card {
   flex: 0 0 260px;
@@ -1037,6 +1234,24 @@ button:hover {
   color: #333;
   font-weight: bold;
 }
+/* Default: 3 cards (for screens >1000px) */
+.catalog-card {
+  flex: 0 0 calc((100% - 40px*2)/3); /* 3 cards with 20px gaps */
+}
+
+/* Medium screens: 2 cards (500px - 1000px) */
+@media (max-width: 1000px) {
+  .catalog-card {
+    flex: 0 0 calc((100% - 20px)/2); /* 2 cards with 20px gap */
+  }
+}
+
+/* Small screens: 1 card (<500px) */
+@media (max-width: 500px) {
+  .catalog-card {
+    flex: 0 0 100%; /* 1 card */
+  }
+}
 
 
 /* ========================
@@ -1045,19 +1260,19 @@ button:hover {
 
 /* Smartphones - 320px to 420px */
 @media (max-width: 420px) {
-  .top-bar, .welcome-banner, .card-grid, .faq-catalog-section, .leader-poll,
+   .welcome-banner, .card-grid, .faq-catalog-section, .leader-poll,
   .featured-latest-wrapper, .personalized-journey, .catalog-carousel {
     padding: 15px;
     flex-direction: column;
   }
 
-  .icons {
+  /* .icons {
     font-size: 16px;
-  }
+  } */
 
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: 1fr; /* Stack cards vertically */
-  }
+  /* } */ */
 
   .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
     flex-direction: column;
@@ -1081,10 +1296,10 @@ button:hover {
     display: none;
   }
 
-  .featured-courses-scroll-container {
+  /* .featured-courses-scroll-container {
     max-height: unset;
     flex-direction: column;
-  }
+  } */
 
   .footer {
     text-align: center;
@@ -1102,9 +1317,9 @@ button:hover {
 
 /* Small tablets - 475px to 767px */
 @media (min-width: 421px) and (max-width: 767px) {
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
+  } */
 
   .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
     flex-direction: column;
@@ -1127,9 +1342,9 @@ button:hover {
 
 /* Tablets - 768px to 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
+  } */
 
   .faq-catalog-section, .leader-poll, .featured-latest-wrapper {
     flex-direction: column;
@@ -1142,9 +1357,9 @@ button:hover {
 
 /* Medium Desktop - 1024px to 1439px */
 @media (min-width: 1024px) and (max-width: 1439px) {
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
+  } */
 
   .catalog-card {
     flex: 0 0 30%;
@@ -1153,9 +1368,9 @@ button:hover {
 
 /* Large Desktop - 1440px to 2369px */
 @media (min-width: 1440px) and (max-width: 2369px) {
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
+  } */
 
   .catalog-card {
     flex: 0 0 260px;
@@ -1164,9 +1379,9 @@ button:hover {
 
 /* Ultra-Wide Screens - 2370px and up */
 @media (min-width: 2370px) {
-  .card-grid {
+  /* .card-grid {
     grid-template-columns: repeat(4, 1fr);
-  }
+  } */
 
   .catalog-card {
     flex: 0 0 280px;
@@ -2047,8 +2262,8 @@ arrow for my learning courses */
   .left-btn { left: 5px; }
   .right-btn { right: 5px; } */
 
-
-  .featured-slider-section {
+/* ===== Featured Slider Section ===== */
+.featured-slider-section {
   width: 100%;
   padding: 20px 0;
 }
@@ -2061,6 +2276,8 @@ arrow for my learning courses */
 .featured-slider {
   display: flex;
   transition: transform 0.5s ease-in-out;
+  flex-wrap: nowrap;
+  gap: 20px; /* default gap between cards */
 }
 
 .featured-card {
@@ -2133,20 +2350,107 @@ arrow for my learning courses */
 .left-btn { left: 5px; }
 .right-btn { right: 5px; }
 
-/* Responsive cards */
-@media (min-width: 768px) {
+/* ===== Responsive Cards ===== */
+
+/* Mobile: 1 card fully visible with scroll snapping */
+@media (max-width: 900px) {
+  .featured-slider-wrapper {
+    overflow-x: auto;           /* allow horizontal scroll */
+    scroll-snap-type: x mandatory; /* snap each card */
+  }
+
+  .featured-slider {
+    gap: 0;                      /* no gap for full card width */
+  }
+
+  .featured-card {
+    flex: 0 0 100%;              /* full width */
+    max-width: 100%;
+    margin: 0;                   /* remove extra margin */
+    scroll-snap-align: start;    /* snap each card */
+  }
+}
+
+/* Tablet: 2 cards visible */
+@media (min-width: 901px) and (max-width: 1023px) {
   .featured-card {
     flex: 0 0 50%;
     max-width: 50%;
+    margin: 0 10px;
+  }
+
+  .featured-slider {
+    gap: 20px;
   }
 }
+
+/* Desktop: 3 cards visible */
 @media (min-width: 1024px) {
   .featured-card {
     flex: 0 0 33.3333%;
     max-width: 33.3333%;
+    margin: 0 10px;
+  }
+
+  .featured-slider {
+    gap: 20px;
   }
 }
 
+/* === Responsive Sidebar === */
 
+/* Mobile: below 500px */
+@media (max-width: 500px) {
+  .sidebar {
+    width: 100%;       /* Full width */
+    right: -100%;      /* Hide offscreen */
+    height: 100vh;     /* Full viewport height */
+    padding: 15px;
+    box-sizing: border-box;
+  }
 
+  .sidebar.active {
+    right: 0;
+    animation: slideIn 0.3s forwards;
+  }
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column; /* Stack items */
+    gap: 15px;
+  }
+
+  .sidebar-content .text-content {
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    padding: 15px 0;
+  }
+}
+
+/* Small tablets: 501px - 767px */
+@media (min-width: 501px) and (max-width: 767px) {
+  .sidebar { width: 250px; }
+  .sidebar-content .text-content { font-size: 1.1rem; padding: 18px 0; }
+}
+
+/* Medium desktops: 768px - 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar { width: 280px; }
+  .sidebar-content .text-content { font-size: 1.15rem; padding: 20px 0; }
+}
+
+/* Large desktops: 1024px+ */
+@media (min-width: 1024px) {
+  .sidebar { width: 300px; }
+  .sidebar-content .text-content { font-size: 1.2rem; padding: 20px 0; }
+}
+
+/* Sidebar slide-in animation */
+@keyframes slideIn {
+  0% { right: -100%; opacity: 0; }
+  100% { right: 0; opacity: 1; }
+}
 
