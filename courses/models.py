@@ -54,6 +54,7 @@ class Course(models.Model):
     requirements = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=[('Active','Active'),('Inactive','Inactive')], default='Active')
     image = models.ImageField(upload_to='course_images/', blank=True, null=True)
+    category_names = models.TextField(blank=True, null=True) 
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='Beginner')
     rating = models.FloatField(default=0.0)
     review_count = models.PositiveIntegerField(default=0)
