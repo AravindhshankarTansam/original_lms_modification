@@ -206,7 +206,7 @@ def create_or_update_course(request, course_id=None):
     selected_categories = []
     if course and course.category_names:
         try:
-            selected_categories = json.loads(course.category_names)
+            selected_categories = [str(cid) for cid in json.loads(course.category_names)]
         except Exception:
             selected_categories = []
 
