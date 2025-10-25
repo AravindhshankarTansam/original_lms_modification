@@ -341,3 +341,12 @@ def course_play(request, course_id):
         'course': course,
         'modules': modules,
     })
+@login_required
+def my_courses(request):
+    """
+    Shows only the courses that the logged-in user has enrolled in.
+    """
+    enrollments = Enrollment.objects.filter(user=request.user).select_related('course')
+    courses = [en.course for en in enrollments]
+
+    return render(request, 'accounts/user/my_course.html', {'courses': courses})
