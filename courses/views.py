@@ -78,58 +78,77 @@ def list_courses(request):
 @role_required('admin')
 @login_required
 def create_or_update_course(request, course_id=None):
+    """
+    Create a new course or edit an existing course.
+    Saves selected categories as JSON in `category_names`.
+    Handles modules, chapters, questions, and file uploads.
+    """
+    # Fetch course if editing
+    course = get_object_or_404(Course, id=course_id) if course_id else None
+    categories = Category.objects.all()
+
     if request.method == 'POST':
+        # ----- BASIC COURSE INFO -----
         title = request.POST.get('title')
         description = request.POST.get('description')
         overview = request.POST.get('overview')
         requirements = request.POST.get('requirements')
         status = 'Active' if request.POST.get('status') == 'true' else 'Inactive'
-        level = request.POST.get('level', 'Beginner')  # new field
-        modules_json = request.POST.get('modules_json')
+        level = request.POST.get('level', 'Beginner')
         image = request.FILES.get('image')
 
-        # Get or create course
-        if course_id:
-            course = get_object_or_404(Course, id=course_id)
-        else:
-            course = Course(created_by=request.user)
+        # ----- CATEGORIES -----
+        category_ids = request.POST.getlist('category')  # selected category IDs
+        category_json = json.dumps(category_ids)
 
-        # Save basic course info
-        course.title = title
-        course.description = description
-        course.overview = overview
-        course.requirements = requirements
-        course.status = status
-        course.level = level
-        if image:
-            course.image = image
-        course.save()
-
-        # Delete old modules if editing
-        if course_id:
+        # ----- CREATE OR UPDATE COURSE -----
+        if course:
+            course.title = title
+            course.description = description
+            course.overview = overview
+            course.requirements = requirements
+            course.status = status
+            course.level = level
+            course.category_names = category_json
+            if image:
+                course.image = image
+            course.save()
+            # Clear old modules
             course.modules.all().delete()
+        else:
+            course = Course.objects.create(
+                title=title,
+                description=description,
+                overview=overview,
+                requirements=requirements,
+                status=status,
+                level=level,
+                category_names=category_json,
+                image=image,
+                created_by=request.user
+            )
 
-        # Parse modules JSON
+        # ----- MODULES, CHAPTERS, QUESTIONS -----
+        modules_json = request.POST.get('modules_json')
         try:
             modules_data = json.loads(modules_json or '[]')
         except Exception as e:
             print("Error parsing modules JSON:", e)
             modules_data = []
 
-        # Loop over modules
         for m_idx, m in enumerate(modules_data):
-            module = Module.objects.create(course=course, title=m.get('title', '') or '')
+            module = Module.objects.create(course=course, title=m.get('title', ''))
 
-            # Loop over chapters
+            # Chapters
             for c_idx, ch in enumerate(m.get('chapters', [])):
                 file_field_name = f'material_{m_idx}_{c_idx}'
                 uploaded_file = request.FILES.get(file_field_name)
 
                 chapter = Chapter.objects.create(
                     module=module,
-                    title=ch.get('title', '') or '',
-                    description=ch.get('desc', '') or '',
-                    material_type=ch.get('type') or None,
+                    title=ch.get('title', ''),
+                    description=ch.get('desc', ''),
+                    material_type=ch.get('type', None),
                     duration=ch.get('duration', 0.0)
                 )
 
@@ -137,7 +156,7 @@ def create_or_update_course(request, course_id=None):
                     chapter.material_file = uploaded_file
                     chapter.save()
 
-                    # ----------- AUTO VIDEO DURATION -----------
+                    # Auto video duration
                     if ch.get('type') == 'video':
                         try:
                             result = subprocess.run(
@@ -151,7 +170,7 @@ def create_or_update_course(request, course_id=None):
                                 stderr=subprocess.PIPE
                             )
                             duration_seconds = float(result.stdout.strip() or 0)
-                            chapter.duration = round(duration_seconds / 3600, 2)  # convert to hours
+                            chapter.duration = round(duration_seconds / 60, 2)  # in minutes
                             chapter.save()
                         except Exception as e:
                             print("FFprobe error:", e)
@@ -168,7 +187,7 @@ def create_or_update_course(request, course_id=None):
                         chapter.material_file.name = relative_path
                         chapter.save()
 
-            # Loop over questions
+            # Questions
             for q in m.get('questions', []):
                 Question.objects.create(
                     module=module,
@@ -183,11 +202,17 @@ def create_or_update_course(request, course_id=None):
 
         return redirect('list_courses')
 
-    # GET request: fetch courses and categories
-    courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
-    categories = Category.objects.all()
-    data = []
+    # ----- GET REQUEST: Populate form -----
+    selected_categories = []
+    if course and course.category_names:
+        try:
+            selected_categories = [str(cid) for cid in json.loads(course.category_names)]
+        except Exception:
+            selected_categories = []
 
+    # Prepare courses JSON for frontend
+    courses_qs = Course.objects.all().prefetch_related('modules__chapters', 'modules__questions')
+    data = []
     for c in courses_qs:
         data.append({
             "id": c.id,
@@ -198,11 +223,11 @@ def create_or_update_course(request, course_id=None):
             "requirements": c.requirements or "",
             "image_url": c.image.url if c.image else "",
             "level": c.level,
-            "total_hours": c.total_hours() if callable(c.total_hours) else c.total_hours,
-            "lectures_count": c.lectures_count() if callable(c.lectures_count) else c.lectures_count,
+            "total_hours": c.total_hours() if callable(c.total_hours) else getattr(c, 'total_hours', 0),
+            "lectures_count": c.lectures_count() if callable(c.lectures_count) else getattr(c, 'lectures_count', 0),
             "last_updated": c.updated_at.strftime('%Y-%m-%d') if c.updated_at else "",
-            "rating": c.rating() if callable(c.rating) else c.rating,
-            "reviews_count": c.review_count() if callable(c.review_count) else c.review_count,
+            "rating": c.rating() if callable(c.rating) else getattr(c, 'rating', 0),
+            "reviews_count": c.review_count() if callable(c.review_count) else getattr(c, 'review_count', 0),
             "badge": c.badge or "",
             "modules": [
                 {
@@ -232,10 +257,11 @@ def create_or_update_course(request, course_id=None):
         })
 
     return render(request, 'courses/create_course.html', {
-        'courses_json': json.dumps(data, ensure_ascii=False),
-        'categories': categories
+        'course': course,
+        'categories': categories,
+        'selected_categories': selected_categories,
+        'courses_json': json.dumps(data, ensure_ascii=False)
     })
-
 def course_categories(request):
     categories = Category.objects.prefetch_related('subcategories').all()
 
