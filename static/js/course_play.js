@@ -1,182 +1,13 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   console.log("Course Play Page Loaded");
-
-//   // Tab logging
-//   const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
-//   tabEls.forEach(tab => {
-//     tab.addEventListener("shown.bs.tab", function (e) {
-//       console.log("Active Tab:", e.target.textContent);
-//     });
-//   });
-
-//   // Start button handler
-//   const startBtn = document.querySelector(".btn-start");
-//   if (startBtn) {
-//     startBtn.addEventListener("click", () => {
-//       alert("Lesson started!");
-//     });
-//   }
-
-//   // Chapter selection logic
-//   const chapters = document.querySelectorAll('input[name="chapter"]');
-//   const videoElement = document.getElementById("lessonVideo");
-
-//   // Map chapter number to video file names matching your static files
-//   const chapterVideos = {
-//     1: "network_segmentation_intro.mp4",
-//     2: "access_control.mp4",
-//     3: "", // No video for chapter 3, so skip video update
-//     4: "advanced_threats.mp4"
-//   };
-
-//   chapters.forEach((chapter, index) => {
-//     chapter.addEventListener('change', () => {
-//       if (chapter.checked) {
-//         const chapterNum = chapter.getAttribute('data-chapter');
-//         console.log(`Chapter ${chapterNum} selected`);
-
-//         // Change video source only if there is a video for the chapter
-//         const videoFile = chapterVideos[chapterNum];
-//         if (videoFile) {
-//           videoElement.pause();
-//           videoElement.currentTime = 0;
-//           videoElement.querySelector("source").src = `/static/videos/${videoFile}`;
-//           videoElement.load();
-//           videoElement.play();
-//         } else {
-//           console.log(`No video for chapter ${chapterNum}`);
-//         }
-
-//         // Unlock next chapter if exists
-//         const nextChapter = chapters[index + 1];
-//         if (nextChapter) {
-//           const nextBlock = nextChapter.closest('.chapter-block');
-//           nextChapter.disabled = false;
-//           nextBlock.classList.remove('locked');
-//         }
-//       }
-//     });
-//   });
-// });
-
-
-
-// document.addEventListener("DOMContentLoaded", function() {
-//   const chapters = document.querySelectorAll('[data-chapter]');
-  
-//   chapters.forEach((chapter, index) => {
-//     chapter.addEventListener('change', () => {
-//       // If this chapter is selected, unlock the next one
-//       const nextChapter = chapters[index + 1];
-//       if (nextChapter) {
-//         const nextBlock = nextChapter.closest('.chapter-block');
-//         nextChapter.disabled = false;
-//         nextBlock.classList.remove('locked');
-//       }
-//     });
-//   });
-// });
-
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   const video = document.getElementById("lessonVideo");
-//   const menuButton = document.getElementById("menuButton");
-//   const menuDropdown = document.getElementById("menuDropdown");
-//   const pipMode = document.getElementById("pipMode");
-//   const speedSelect = document.getElementById("speedSelect");
-
-//   // Toggle dropdown visibility
-//   menuButton.addEventListener("click", (e) => {
-//     e.stopPropagation();
-//     menuDropdown.classList.toggle("d-none");
-//   });
-
-//   // Close menu when clicking outside
-//   document.addEventListener("click", (e) => {
-//     if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
-//       menuDropdown.classList.add("d-none");
-//     }
-//   });
-
-//   // Picture-in-Picture toggle
-//   pipMode.addEventListener("click", async () => {
-//     try {
-//       if (document.pictureInPictureElement) {
-//         await document.exitPictureInPicture();
-//       } else {
-//         await video.requestPictureInPicture();
-//       }
-//     } catch (err) {
-//       console.error("PiP not supported:", err);
-//     }
-//     menuDropdown.classList.add("d-none");
-//   });
-
-//   // Playback speed control
-//   speedSelect.addEventListener("change", () => {
-//     video.playbackRate = parseFloat(speedSelect.value);
-//   });
-
-//   // === LESSON UNLOCK LOGIC ===
-//   const lessons = document.querySelectorAll(".lesson-item");
-
-//   lessons.forEach((lesson, index) => {
-//     lesson.addEventListener("click", () => {
-//       const videoSrc = lesson.getAttribute("data-video");
-//       if (videoSrc) {
-//         video.pause();
-//         video.currentTime = 0;
-//         video.querySelector("source").src = `/static/videos/${videoSrc}`;
-//         video.load();
-//         video.play();
-//       }
-
-//       // Mark lesson as completed after video ends
-//       video.onended = function () {
-//         const nextLesson = lessons[index + 1];
-//         if (nextLesson && nextLesson.classList.contains("locked")) {
-//           nextLesson.classList.remove("locked");
-//         }
-//       };
-//     });
-//   });
-//   // --- Chapter logic (unlock next, change video) ---
-//   const chapters = document.querySelectorAll('input[name="chapter"]');
-//   const chapterVideos = {
-//     1: "network_segmentation_intro.mp4",
-//     2: "access_control.mp4",
-//     4: "advanced_threats.mp4"
-//   };
-
-//   chapters.forEach((chapter, index) => {
-//     chapter.addEventListener('change', () => {
-//       const chapterNum = chapter.getAttribute('data-chapter');
-//       const videoFile = chapterVideos[chapterNum];
-//       if (videoFile) {
-//         video.pause();
-//         video.currentTime = 0;
-//         video.querySelector("source").src = `/static/videos/${videoFile}`;
-//         video.load();
-//         video.play();
-//       }
-
-//       const nextChapter = chapters[index + 1];
-//       if (nextChapter) {
-//         const nextBlock = nextChapter.closest('.chapter-block');
-//         nextChapter.disabled = false;
-//         nextBlock.classList.remove('locked');
-//       }
-//     });
-//   });
-// });
-
 document.addEventListener("DOMContentLoaded", function () {
   const video = document.getElementById("lessonVideo");
   const lessons = document.querySelectorAll(".lesson-item");
   const chapters = document.querySelectorAll(".chapter-block");
   const progressBar = document.getElementById("progressBar");
   const progressText = document.getElementById("progressText");
-  const STORAGE_KEY = "courseProgress_v2"; // new version to reset older cache
+  const quizContainer = document.getElementById("quizContainer");
+  const videoContainer = document.querySelector(".video-container");
+
+  const STORAGE_KEY = "courseProgress_v3"; // increment to reset older cache
 
   let savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   const totalLessons = lessons.length;
@@ -199,13 +30,24 @@ document.addEventListener("DOMContentLoaded", function () {
       checkbox.disabled = true;
     }
 
-    // Lesson click
+    // Lesson click — play video or load quiz
     lesson.addEventListener("click", () => {
       if (lesson.classList.contains("locked")) return;
 
       currentLessonIndex = index;
+
+      // Quiz lesson
+      if (lesson.classList.contains("quiz-item")) {
+        showQuiz(lesson);
+        return;
+      }
+
+      // Video lesson
       const videoSrc = lesson.getAttribute("data-video");
       if (!videoSrc) return;
+
+      quizContainer.classList.add("d-none");
+      videoContainer.classList.remove("d-none");
 
       const source = video.querySelector("source");
       if (!source.src.endsWith(videoSrc)) {
@@ -217,7 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // === UNLOCK FIRST AVAILABLE LESSON ===
-  const firstIncomplete = lessons.find((_, i) => !savedProgress.includes(i)) || lessons[0];
+  const firstIncomplete = Array.from(lessons).find(
+    (_, i) => !savedProgress.includes(i)
+  ) || lessons[0];
   firstIncomplete.classList.remove("locked");
   firstIncomplete.querySelector(".lesson-check").disabled = false;
   const parentChapter = firstIncomplete.closest(".chapter-block");
@@ -230,60 +74,82 @@ document.addEventListener("DOMContentLoaded", function () {
     progressBar.style.width = percent + "%";
     progressText.textContent = `${percent}% Completed`;
   }
-  updateProgress();
+
+  updateProgress(); // initial render
 
   // === VIDEO END HANDLER ===
-  video.addEventListener("ended", () => {
-    const lesson = lessons[currentLessonIndex];
+// === VIDEO END HANDLER ===
+video.addEventListener("ended", () => {
+  const lesson = lessons[currentLessonIndex];
+  const checkbox = lesson.querySelector(".lesson-check");
+
+  if (!lesson.classList.contains("completed")) {
+    markLessonComplete(currentLessonIndex);
+  }
+
+  // Find the next lesson
+  const nextLesson = lessons[currentLessonIndex + 1];
+
+  if (nextLesson) {
+    // Unlock next lesson
+    nextLesson.classList.remove("locked");
+    nextLesson.querySelector(".lesson-check").disabled = false;
+
+    const nextParent = nextLesson.closest(".chapter-block");
+    if (nextParent) nextParent.classList.remove("locked");
+
+    // ✅ If next is quiz (end of module) → show quiz immediately
+    if (nextLesson.classList.contains("quiz-item")) {
+      showQuiz(nextLesson);
+      return; // prevent auto-playing next video
+    }
+  }
+
+  // ✅ Otherwise, just continue normally
+  checkModuleCompletion();
+});
+
+  // === FUNCTION: MARK LESSON COMPLETE ===
+  function markLessonComplete(index) {
+    const lesson = lessons[index];
     const checkbox = lesson.querySelector(".lesson-check");
 
-    if (!lesson.classList.contains("completed")) {
-      lesson.classList.add("completed");
-      checkbox.checked = true;
-      checkbox.disabled = false;
+    lesson.classList.add("completed");
+    checkbox.checked = true;
+    checkbox.disabled = false;
 
-      if (!savedProgress.includes(currentLessonIndex)) {
-        savedProgress.push(currentLessonIndex);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
-      }
-
-      updateProgress();
-
-      // Unlock next lesson
-      const nextLesson = lessons[currentLessonIndex + 1];
-      if (nextLesson) {
-        nextLesson.classList.remove("locked");
-        nextLesson.querySelector(".lesson-check").disabled = false;
-
-        const nextParent = nextLesson.closest(".chapter-block");
-        if (nextParent) nextParent.classList.remove("locked");
-      }
-
-      // === Check if current module completed ===
-      checkModuleCompletion();
+    if (!savedProgress.includes(index)) {
+      savedProgress.push(index);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
     }
-  });
+
+    updateProgress();
+  }
 
   // === FUNCTION: CHECK MODULE COMPLETION ===
-  function checkModuleCompletion() {
-    chapters.forEach((chapter, i) => {
-      const lessonsInChapter = chapter.querySelectorAll(".lesson-item");
-      const allCompleted = Array.from(lessonsInChapter).every(l =>
-        l.classList.contains("completed")
-      );
+ function checkModuleCompletion() {
+  chapters.forEach((chapter, i) => {
+    const lessonsInChapter = chapter.querySelectorAll(".lesson-item");
+    const allCompleted = Array.from(lessonsInChapter).every(l =>
+      l.classList.contains("completed")
+    );
 
-      const nextChapter = chapters[i + 1];
-      if (allCompleted && nextChapter) {
-        // Unlock next module
-        nextChapter.classList.remove("locked");
-        const firstLesson = nextChapter.querySelector(".lesson-item");
-        if (firstLesson) {
-          firstLesson.classList.remove("locked");
-          firstLesson.querySelector(".lesson-check").disabled = false;
-        }
+    // Only unlock next chapter after quiz is completed
+    const quizItem = document.querySelector(`.quiz-item[data-quiz="${i + 1}"]`);
+    const quizCompleted = quizItem && quizItem.classList.contains("completed");
+
+    const nextChapter = chapters[i + 1];
+    if (allCompleted && quizCompleted && nextChapter) {
+      nextChapter.classList.remove("locked");
+      const firstLesson = nextChapter.querySelector(".lesson-item");
+      if (firstLesson) {
+        firstLesson.classList.remove("locked");
+        firstLesson.querySelector(".lesson-check").disabled = false;
       }
-    });
-  }
+    }
+  });
+}
+
 
   // === RESTORE LAST WATCHED VIDEO ===
   if (savedProgress.length > 0) {
@@ -297,6 +163,73 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Run once on load to ensure modules unlock properly
   checkModuleCompletion();
+
+  // === QUIZ LOGIC ===
+  function showQuiz(quizLesson) {
+    // Hide video
+    videoContainer.classList.add("d-none");
+    // Show quiz container
+    quizContainer.classList.remove("d-none");
+
+    const quizTitle = document.getElementById("quizTitle");
+    const quizQuestion = document.getElementById("quizQuestion");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizProgress = document.getElementById("quizProgress");
+
+    // Dummy quiz questions (replace with Django data later)
+    const quizData = [
+      {
+        question: "What does SQL stand for?",
+        options: ["Structured Query Language", "Simple Query Logic", "Strong Query Loop"],
+        correct: 0,
+      },
+      {
+        question: "Which is a database type?",
+        options: ["MySQL", "HTML", "CSS"],
+        correct: 0,
+      },
+    ];
+
+    let currentQ = 0;
+
+    function loadQuestion() {
+      const q = quizData[currentQ];
+      quizTitle.textContent = quizLesson.textContent.trim();
+      quizQuestion.textContent = q.question;
+      quizProgress.textContent = `Question ${currentQ + 1} of ${quizData.length}`;
+      quizOptions.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary w-100 mb-2";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        quizOptions.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const q = quizData[currentQ];
+      if (selected === q.correct) {
+        alert("✅ Correct!");
+      } else {
+        alert("❌ Incorrect!");
+      }
+
+      currentQ++;
+      if (currentQ < quizData.length) {
+        loadQuestion();
+      } else {
+        alert("🎉 Quiz completed!");
+        markLessonComplete(currentLessonIndex + 1); // mark quiz as complete
+        quizContainer.classList.add("d-none");
+        videoContainer.classList.remove("d-none");
+        updateProgress();
+        checkModuleCompletion();
+      }
+    }
+
+    loadQuestion();
+  }
 });

@@ -599,3 +599,40 @@ html, body {
   color: #555 !important;
   border-color: transparent !important;
 }
+
+
+.quiz-container {
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-top: 20px;
+}
+
+.quiz-options label {
+  display: block;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-options input[type="radio"] {
+  margin-right: 10px;
+}
+
+.quiz-options label:hover {
+  background-color: #f8f9fa;
+}
+
+.quiz-options label.correct {
+  border-color: #28a745;
+  background-color: #e7f9ee;
+}
+
+.quiz-options label.incorrect {
+  border-color: #dc3545;
+  background-color: #fbeaea;
+}

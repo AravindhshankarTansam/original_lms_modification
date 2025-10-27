@@ -70,6 +70,24 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
     </div>
   </div>
 </div>
+<!-- ===== QUIZ CONTAINER ===== -->
+<div id="quizContainer" class="quiz-container d-none">
+  <div class="quiz-header mb-3">
+    <h5 id="quizTitle">Quiz 1: Cybersecurity Fundamentals</h5>
+    <div class="small text-muted" id="quizProgress">Question 1 of 3</div>
+  </div>
+
+  <div class="quiz-question mb-3">
+    <p id="quizQuestion">Loading question...</p>
+  </div>
+
+  <div class="quiz-options mb-3" id="quizOptions"></div>
+
+  <div class="quiz-actions d-flex gap-2">
+    <button class="btn btn-outline-secondary" id="skipBtn">Skip Question</button>
+    <button class="btn btn-primary" id="checkAnswerBtn">Check Answer</button>
+  </div>
+</div>
 
 
     <!-- ===== TABS ===== -->
@@ -129,6 +147,7 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
   <h6>Module 1: {{ module.title|default:"No Module Available" }}</h6>
 </div> -->
 
+
 <!-- ===== MODULES ===== -->
 {% if modules|length > 0 %}
   {% for module in modules %}
@@ -150,6 +169,18 @@ Cybersecurity Analyst (200): Advanced Cybersecurity Skills for Manufacturing Env
         </ul>
       </div>
 
+    </div>
+      <!-- QUIZ FOR THIS MODULE -->
+    <div class="section mb-4">
+      <h6>Quiz {{ forloop.counter }}: {{ module.title }}</h6>
+      <div class="chapter-block">
+        <ul class="lesson-list list-unstyled ms-2 mt-1">
+          <li class="lesson-item quiz-item" data-quiz="{{ forloop.counter }}">
+            <input type="checkbox" class="lesson-check">
+            Quiz {{ forloop.counter }}: {{ module.title }}
+          </li>
+        </ul>
+      </div>
     </div>
   {% endfor %}
 {% else %}
