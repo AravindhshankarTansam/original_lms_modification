@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const quizContainer = document.getElementById("quizContainer");
   const videoContainer = document.querySelector(".video-container");
 
-  const STORAGE_KEY = "courseProgress_v3"; // increment to reset older cache
-
+  const STORAGE_KEY = "courseProgress_v4"; // Increment this if course structure changes
   let savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   const totalLessons = lessons.length;
   let currentLessonIndex = 0;
@@ -21,102 +20,87 @@ document.addEventListener("DOMContentLoaded", function () {
     if (savedProgress.includes(index)) {
       lesson.classList.add("completed");
       checkbox.checked = true;
-      lesson.classList.remove("locked");
       checkbox.disabled = false;
-
       const parentChapter = lesson.closest(".chapter-block");
       if (parentChapter) parentChapter.classList.remove("locked");
     } else if (lesson.classList.contains("locked")) {
       checkbox.disabled = true;
     }
 
-    // Lesson click — play video or load quiz
+    // === LESSON CLICK ===
     lesson.addEventListener("click", () => {
       if (lesson.classList.contains("locked")) return;
 
       currentLessonIndex = index;
 
-      // Quiz lesson
+      // --- Handle Quiz Lessons ---
       if (lesson.classList.contains("quiz-item")) {
         showQuiz(lesson);
         return;
       }
 
-      // Video lesson
+      // --- Handle Media Lessons ---
       const videoSrc = lesson.getAttribute("data-video");
-      if (!videoSrc) return;
+      const pdfSrc = lesson.getAttribute("data-pdf");
+      const pptSrc = lesson.getAttribute("data-ppt");
 
-      quizContainer.classList.add("d-none");
-      videoContainer.classList.remove("d-none");
+      const viewer = document.getElementById("lessonViewer");
 
-      const source = video.querySelector("source");
-      if (!source.src.endsWith(videoSrc)) {
-        source.src = `/static/videos/${videoSrc}`;
-        video.load();
+      // If it's a video
+      if (videoSrc) {
+        quizContainer.classList.add("d-none");
+        viewer.classList.add("d-none");
+        videoContainer.classList.remove("d-none");
+
+        const source = video.querySelector("source");
+        if (source.src !== videoSrc) {
+          source.src = videoSrc;
+          video.load();
+        }
+
+        video.play();
+      } 
+      // If it's a PDF or PPT
+      else if (pdfSrc || pptSrc) {
+        videoContainer.classList.add("d-none");
+        quizContainer.classList.add("d-none");
+        viewer.classList.remove("d-none");
+        viewer.src = pdfSrc || pptSrc;
+        markLessonComplete(index);
       }
-      video.play();
     });
   });
 
-  // === UNLOCK FIRST AVAILABLE LESSON ===
-  const firstIncomplete = Array.from(lessons).find(
-    (_, i) => !savedProgress.includes(i)
-  ) || lessons[0];
-  firstIncomplete.classList.remove("locked");
-  firstIncomplete.querySelector(".lesson-check").disabled = false;
-  const parentChapter = firstIncomplete.closest(".chapter-block");
-  if (parentChapter) parentChapter.classList.remove("locked");
+  // === UNLOCK FIRST INCOMPLETE LESSON ===
+  const firstIncomplete = Array.from(lessons).find((_, i) => !savedProgress.includes(i)) || lessons[0];
+  if (firstIncomplete) {
+    firstIncomplete.classList.remove("locked");
+    const checkbox = firstIncomplete.querySelector(".lesson-check");
+    if (checkbox) checkbox.disabled = false;
+    const parentChapter = firstIncomplete.closest(".chapter-block");
+    if (parentChapter) parentChapter.classList.remove("locked");
+  }
 
-  // === PROGRESS BAR UPDATE ===
+  // === PROGRESS BAR ===
   function updateProgress() {
     const completed = savedProgress.length;
     const percent = Math.round((completed / totalLessons) * 100);
     progressBar.style.width = percent + "%";
     progressText.textContent = `${percent}% Completed`;
   }
+  updateProgress();
 
-  updateProgress(); // initial render
-
-  // === VIDEO END HANDLER ===
-// === VIDEO END HANDLER ===
-video.addEventListener("ended", () => {
-  const lesson = lessons[currentLessonIndex];
-  const checkbox = lesson.querySelector(".lesson-check");
-
-  if (!lesson.classList.contains("completed")) {
-    markLessonComplete(currentLessonIndex);
-  }
-
-  // Find the next lesson
-  const nextLesson = lessons[currentLessonIndex + 1];
-
-  if (nextLesson) {
-    // Unlock next lesson
-    nextLesson.classList.remove("locked");
-    nextLesson.querySelector(".lesson-check").disabled = false;
-
-    const nextParent = nextLesson.closest(".chapter-block");
-    if (nextParent) nextParent.classList.remove("locked");
-
-    // ✅ If next is quiz (end of module) → show quiz immediately
-    if (nextLesson.classList.contains("quiz-item")) {
-      showQuiz(nextLesson);
-      return; // prevent auto-playing next video
-    }
-  }
-
-  // ✅ Otherwise, just continue normally
-  checkModuleCompletion();
-});
-
-  // === FUNCTION: MARK LESSON COMPLETE ===
+  // === MARK LESSON COMPLETE ===
   function markLessonComplete(index) {
     const lesson = lessons[index];
-    const checkbox = lesson.querySelector(".lesson-check");
+    if (!lesson) return;
 
+    const checkbox = lesson.querySelector(".lesson-check");
     lesson.classList.add("completed");
-    checkbox.checked = true;
-    checkbox.disabled = false;
+    if (checkbox) {
+      checkbox.checked = true;
+      checkbox.disabled = false;
+    }
 
     if (!savedProgress.includes(index)) {
       savedProgress.push(index);
@@ -126,50 +110,73 @@ video.addEventListener("ended", () => {
     updateProgress();
   }
 
-  // === FUNCTION: CHECK MODULE COMPLETION ===
- function checkModuleCompletion() {
-  chapters.forEach((chapter, i) => {
-    const lessonsInChapter = chapter.querySelectorAll(".lesson-item");
-    const allCompleted = Array.from(lessonsInChapter).every(l =>
-      l.classList.contains("completed")
-    );
+  // === CHECK MODULE COMPLETION ===
+  function checkModuleCompletion() {
+    chapters.forEach((chapter, i) => {
+      const lessonsInChapter = chapter.querySelectorAll(".lesson-item");
+      const allCompleted = Array.from(lessonsInChapter).every((l) =>
+        l.classList.contains("completed")
+      );
 
-    // Only unlock next chapter after quiz is completed
-    const quizItem = document.querySelector(`.quiz-item[data-quiz="${i + 1}"]`);
-    const quizCompleted = quizItem && quizItem.classList.contains("completed");
+      const quizItem = document.querySelector(`.quiz-item[data-quiz="${i + 1}"]`);
+      const quizCompleted = quizItem && quizItem.classList.contains("completed");
 
-    const nextChapter = chapters[i + 1];
-    if (allCompleted && quizCompleted && nextChapter) {
-      nextChapter.classList.remove("locked");
-      const firstLesson = nextChapter.querySelector(".lesson-item");
-      if (firstLesson) {
-        firstLesson.classList.remove("locked");
-        firstLesson.querySelector(".lesson-check").disabled = false;
+      const nextChapter = chapters[i + 1];
+      if (allCompleted && quizCompleted && nextChapter) {
+        nextChapter.classList.remove("locked");
+        const firstLesson = nextChapter.querySelector(".lesson-item");
+        if (firstLesson) {
+          firstLesson.classList.remove("locked");
+          const checkbox = firstLesson.querySelector(".lesson-check");
+          if (checkbox) checkbox.disabled = false;
+        }
+      }
+    });
+  }
+
+  // === VIDEO END HANDLER ===
+  video.addEventListener("ended", () => {
+    const lesson = lessons[currentLessonIndex];
+    if (!lesson) return;
+
+    if (!lesson.classList.contains("completed")) {
+      markLessonComplete(currentLessonIndex);
+    }
+
+    // Unlock and move to next lesson
+    const nextLesson = lessons[currentLessonIndex + 1];
+    if (nextLesson) {
+      nextLesson.classList.remove("locked");
+      const checkbox = nextLesson.querySelector(".lesson-check");
+      if (checkbox) checkbox.disabled = false;
+
+      const nextParent = nextLesson.closest(".chapter-block");
+      if (nextParent) nextParent.classList.remove("locked");
+
+      // If quiz is next, show it automatically
+      if (nextLesson.classList.contains("quiz-item")) {
+        showQuiz(nextLesson);
+        return;
       }
     }
-  });
-}
 
+    checkModuleCompletion();
+  });
 
   // === RESTORE LAST WATCHED VIDEO ===
   if (savedProgress.length > 0) {
     const lastIndex = Math.max(...savedProgress);
     const nextLesson = lessons[lastIndex + 1] || lessons[lastIndex];
-    const videoSrc = nextLesson.getAttribute("data-video");
-    if (videoSrc) {
+    if (nextLesson && nextLesson.getAttribute("data-video")) {
       const source = video.querySelector("source");
-      source.src = `/static/videos/${videoSrc}`;
+      source.src = nextLesson.getAttribute("data-video");
       video.load();
     }
   }
 
-  checkModuleCompletion();
-
-  // === QUIZ LOGIC ===
+  // === QUIZ HANDLER ===
   function showQuiz(quizLesson) {
-    // Hide video
     videoContainer.classList.add("d-none");
-    // Show quiz container
     quizContainer.classList.remove("d-none");
 
     const quizTitle = document.getElementById("quizTitle");
@@ -177,7 +184,7 @@ video.addEventListener("ended", () => {
     const quizOptions = document.getElementById("quizOptions");
     const quizProgress = document.getElementById("quizProgress");
 
-    // Dummy quiz questions (replace with Django data later)
+    // Dummy quiz data (replace with Django context later)
     const quizData = [
       {
         question: "What does SQL stand for?",
@@ -185,7 +192,7 @@ video.addEventListener("ended", () => {
         correct: 0,
       },
       {
-        question: "Which is a database type?",
+        question: "Which one is a relational database?",
         options: ["MySQL", "HTML", "CSS"],
         correct: 0,
       },
@@ -211,20 +218,31 @@ video.addEventListener("ended", () => {
 
     function checkAnswer(selected) {
       const q = quizData[currentQ];
-      if (selected === q.correct) {
-        alert("✅ Correct!");
-      } else {
-        alert("❌ Incorrect!");
-      }
+      const correct = selected === q.correct;
+
+      if (correct) alert("✅ Correct!");
+      else alert("❌ Incorrect!");
 
       currentQ++;
       if (currentQ < quizData.length) {
         loadQuestion();
       } else {
-        alert("🎉 Quiz completed!");
-        markLessonComplete(currentLessonIndex + 1); // mark quiz as complete
+        alert("🎉 Quiz Completed!");
+        quizLesson.classList.add("completed");
+        const checkbox = quizLesson.querySelector(".lesson-check");
+        if (checkbox) {
+          checkbox.checked = true;
+          checkbox.disabled = false;
+        }
+
+        if (!savedProgress.includes(currentLessonIndex)) {
+          savedProgress.push(currentLessonIndex);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
+        }
+
         quizContainer.classList.add("d-none");
         videoContainer.classList.remove("d-none");
+
         updateProgress();
         checkModuleCompletion();
       }
@@ -232,4 +250,26 @@ video.addEventListener("ended", () => {
 
     loadQuestion();
   }
+
+  // === MENU OPTIONS (Picture-in-Picture & Speed Control) ===
+  const menuButton = document.getElementById("menuButton");
+  const menuDropdown = document.getElementById("menuDropdown");
+  const pipMode = document.getElementById("pipMode");
+  const speedSelect = document.getElementById("speedSelect");
+
+  menuButton.addEventListener("click", () => {
+    menuDropdown.classList.toggle("d-none");
+  });
+
+  pipMode.addEventListener("click", async () => {
+    if (document.pictureInPictureElement) {
+      await document.exitPictureInPicture();
+    } else {
+      await video.requestPictureInPicture();
+    }
+  });
+
+  speedSelect.addEventListener("change", (e) => {
+    video.playbackRate = parseFloat(e.target.value);
+  });
 });
