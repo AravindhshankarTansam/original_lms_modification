@@ -210,6 +210,7 @@ function addChapter(container, existing = null) {
             <label class="form-label">Study Material</label>
             <select class="form-select materialType">
                 <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+                
                 <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
                 <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
                 <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
@@ -325,12 +326,22 @@ function addQuestion(container, existing = null) {
         <label class="form-label">Question Type</label>
         <select class="form-select questionType">
             <option disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+              <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
             <option value="mcq" ${existing?.type === "mcq" ? "selected" : ""}>Multiple Choice</option>
             <option value="truefalse" ${existing?.type === "truefalse" ? "selected" : ""}>True / False</option>
             <option value="short" ${existing?.type === "short" ? "selected" : ""}>Short Answer</option>
         </select>
     </div>
-    <div class="questionDetails"></div>
+<div class="mb-2 pdfUploadContainer" style="display: ${existing?.type === "pdf" ? "block" : "none"};">
+            <label class="form-label">Upload PDF File</label>
+            <input type="file" class="form-control pdfUpload" accept="application/pdf">
+            <div class="pdfPreview mt-2"></div>
+            ${existing?.pdfFile ? `
+                <embed src="${existing.pdfFile}" type="application/pdf" width="100%" height="400px" class="mt-2 border rounded">
+            ` : ""}
+        </div>
+
+  <div class="questionDetails"></div>
   `;
   container.appendChild(qDiv);
 
@@ -641,4 +652,21 @@ downloadBtn.addEventListener("click", () => {
 
   pdf.setPage(1); // return to title page
   pdf.save(`${title}.pdf`);
+});
+
+// PDF Preview logic
+const pdfContainer = qDiv.querySelector(".pdfUploadContainer");
+const pdfInput = qDiv.querySelector(".pdfUpload");
+const pdfPreview = qDiv.querySelector(".pdfPreview");
+
+pdfInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+        const fileURL = URL.createObjectURL(file);
+        pdfPreview.innerHTML = `
+            <embed src="${fileURL}" type="application/pdf" width="100%" height="400px" class="mt-2 border rounded">
+        `;
+    } else {
+        pdfPreview.innerHTML = `<p class="text-danger">Please upload a valid PDF file.</p>`;
+    }
 });
