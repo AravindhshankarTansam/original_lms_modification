@@ -84,19 +84,33 @@ class Chapter(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='chapters')
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    material_file = models.FileField(upload_to='chapter_materials/', blank=True, null=True)
+    material_file = models.FileField(upload_to=course_directory_path, blank=True, null=True)
     material_type = models.CharField(max_length=50, blank=True, null=True)
-    duration = models.FloatField(default=0.0)  # duration in minutes
+    duration = models.FloatField(default=0.0)
 
     def save(self, *args, **kwargs):
-        # ✅ Only calculate duration if this is a video file
+        # ✅ If updating: check if an old file exists
+        try:
+            old_instance = Chapter.objects.get(pk=self.pk)
+        except Chapter.DoesNotExist:
+            old_instance = None
+
+        # ✅ Handle material update (delete old file)
+        if old_instance and old_instance.material_file and old_instance.material_file != self.material_file:
+            old_path = old_instance.material_file.path
+            if os.path.exists(old_path):
+                os.remove(old_path)
+
+        # ✅ Handle video duration update
         if self.material_file and self.material_file.name.lower().endswith(('.mp4', '.mov', '.mkv', '.avi')):
             try:
                 duration = get_video_duration(self.material_file.path)
                 self.duration = duration
             except Exception as e:
                 print(f"Error extracting duration for {self.material_file.name}: {e}")
+
         super().save(*args, **kwargs)
+
 
 
 class Question(models.Model):
