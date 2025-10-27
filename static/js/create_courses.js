@@ -332,11 +332,15 @@ function addQuestion(container, existing = null) {
             <option value="short" ${existing?.type === "short" ? "selected" : ""}>Short Answer</option>
         </select>
     </div>
- <div class="mb-2 pdfUploadContainer" style="display: ${existing?.type === "pdf" ? "block" : "none"};">
-      <label class="form-label">Upload PDF File</label>
-      <input type="file" class="form-control pdfUpload" accept="application/pdf">
-      ${existing?.pdfFile ? `<p class="mt-1">Existing file: <a href="${existing.pdfFile}" target="_blank">View PDF</a></p>` : ""}
-  </div>
+<div class="mb-2 pdfUploadContainer" style="display: ${existing?.type === "pdf" ? "block" : "none"};">
+            <label class="form-label">Upload PDF File</label>
+            <input type="file" class="form-control pdfUpload" accept="application/pdf">
+            <div class="pdfPreview mt-2"></div>
+            ${existing?.pdfFile ? `
+                <embed src="${existing.pdfFile}" type="application/pdf" width="100%" height="400px" class="mt-2 border rounded">
+            ` : ""}
+        </div>
+
   <div class="questionDetails"></div>
   `;
   container.appendChild(qDiv);
@@ -648,4 +652,21 @@ downloadBtn.addEventListener("click", () => {
 
   pdf.setPage(1); // return to title page
   pdf.save(`${title}.pdf`);
+});
+
+// PDF Preview logic
+const pdfContainer = qDiv.querySelector(".pdfUploadContainer");
+const pdfInput = qDiv.querySelector(".pdfUpload");
+const pdfPreview = qDiv.querySelector(".pdfPreview");
+
+pdfInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+        const fileURL = URL.createObjectURL(file);
+        pdfPreview.innerHTML = `
+            <embed src="${fileURL}" type="application/pdf" width="100%" height="400px" class="mt-2 border rounded">
+        `;
+    } else {
+        pdfPreview.innerHTML = `<p class="text-danger">Please upload a valid PDF file.</p>`;
+    }
 });
