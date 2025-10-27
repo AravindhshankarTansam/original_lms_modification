@@ -74,9 +74,9 @@
   <section class="main-content-wrapper p-4">
 
     <!-- Welcome Section -->
-    <div class="welcome-banner mb-4 text-center">
+    <!-- <div class="welcome-banner mb-4 text-center">
       <h2>Welcome {{ request.user.username }}</h2>
-    </div>
+    </div> -->
 
    <!-- Slider Section -->
 <section class="featured-slider-section">
@@ -86,26 +86,47 @@
 
     <div class="featured-slider">
       <!-- Featured Card 1 -->
-      <div class="featured-card">
+    <div class="featured-slider">
+    {% for course in courses %}
+    <div class="featured-card">
+        {% if course.image %}
+        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+        {% else %}
         <img src="{% static 'images/course1.png' %}" alt="Course Image">
-        <div class="card-info">
-          <h3>Build a complete distributed app using .Net Aspire</h3>
-          <p>A complete guide to building an app using Aspire with .Net services and Next.js from scratch</p>
-          <span class="author">By Neil Cummings</span>
-          <span class="updated">Updated <strong>September 2025</strong></span>
-          <span class="hours">26.5 total hours • 191 lectures • Intermediate</span>
-          <div class="rating">
-            <span>4.9 ★★★★★ (24)</span>
-            <span class="badge">Highest Rated</span>
-          </div>
-          <div class="price">
-            ₹499 <span class="original-price">₹2,119</span>
-          </div>
-        </div>
-      </div>
+        {% endif %}
 
+        <div class="card-info">
+            <!-- Dynamic title -->
+            <h3>{{ course.title }}</h3>
+
+            <!-- Dynamic description -->
+            <p>{{ course.description | safe }}</p>
+
+            <!-- Static author -->
+            <!-- <span class="author">By Neil Cummings</span> -->
+
+            <!-- Dynamic updated date -->
+            <span class="updated">Updated <strong>{{ course.updated_at|date:"F Y" }}</strong></span>
+
+            <!-- Static hours/lectures/level -->
+            <span class="hours">26.5 total hours • 191 lectures • Intermediate</span>
+
+            <!-- Static rating -->
+            <div class="rating">
+                <span>4.9 ★★★★★ (24)</span>
+                <span class="badge">Highest Rated</span>
+            </div>
+
+            <!-- Static price -->
+            <div class="price">
+                ₹499 <span class="original-price">₹2,119</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
       <!-- Featured Card 2 -->
-      <div class="featured-card">
+      <!-- <div class="featured-card">
         <img src="{% static 'images/course2.png' %}" alt="Course Image">
         <div class="card-info">
           <h3>Another Course Title</h3>
@@ -121,9 +142,9 @@
             ₹399 <span class="original-price">₹1,999</span>
           </div>
         </div>  
-      </div>
+      </div> -->
   <!-- Featured Card 3 -->
-      <div class="featured-card">
+      <!-- <div class="featured-card">
         <img src="{% static 'images/course2.png' %}" alt="Course Image">
         <div class="card-info">
           <h3>Another Course Title</h3>
@@ -139,9 +160,9 @@
             ₹399 <span class="original-price">₹1,999</span>
           </div>
         </div>
-      </div>
+      </div> -->
        <!-- Featured Card 5 -->
-      <div class="featured-card">
+      <!-- <div class="featured-card">
         <img src="{% static 'images/course2.png' %}" alt="Course Image">
         <div class="card-info">
           <h3>Another Course Title</h3>
@@ -157,7 +178,7 @@
             ₹399 <span class="original-price">₹1,999</span>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- Add more cards as needed -->
     </div>
 
@@ -333,33 +354,62 @@
     </div>
   </div>
 
-
-    <!-- Featured + News -->
-    <section class="featured-latest-wrapper">
-      <div class="featured-courses-scroll">
-        <h3>Featured Courses</h3>
-        <div class="featured-courses-scroll-container">
-          <div class="course-card">
-            <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
-            <div>
-              <h4>Advanced Manufacturing Penetration Testing</h4>
-              <p>Online Course<br/><span class="badge">⭐ Featured</span> 5 (1)</p>
-            </div>
-            <span class="start">Start ▶</span>
-          </div>
-
-          <div class="course-card">
-            <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
-            <div>
-              <h4>Cybersecurity Analyst (100)</h4>
-              <p>Online Course<br/><span class="badge">⭐ Featured</span></p>
-            </div>
-            <span class="start">Resume ▶</span>
-          </div>
+   <!-- Featured + News -->
+<section class="featured-latest-wrapper">
+  <div class="featured-courses-scroll">
+    <h3>Featured Courses</h3>
+    <div class="featured-courses-scroll-container">
+      <div class="course-card">
+        <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
+        <div>
+          <h4>Advanced Manufacturing Penetration Testing</h4>
+          <p>Online Course<br/><span class="badge">⭐ Featured</span> 5 (1)</p>
         </div>
+        <span class="start">Start ▶</span>
       </div>
 
-      <div class="latest-news-box">
+      <div class="course-card">
+        <img src="{% static 'images/learn-icon.jpg' %}" alt="Course" />
+        <div>
+          <h4>Cybersecurity Analyst (100)</h4>
+          <p>Online Course<br/><span class="badge">⭐ Featured</span></p>
+        </div>
+        <span class="start">Resume ▶</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CATALOG SECTION ===== -->
+<section class="catalog-carousel">
+  <h3>Catalog</h3>
+  <div class="catalog-container">
+    <div class="catalog-scroll">
+      {% for course in courses %}
+      <div class="catalog-card">
+        {% if course.image %}
+        <img src="{{ course.image.url }}" alt="{{ course.title }}">
+        {% else %}
+        <img src="{% static 'images/default_course.png' %}" alt="Default Course Image">
+        {% endif %}
+        <h4>{{ course.title }}</h4>
+        <p>Online Course</p>
+
+        <form action="{% url 'enroll_course' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="course_id" value="{{ course.id }}">
+          <button type="submit" class="enroll-btn">Enroll ➕</button>
+        </form>
+      </div>
+      {% empty %}
+      <p style="text-align:center;">No courses available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+      <!-- <div class="latest-news-box">
         <h3>📰 Latest News</h3>
         <ul>
           <li><span>Tansam Learn & SACA Co-developed Credential!</span><span>2 months ago</span></li>
@@ -367,10 +417,10 @@
           <li><span>New Curriculum: Pre-Metaverse Integration Technologist</span><span>5 months ago</span></li>
         </ul>
       </div>
-    </section>
+    </section> -->
 
     <!-- Catalog Carousel -->
-    <section class="catalog-carousel">
+    <!-- <section class="catalog-carousel">
   <h3>Catalog</h3>
   <div class="catalog-container">
     
@@ -396,12 +446,12 @@
 <p style="text-align:center;">No courses available.</p>
 {% endfor %}
 
-    </div>
+    </div> -->
 
-   
+<!--    
   </div>
  
-</section>
+</section> -->
 
 
     <!-- Personalized Journey -->
@@ -419,9 +469,9 @@
   </section> -->
 
   <!-- Footer -->
-  <!-- <footer class="footer">
-    <div class="language-selector">🌐 EN</div>
-  </footer> -->
+  <footer class="footer">
+    <div class="language-selector">© 2025 TANSAM. All Rights Reserved.</div>
+  </footer>
 
   <!-- ===== JS ===== -->
   <script src="{% static 'js/dashboard.js' %}"></script>
@@ -444,7 +494,7 @@
       overlay.classList.remove('active');
     });
   </script>
- <script>
+ <!-- <script>
 const scrollContainer = document.querySelector('.catalog-scroll');
 const scrollSpeed = 1; // pixels per frame, adjust speed as needed
 
@@ -469,7 +519,7 @@ scrollContainer.addEventListener('mouseenter', () => {
 scrollContainer.addEventListener('mouseleave', () => {
   scrollContainer.dataset.paused = "false";
 });
-</script>
+</script> -->
 
 
 </body>

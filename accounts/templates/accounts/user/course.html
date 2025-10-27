@@ -133,8 +133,8 @@
 
               <div class="card-body-custom">
                 <div>
-                  <div class="course-title">{{ course.title }}</div>
-                  <div class="course-sub">{{ course.description|truncatechars:50 }}</div>
+                  <div class="course-title">{{ course.title | safe }}</div>
+                  <div class="course-sub">{{ course.description|truncatechars:50 | safe}}</div>
                 </div>
 
                 <!-- <div class="rating-row">
