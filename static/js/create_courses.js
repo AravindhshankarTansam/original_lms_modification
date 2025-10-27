@@ -210,6 +210,7 @@ function addChapter(container, existing = null) {
             <label class="form-label">Study Material</label>
             <select class="form-select materialType">
                 <option value="" disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+                
                 <option value="video" ${existing?.type === "video" ? "selected" : ""}>Video</option>
                 <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
                 <option value="ppt" ${existing?.type === "ppt" ? "selected" : ""}>PPT</option>
@@ -325,12 +326,18 @@ function addQuestion(container, existing = null) {
         <label class="form-label">Question Type</label>
         <select class="form-select questionType">
             <option disabled ${!existing?.type ? "selected" : ""}>Select Type</option>
+              <option value="pdf" ${existing?.type === "pdf" ? "selected" : ""}>PDF</option>
             <option value="mcq" ${existing?.type === "mcq" ? "selected" : ""}>Multiple Choice</option>
             <option value="truefalse" ${existing?.type === "truefalse" ? "selected" : ""}>True / False</option>
             <option value="short" ${existing?.type === "short" ? "selected" : ""}>Short Answer</option>
         </select>
     </div>
-    <div class="questionDetails"></div>
+ <div class="mb-2 pdfUploadContainer" style="display: ${existing?.type === "pdf" ? "block" : "none"};">
+      <label class="form-label">Upload PDF File</label>
+      <input type="file" class="form-control pdfUpload" accept="application/pdf">
+      ${existing?.pdfFile ? `<p class="mt-1">Existing file: <a href="${existing.pdfFile}" target="_blank">View PDF</a></p>` : ""}
+  </div>
+  <div class="questionDetails"></div>
   `;
   container.appendChild(qDiv);
 

@@ -28,6 +28,7 @@ QUESTION_TYPE_CHOICES = [
     ('mcq', 'Multiple Choice'),
     ('truefalse', 'True / False'),
     ('short', 'Short Answer'),
+    ('pdf', 'PDF Document'),
 ]
 
 MATERIAL_TYPE_CHOICES = [
