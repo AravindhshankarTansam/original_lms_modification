@@ -36,41 +36,51 @@
   <div class="video-section">
     <div class="video-container text-center position-relative" id="mediaContainer">
       {% if first_chapter %}
-        {% if first_chapter.material_type == 'video' and first_chapter.material_file %}
-          <!-- 🎥 Video Player -->
-          <video id="lessonVideo"
-                 controls preload="metadata"
-                 controlsList="nodownload"
-                 oncontextmenu="return false;"
-                 width="100%">
-            <source src="{{ first_chapter.material_file.url }}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
-
-        {% elif first_chapter.material_file and first_chapter.material_type == 'pdf' or first_chapter.material_type == 'ppt' %}
-
-          <!-- 📄 Document Viewer -->
-          <iframe id="lessonViewer"
-                  src="{{ first_chapter.material_file.url }}"
-                  width="100%" height="600px"></iframe>
-          <video id="lessonVideo" class="d-none"></video>
-
-        {% else %}
-          <!-- 🪄 Default Placeholder -->
-          <video id="lessonVideo" controls preload="metadata" width="100%">
-            <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
-        {% endif %}
-      {% else %}
-        <video id="lessonVideo" controls preload="metadata" width="100%">
-          <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
-          Your browser does not support the video tag.
+    {% if first_chapter.material_type == 'video' and first_chapter.material_file %}
+        <!-- 🎥 Video Player -->
+        <video id="lessonVideo"
+               controls preload="metadata"
+               controlsList="nodownload"
+               oncontextmenu="return false;"
+               width="100%">
+          <source src="{{ first_chapter.material_file.url }}" type="video/mp4">
         </video>
         <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
-      {% endif %}
+
+   {% elif first_chapter.material_file and first_chapter.material_type == 'pdf' %}
+    <iframe id="lessonViewer"
+            src="{{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}#toolbar=0&scrollbar=0"
+            width="100%" height="600px"
+            style="border: none;"></iframe>
+    <video id="lessonVideo" class="d-none"></video>
+
+
+    {% elif first_chapter.material_file and first_chapter.material_type == 'ppt' %}
+        <!-- 🟢 PPT Viewer (No Download) -->
+        <iframe id="lessonViewer"
+                src="https://view.officeapps.live.com/op/embed.aspx?src={{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}"
+                width="100%" height="600px"
+                style="border: none;"></iframe>
+        <video id="lessonVideo" class="d-none"></video>
+
+    {% else %}
+        <!-- 🪄 Default if file exists but type unknown -->
+        <video id="lessonVideo" controls preload="metadata" width="100%">
+          <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
+        </video>
+        <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
+
+    {% endif %}
+
+{% else %}
+    <!-- 🪄 Default if no chapter found -->
+    <video id="lessonVideo" controls preload="metadata" width="100%">
+      <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
+    </video>
+    <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
+
+{% endif %}
+
     </div>
 
     <!-- ===== TABS ===== -->
@@ -123,10 +133,11 @@
             {% if module.chapters.all %}
               {% for chapter in module.chapters.all %}
                 <li class="lesson-item d-flex align-items-center gap-2 py-1"
+                    data-chapter-id="{{ chapter.id }}"
                     data-type="{{ chapter.material_type }}"
-                    data-url="{% if chapter.material_file %}{{ chapter.material_file.url }}{% else %}{% static 'videos/default_intro.mp4' %}{% endif %}"
+                    data-url="{% if chapter.material_file %}{{ request.scheme }}://{{ request.get_host }}{{ chapter.material_file.url }}{% else %}{% static 'videos/default_intro.mp4' %}{% endif %}"
                     data-title="{{ chapter.title }}">
-                  <input type="checkbox" class="lesson-check">
+                  
                   <span class="lesson-title">
                     {{ chapter.title }}
                     {% if not chapter.material_file %}
@@ -145,6 +156,7 @@
       <p class="text-muted">No modules found in this course.</p>
     {% endif %}
   </div>
+
 </div>
 <script src="{% static 'js/course_play.js' %}"></script>
 {% endblock %}

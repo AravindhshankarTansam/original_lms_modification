@@ -135,21 +135,30 @@ html, body {
   cursor: pointer;
   font-size: 0.9rem;
   transition: background 0.2s;
-}
-
-.lesson-item:hover {
-  background: #ececec;
-}
-
-.lesson-item.completed {
-  color: #888;
-  text-decoration: line-through;
+  position: relative; /* ← Add this line */
 }
 
 .lesson-item.locked {
-  opacity: 0.5;
+  opacity: 0.55;
   pointer-events: none;
 }
+
+/* FIXED LOCK ICON */
+.lesson-item.locked::after {
+  content: "🔒";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.lesson-item.active {
+  background: #d4352d18;
+  border-left: 4px solid #d4362d;
+}
+
 
 /* ---------- PROGRESS BAR ---------- */
 .progress-wrapper {

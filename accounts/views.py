@@ -15,7 +15,7 @@ import json
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import Enrollment
-
+from .models import LessonProgress
 
 def landing_page(request):
     # Paths to JSON files
@@ -332,25 +332,30 @@ def catalog(request):
 @login_required
 def course_play(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    
-    # Get all modules and chapters efficiently
     modules = course.modules.prefetch_related('chapters').all()
-    
-    # Get the first chapter (any module’s first one)
+
     first_chapter = None
     for module in modules:
         if module.chapters.exists():
             first_chapter = module.chapters.first()
             break
 
+    chapter_completed = False
+    if first_chapter:
+        chapter_completed = LessonProgress.objects.filter(
+            user=request.user,
+            chapter=first_chapter,
+            completed=True
+        ).exists()
+
     context = {
         'course': course,
         'modules': modules,
         'first_chapter': first_chapter,
+        'chapter_completed': chapter_completed,
     }
-
     return render(request, 'accounts/user/course_play.html', context)
-
+    
 @login_required
 def my_courses(request):
     """
@@ -360,3 +365,19 @@ def my_courses(request):
     courses = [en.course for en in enrollments]
 
     return render(request, 'accounts/user/my_course.html', {'courses': courses})
+
+@login_required
+def mark_chapter_complete(request, chapter_id):
+    chapter = get_object_or_404(Chapter, id=chapter_id)
+
+    progress, created = LessonProgress.objects.get_or_create(
+        user=request.user,
+        chapter=chapter,
+        defaults={'completed': True}
+    )
+
+    if not created:
+        progress.completed = True
+        progress.save()
+
+    return JsonResponse({'status': 'success', 'message': 'Chapter marked complete'})

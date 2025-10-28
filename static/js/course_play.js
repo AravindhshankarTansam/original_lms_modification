@@ -1,4 +1,4 @@
-console.log("✅ course_play.js loaded");
+console.log("✅ course_play.js loaded with lesson locking");
 
 document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("#lessonVideo");
@@ -7,58 +7,124 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBar = document.querySelector("#progressBar");
   const progressText = document.querySelector("#progressText");
 
-  const STORAGE_KEY = "courseProgress_v6";
+  const STORAGE_KEY = "courseProgress_v7";
   let savedProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   let currentLessonIndex = 0;
 
   const totalLessons = lessons.length;
 
-  // Setup lesson click behavior
+  // ==== Lock all lessons except first unlocked ====
+  function applyLessonLocks() {
+    lessons.forEach((lesson, index) => {
+      lesson.classList.remove("locked");
+      if (index > savedProgress.length) {
+        lesson.classList.add("locked");
+      }
+    });
+  }
+
+  applyLessonLocks();
+
+  // ==== Click Handler ====
   lessons.forEach((lesson, index) => {
     lesson.addEventListener("click", () => playLesson(index));
   });
 
-  // Play Selected Lesson
-  function playLesson(index) {
-    const lesson = lessons[index];
-    if (!lesson) return;
+  // ==== Play Lesson ====
+function playLesson(index) {
+  if (lessons[index].classList.contains("locked")) return;
 
-    const url = lesson.dataset.url;
-    const type = lesson.dataset.type;
-    const title = lesson.dataset.title;
+  currentLessonIndex = index;
 
-    currentLessonIndex = index;
+  lessons.forEach(l => l.classList.remove("active"));
+  lessons[index].classList.add("active");
 
-    lessons.forEach(l => l.classList.remove("active"));
-    lesson.classList.add("active");
+  const url = lessons[index].dataset.url;
+  const type = lessons[index].dataset.type;
+  const title = lessons[index].dataset.title;
 
-    const header = document.querySelector(".course-header");
-    if (header) header.textContent = title;
+  document.querySelector(".course-header").textContent = title;
 
-    if (type === "video" && url.endsWith(".mp4")) {
-      viewer.classList.add("d-none");
-      video.classList.remove("d-none");
-      video.querySelector("source").src = url;
-      video.load();
-      video.play();
-    } else {
-      video.classList.add("d-none");
-      viewer.classList.remove("d-none");
-      viewer.src = url;
-    }
+  const isLocalhost =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1";
+
+  // ==== VIDEO ====
+  if (type === "video" && url.endsWith(".mp4")) {
+    viewer.classList.add("d-none");
+    video.classList.remove("d-none");
+    video.querySelector("source").src = url;
+    video.load();
+    video.play();
+    return;
   }
 
-  // Mark Lesson Complete (No strike text)
+  // ==== DOCUMENT VIEWER ====
+  video.classList.add("d-none");
+  viewer.classList.remove("d-none");
+
+  // ---- PPT & PPTX ----
+  if (url.endsWith(".ppt") || url.endsWith(".pptx")) {
+    const absoluteUrl = url.startsWith("http") ? url : window.location.origin + url;
+
+    if (isLocalhost) {
+      // Office Viewer for local
+      viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(absoluteUrl)}`;
+    } else {
+      // Google Viewer for production
+      viewer.src = `https://docs.google.com/gview?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
+    }
+    return;
+  }
+
+  // ---- PDF ----
+  if (url.endsWith(".pdf")) {
+    if (isLocalhost) {
+      // Browser internal viewer (no download button hidden with toolbar=0)
+      viewer.src = url + "#toolbar=0&scrollbar=0";
+    } else {
+      // Google viewer online
+      viewer.src = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+    }
+    return;
+  }
+
+  // ---- DOC / DOCX ----
+  if (url.endsWith(".doc") || url.endsWith(".docx")) {
+    const absoluteUrl = url.startsWith("http") ? url : window.location.origin + url;
+    viewer.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(absoluteUrl)}`;
+    return;
+  }
+
+  // Default (images, txt, etc.)
+  viewer.src = url;
+}
+
+
+
+  // ==== Mark Lesson Complete ====
   function markLessonComplete(index) {
+  const chapterId = lessons[index].dataset.chapterId;
+
+  fetch(`/courses/mark-complete/${chapterId}/`, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+  })
+  .then(res => res.json())
+  .then(() => {
     if (!savedProgress.includes(index)) {
       savedProgress.push(index);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(savedProgress));
+      applyLessonLocks(); 
+      updateProgress();
     }
-    updateProgress();
-    showSuccessPopup("Lesson Completed ✅");
-  }
+  });
+}
 
-  // Update Progress Bar
+
+  // ==== Update Progress Bar ====
   function updateProgress() {
     const percent = Math.round((savedProgress.length / totalLessons) * 100);
     progressBar.style.width = percent + "%";
@@ -67,43 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateProgress();
 
-  // Auto Next Lesson
-  if (video) {
-    video.addEventListener("ended", () => {
-      markLessonComplete(currentLessonIndex);
-
-      const nextLesson = lessons[currentLessonIndex + 1];
-      if (nextLesson) {
-        setTimeout(() => playLesson(currentLessonIndex + 1), 1000);
-      } else {
-        setTimeout(() => showSuccessPopup("🎉 You completed this course!", true), 1000);
-      }
-    });
-  }
-
-  // Success Popup
-  function showSuccessPopup(message, final = false) {
-    const popup = document.createElement("div");
-    popup.className = "lesson-popup";
-    popup.innerHTML = `<div>${message}</div>`;
-    document.body.appendChild(popup);
-
-    setTimeout(() => {
-      popup.classList.add("show");
-    }, 50);
-
-    setTimeout(() => {
-      popup.classList.remove("show");
-      setTimeout(() => popup.remove(), 400);
-
-      if (final) {
-        // redirect or show certificate - tell me what you want here
-        console.log("Course finished!");
-      }
-    }, 2000);
-  }
-
-  // Continue last lesson automatically
-  const lastIndex = savedProgress.length > 0 ? Math.max(...savedProgress) : 0;
-  playLesson(lastIndex);
+  // ==== Auto continue last unfinished lesson ====
+  const resumeIndex = savedProgress.length > 0 ? savedProgress.length : 0;
+  playLesson(resumeIndex);
 });
