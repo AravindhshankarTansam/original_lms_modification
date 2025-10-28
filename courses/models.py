@@ -68,7 +68,7 @@ class Course(models.Model):
         default="Active",
     )
     image = models.ImageField(upload_to="course_images/", blank=True, null=True)
-    # tags = models.TextField(blank=True, null=True)
+    tags = models.TextField(blank=True, null=True)
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default="Beginner")
     rating = models.FloatField(default=0.0)
     review_count = models.PositiveIntegerField(default=0)
