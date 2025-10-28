@@ -309,17 +309,26 @@ def courses_catalog(request):
 def enroll_course(request):
     course = None
     message = None
+    already_enrolled = False
 
     if request.method == "POST":
         course_id = request.POST.get("course_id")
         if course_id:
             course = get_object_or_404(Course, id=course_id)
-            Enrollment.objects.get_or_create(user=request.user, course=course)
-            message = "You are enrolled successfully!"
+            
+            # Check if user already enrolled
+            enrollment, created = Enrollment.objects.get_or_create(user=request.user, course=course)
+            
+            if created:
+                message = "You are enrolled successfully!"
+            else:
+                already_enrolled = True
+                message = "You are already enrolled in this course."
 
     return render(request, "courses/enroll.html", {
         "course": course,
-        "message": message
+        "message": message,
+        "already_enrolled": already_enrolled,
     })
 def catalog(request):
     courses = Course.objects.all()  # Fetch all courses
@@ -350,3 +359,5 @@ def my_courses(request):
     courses = [en.course for en in enrollments]
 
     return render(request, 'accounts/user/my_course.html', {'courses': courses})
+
+

@@ -144,13 +144,14 @@
                   <div class="rating-count">(0)</div>
                 </div> -->
 
-                <div class="card-actions">
-                  {% if course.id %}
-                    <a href="{% url 'course_play' course.id %}" class="btn-enroll">
-                      Enroll <div class="plus">+</div>
-                    </a>
-                  {% endif %}
-                </div>
+             <div class="card-actions">
+  <form action="{% url 'enroll_course' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="course_id" value="{{ course.id }}">
+    <button type="submit" class="btn-enroll">Enroll <div class="plus">+</div></button>
+  </form>
+</div>
+
               </div>
             </div>
           </div>
