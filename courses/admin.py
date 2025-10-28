@@ -2,6 +2,45 @@ from django.contrib import admin
 from .models import Course, Module, Chapter, Question, Category, SubCategory
 
 
+class ChapterInline(admin.TabularInline):
+    model = Chapter
+    extra = 1
+    fields = ('title', 'description', 'material_type', 'material_file', 'duration')
+    readonly_fields = ('duration',)
+    show_change_link = True
+
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 1
+    fields = (
+        'question_text',
+        'question_type',
+        'option1',
+        'option2',
+        'option3',
+        'option4',
+        'correct_answer',
+    )
+
+
+class ModuleInline(admin.StackedInline):
+    model = Module
+    extra = 1
+    show_change_link = True
+    fields = ('title',)
+    inlines = [ChapterInline, QuestionInline]  # Not supported directly by Django admin
+
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'course')
+    search_fields = ('title', 'course__title')
+    list_filter = ('course',)
+    ordering = ('course',)
+    inlines = [ChapterInline, QuestionInline]
+
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = (
@@ -41,14 +80,7 @@ class CourseAdmin(admin.ModelAdmin):
     )
 
     filter_horizontal = ('students',)
-
-
-@admin.register(Module)
-class ModuleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course')
-    list_filter = ('course',)
-    search_fields = ('title', 'course__title')
-    ordering = ('course',)
+    inlines = [ModuleInline]  # Add modules directly under each course
 
 
 @admin.register(Chapter)

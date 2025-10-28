@@ -340,16 +340,26 @@ def catalog(request):
 
 @login_required
 def course_play(request, course_id):
-    # Get the course object or 404 if not found
     course = get_object_or_404(Course, id=course_id)
     
-    # Get all modules related to this course, prefetch chapters to reduce queries
+    # Get all modules and chapters efficiently
     modules = course.modules.prefetch_related('chapters').all()
+    
+    # Get the first chapter (any module’s first one)
+    first_chapter = None
+    for module in modules:
+        if module.chapters.exists():
+            first_chapter = module.chapters.first()
+            break
 
-    return render(request, 'accounts/user/course_play.html', {
+    context = {
         'course': course,
         'modules': modules,
-    })
+        'first_chapter': first_chapter,
+    }
+
+    return render(request, 'accounts/user/course_play.html', context)
+
 @login_required
 def my_courses(request):
     """
