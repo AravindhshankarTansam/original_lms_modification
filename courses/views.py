@@ -112,7 +112,7 @@ def create_or_update_course(request, course_id=None):
         status = "Active" if request.POST.get("status") == "true" else "Inactive"
         level = request.POST.get("level", "Beginner")
         image = request.FILES.get("image")
-
+        
         # ----- CATEGORIES -----
         category_ids = request.POST.getlist("category")  # selected category IDs
         category_json = json.dumps(category_ids)
@@ -125,7 +125,7 @@ def create_or_update_course(request, course_id=None):
             course.requirements = requirements
             course.status = status
             course.level = level
-            course.category_name = category_json
+            course.tags = category_json
             if image:
                 course.image = image
             course.save()
@@ -139,7 +139,7 @@ def create_or_update_course(request, course_id=None):
                 requirements=requirements,
                 status=status,
                 level=level,
-                category_name=category_json,
+                tags=category_json,
                 image=image,
                 created_by=request.user,
             )
@@ -230,9 +230,9 @@ def create_or_update_course(request, course_id=None):
 
     # ----- GET REQUEST: Populate form -----
     selected_categories = []
-    if course and course.category_name:
+    if course and course.tags:
         try:
-            selected_categories = [str(cid) for cid in json.loads(course.category_name)]
+            selected_categories = [str(cid) for cid in json.loads(course.tags)]
         except Exception:
             selected_categories = []
 
