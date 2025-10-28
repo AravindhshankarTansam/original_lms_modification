@@ -324,11 +324,11 @@ def course_categories(request):
     categories = Category.objects.prefetch_related("subcategories").all()
 
     if request.method == "POST":
-        category_name = request.POST.get("category_name")
+        name = request.POST.get("name")
         subcategory_name = request.POST.get("subcategory_name")
 
-        if category_name:
-            category, created = Category.objects.get_or_create(name=category_name)
+        if name:
+            category, created = Category.objects.get_or_create(name=name)
 
             if subcategory_name:
                 SubCategory.objects.get_or_create(

@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('requirements', models.TextField(blank=True, null=True)),
                 ('status', models.CharField(choices=[('Active', 'Active'), ('Inactive', 'Inactive')], default='Active', max_length=10)),
                 ('image', models.ImageField(blank=True, null=True, upload_to='course_images/')),
-                ('category_name', models.TextField(blank=True, null=True)),
+                ('tags', models.TextField(blank=True, null=True)),
                 ('level', models.CharField(choices=[('Beginner', 'Beginner'), ('Intermediate', 'Intermediate'), ('Advanced', 'Advanced')], default='Beginner', max_length=20)),
                 ('rating', models.FloatField(default=0.0)),
                 ('review_count', models.PositiveIntegerField(default=0)),
