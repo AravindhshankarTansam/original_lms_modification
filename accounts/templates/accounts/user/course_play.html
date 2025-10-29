@@ -36,51 +36,49 @@
   <div class="video-section">
     <div class="video-container text-center position-relative" id="mediaContainer">
       {% if first_chapter %}
-    {% if first_chapter.material_type == 'video' and first_chapter.material_file %}
-        <!-- 🎥 Video Player -->
-        <video id="lessonVideo"
-               controls preload="metadata"
-               controlsList="nodownload"
-               oncontextmenu="return false;"
-               width="100%">
-          <source src="{{ first_chapter.material_file.url }}" type="video/mp4">
-        </video>
-        <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
+        {% if first_chapter.material_type == 'video' and first_chapter.material_file %}
+          <!-- 🎥 Video Player -->
+          <video id="lessonVideo"
+                 controls preload="metadata"
+                 controlsList="nodownload"
+                 oncontextmenu="return false;"
+                 width="100%">
+            <source src="{{ first_chapter.material_file.url }}" type="video/mp4">
+          </video>
+          <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
 
-   {% elif first_chapter.material_file and first_chapter.material_type == 'pdf' %}
-    <iframe id="lessonViewer"
-            src="{{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}#toolbar=0&scrollbar=0"
-            width="100%" height="600px"
-            style="border: none;"></iframe>
-    <video id="lessonVideo" class="d-none"></video>
+        {% elif first_chapter.material_file and first_chapter.material_type == 'pdf' %}
+          <iframe id="lessonViewer"
+                  src="{{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}#toolbar=0&scrollbar=0"
+                  width="100%" height="600px"
+                  style="border: none;"></iframe>
+          <video id="lessonVideo" class="d-none"></video>
 
+        {% elif first_chapter.material_file and first_chapter.material_type == 'ppt' %}
+          <!-- 🟢 PPT Viewer (No Download) -->
+          <iframe id="lessonViewer"
+                  src="https://view.officeapps.live.com/op/embed.aspx?src={{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}"
+                  width="100%" height="600px"
+                  style="border: none;"></iframe>
+          <video id="lessonVideo" class="d-none"></video>
 
-    {% elif first_chapter.material_file and first_chapter.material_type == 'ppt' %}
-        <!-- 🟢 PPT Viewer (No Download) -->
-        <iframe id="lessonViewer"
-                src="https://view.officeapps.live.com/op/embed.aspx?src={{ request.scheme }}://{{ request.get_host }}{{ first_chapter.material_file.url }}"
-                width="100%" height="600px"
-                style="border: none;"></iframe>
-        <video id="lessonVideo" class="d-none"></video>
-
-    {% else %}
-        <!-- 🪄 Default if file exists but type unknown -->
+        {% else %}
+          <!-- 🪄 Default if file exists but type unknown -->
+          <video id="lessonVideo" controls preload="metadata" width="100%">
+            <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
+          </video>
+          <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
+        {% endif %}
+      {% else %}
+        <!-- 🪄 Default if no chapter found -->
         <video id="lessonVideo" controls preload="metadata" width="100%">
           <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
         </video>
         <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
+      {% endif %}
 
-    {% endif %}
-
-{% else %}
-    <!-- 🪄 Default if no chapter found -->
-    <video id="lessonVideo" controls preload="metadata" width="100%">
-      <source src="{% static 'videos/default_intro.mp4' %}" type="video/mp4">
-    </video>
-    <iframe id="lessonViewer" class="d-none" width="100%" height="500px"></iframe>
-
-{% endif %}
-
+      <!-- ✅ NEW: Mark Complete Button -->
+      <button id="markCompleteBtn" class="btn btn-success d-none mt-3">Mark as Complete</button>
     </div>
 
     <!-- ===== TABS ===== -->
@@ -160,5 +158,3 @@
 </div>
 <script src="{% static 'js/course_play.js' %}"></script>
 {% endblock %}
-
-
