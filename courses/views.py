@@ -96,7 +96,7 @@ def list_courses(request):
 def create_or_update_course(request, course_id=None):
     """
     Create a new course or edit an existing course.
-    Saves selected categories as JSON in `category_name`.
+    Saves selected categories as JSON in `category_names`.
     Handles modules, chapters, questions, and file uploads.
     """
     # Fetch course if editing
@@ -125,7 +125,7 @@ def create_or_update_course(request, course_id=None):
             course.requirements = requirements
             course.status = status
             course.level = level
-            course.category_name = category_json
+            course.category_names = category_json
             if image:
                 course.image = image
             course.save()
@@ -139,7 +139,7 @@ def create_or_update_course(request, course_id=None):
                 requirements=requirements,
                 status=status,
                 level=level,
-                category_name=category_json,
+                category_names=category_json,
                 image=image,
                 created_by=request.user,
             )
@@ -230,9 +230,9 @@ def create_or_update_course(request, course_id=None):
 
     # ----- GET REQUEST: Populate form -----
     selected_categories = []
-    if course and course.category_name:
+    if course and course.category_names:
         try:
-            selected_categories = [str(cid) for cid in json.loads(course.category_name)]
+            selected_categories = [str(cid) for cid in json.loads(course.category_names)]
         except Exception:
             selected_categories = []
 
@@ -324,11 +324,11 @@ def course_categories(request):
     categories = Category.objects.prefetch_related("subcategories").all()
 
     if request.method == "POST":
-        category_name = request.POST.get("category_name")
+        category_names = request.POST.get("category_names")
         subcategory_name = request.POST.get("subcategory_name")
 
-        if category_name:
-            category, created = Category.objects.get_or_create(name=category_name)
+        if category_names:
+            category, created = Category.objects.get_or_create(name=category_names)
 
             if subcategory_name:
                 SubCategory.objects.get_or_create(

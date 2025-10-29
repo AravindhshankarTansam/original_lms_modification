@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import mark_chapter_complete
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -14,13 +15,9 @@ urlpatterns = [
     path('courses/', views.courses_catalog, name='courses_catalog'),
     path('my-courses/', views.my_courses, name='my_courses'),
     path('courses/play/', views.course_play, name='course_play'), 
-    # urls.py
-# urls.py
-path('accounts/courses/enroll/', views.enroll_course, name='enroll_course'),
-path('courses/play/<int:course_id>/', views.course_play, name='course_play')
-
-
-
+    path('accounts/courses/enroll/', views.enroll_course, name='enroll_course'),
+    path('courses/play/<int:course_id>/', views.course_play, name='course_play'),
+    path('courses/mark-complete/<int:chapter_id>/', mark_chapter_complete, name='mark_chapter_complete'),
 
 
 

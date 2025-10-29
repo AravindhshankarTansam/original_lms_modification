@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import os
+from django.conf import settings
+
 
 def user_profile_image_path(instance, filename):
     """
@@ -22,6 +24,14 @@ class User(AbstractUser):
         default="profile_images/default/no_bg_user.png"
     )
 
+class LessonProgress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    chapter = models.ForeignKey("courses.Chapter", on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'chapter')
 
 
 class Enrollment(models.Model):
